@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReplyDAO">
+
+<resultMap type="reply" id="replyResult">
+	<id property="replyseq" column="REPLYSEQ"/>
+	<result property="boardseq" column="BOARDSEQ"/>
+	<result property="writer" column="WRITER"/>
+	<result property="content" column="CONTENT"/>
+	<result property="regdate" column="REGDATE"/>
+</resultMap>
+
+<!-- 댓글 리스트 -->
+<select id="replyList" resultMap="replyResult">
+	SELECT * FROM REPLY WHERE BOARDSEQ =#{boardseq}
+</select>
+
+<!-- 댓글 입력 -->
+<insert id="insertreply">
+	INSERT INTO REPLY (BOARDSEQ,WRITER,CONTENT,PASSWORD) VALUES (#{boardseq},#{writer},#{content},#{password})
+</insert>
+
+<!-- 댓글 수정 -->
+<update id="updatereply">
+	UPDATE REPLY SET CONTENT=#{content} WHERE REPLYSEQ =#{replyseq} AND PASSWORD =#{password}
+</update>
+
+<!-- 댓글 삭제 -->
+<delete id="deletereply">
+	DELETE FROM REPLY WHERE REPLYSEQ = #{replyseq} AND PASSWORD =#{password}
+</delete>
+
+<!-- 댓글 보기 -->
+<select id="selectreply" resultType="reply" parameterType="reply">
+	SELECT * FROM REPLY WHERE REPLYSEQ =#{replyseq}
+</select>
+
+<!-- 댓글 추천 -->
+<update id="upCountReply" parameterType="int">
+	UPDATE REPLY SET COUNT = COUNT + 1 WHERE REPLYSEQ =#{replyseq}
+</update>
+
+<!-- 댓글 비추천 -->
+<update id="downCountReply"  parameterType="int">
+	UPDATE REPLY SET COUNT = COUNT - 1 WHERE REPLYSEQ =#{replyseq}
+</update>
+</mapper>

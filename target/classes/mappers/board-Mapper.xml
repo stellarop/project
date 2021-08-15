@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BoardDAO">
+
+<!-- List로 불러올때 -->
+ <resultMap id="boardResult" type="board">  
+  	<id property="boardseq" column="BOARDSEQ"/>
+  	<result property="title" column="TITLE"/>
+  	<result property="writer" column="WRITER"/>
+  	<result property="content" column="CONTENT"/>
+  	<result property="filename" column="FILENAME"/>
+  	<result property="boardcount" column="BOARDCOUNT"/>
+  	<result property="count" column="COUNT"/>
+  	<result property="regdate" column="REGDATE"/>
+  </resultMap>
+  
+
+<!-- 게시글 조회 -->
+<select  id="getBoard" resultType="board" parameterType="board">
+	SELECT * FROM BOARD WHERE BOARDSEQ =#{boardseq}
+</select>
+
+<!-- 게시글 입력 -->
+<insert id="insertBoard">
+	INSERT INTO BOARD (TITLE,WRITER,CONTENT,PASSWORD,FILENAME) VALUES (#{title},#{writer},#{content},#{password},#{filename})
+</insert>
+
+<!-- 게시글 수정 -->
+<update id="updateBoard">
+	UPDATE BOARD SET TITLE=#{title},CONTENT=#{content} WHERE BOARDSEQ=#{boardseq} AND PASSWORD =#{password}
+</update>
+
+<!-- 게시글 삭제 -->
+<delete id="deleteBoard">
+	DELETE FROM BOARD WHERE BOARDSEQ=#{boardseq} AND PASSWORD =#{password}
+</delete>
+ 
+<!-- 게시글 조회수 -->
+<update id="boardCount" parameterType="int">
+	UPDATE BOARD SET BOARDCOUNT = BOARDCOUNT + 1 WHERE BOARDSEQ =#{boardseq}
+</update>
+
+<!-- 게시글 주천 -->
+<update id="upCountBoard" parameterType="int">
+	UPDATE BOARD SET COUNT = COUNT + 1 WHERE BOARDSEQ =#{boardseq}
+</update>
+
+<!-- 게시글 비추천 -->
+<update id="downCountBoard" parameterType="int">
+	UPDATE BOARD SET COUNT = COUNT - 1 WHERE BOARDSEQ =#{boardseq}
+</update>
+
+
+<!-- 게시글리스트 + 페이징 -->
+<select id="selectBoardList" resultMap="boardResult">
+	SELECT * FROM BOARD
+		<include refid="search"></include>
+		ORDER BY BOARDSEQ DESC
+	LIMIT #{pageStart},#{perPageNum}
+</select>
+
+<!-- 게시글 수 -->
+<select id="selectCount" resultType="int">
+	SELECT COUNT(*) FROM BOARD
+	<include refid="search"></include>
+</select>
+
+<!-- 글 수정 삭제 패스워드 체크 -->
+<select id="boardPwdCheck" resultType="int">
+	SELECT COUNT(*) FROM BOARD WHERE BOARDSEQ=#{boardseq} AND PASSWORD =#{password}
+</select>
+
+<!-- 검색 -->
+<sql id="search">
+	<if test="searchType != null">
+		<if test="searchType == 't'.toString()">WHERE TITLE LIKE CONCAT('%',#{keyword},'%')</if>
+		<if test="searchType == 'c'.toString()">WHERE CONTENT LIKE CONCAT('%',#{keyword},'%')</if>
+		<if test="searchType == 'w'.toString()">WHERE WRITER LIKE CONCAT('%',#{keyword},'%')</if>
+	</if>
+</sql>
+
+<!-- 게시글리스트 + 페이징  
+<select id="selectBoardList" resultMap="boardResult">
+	SELECT * FROM BOARD
+		<if test="keyword != null">
+			WHERE TITLE LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		ORDER BY BOARDSEQ DESC
+	LIMIT #{pageStart},#{perPageNum}
+</select>
+ -->
+<!-- 게시글 수 
+<select id="selectCount" resultType="int">
+	SELECT COUNT(*) FROM BOARD WHERE BOARDSEQ  
+	<if test="keyword != null">
+		AND TITLE LIKE CONCAT('%',#{keyword},'%')
+	</if>
+</select>
+-->
+
+</mapper> 

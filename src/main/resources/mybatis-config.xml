@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <typeAliases>
+		<typeAlias alias="user" type="com.spring.www.VO.UserVO"/>
+		<typeAlias alias="board" type="com.spring.www.VO.BoardVO"/>	
+		<typeAlias alias="reply" type="com.spring.www.VO.ReplyVO"/>
+	</typeAliases>
+	
+	<!-- SQL.XML 매퍼등록 -->
+	<mappers>
+		<mapper resource="mappers/user-Mapper.xml"/>
+		<mapper resource="mappers/board-Mapper.xml"/>
+		<mapper resource="mappers/reply-Mapper.xml"/> 
+	</mappers>
+</configuration>
