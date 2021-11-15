@@ -92,18 +92,6 @@ public class ReplyController {
 	
 	
 	
-	// 댓글 추천
-	@RequestMapping(value = "/upCountReply.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String upCountReply(ReplyVO rvo) {
-		replyservice.upCountReply(rvo.getReplyseq());
-		return "getBoard.do";
-	}
 	
-	// 댓글 반대
-	@RequestMapping(value = "/downCountReply.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String downCountReply(ReplyVO rvo) {
-		replyservice.downCountReply(rvo.getReplyseq());
-		return "getBoard.do";
-	}
 
 }
