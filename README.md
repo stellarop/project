@@ -83,6 +83,7 @@ $(function(){
       type : 'post',
       dateType : 'json',
       // 사용자가 입력한 아이디, 패스워드
+      // 입력한 값이 컨트롤러로 보내진다
       data : {'id' : $('#id').val(),
       'password' : $('#password').val()},
       success : function(data){
