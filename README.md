@@ -18,14 +18,14 @@ Back
 4. Spring 4.2.4
 5. Tomcat 8
 
-## 패키지 구조
+## 프로젝트 구조
 
-![패키지 구조1](https://user-images.githubusercontent.com/88939199/129493438-a145b629-e323-410d-a80f-c32bdfc9003e.png)
-![패키지 구조2](https://user-images.githubusercontent.com/88939199/129493444-84dd4220-dff7-4c15-880f-37fbd1e2b3ff.png)
+![프로젝트 구조 1](https://user-images.githubusercontent.com/93149034/141842473-dfb7e5a8-3a50-4974-ab9f-d127a4e72fb3.png)
+![프로젝트 구조 2](https://user-images.githubusercontent.com/93149034/141842482-91fcb060-d039-4e9e-a45e-2d2f5e4ebae7.png)
 
 ## ERD 
 
-![erd](https://user-images.githubusercontent.com/88939199/129493461-bbe27e9e-e297-4425-8221-d651edb70fc6.png)
+![ERD](https://user-images.githubusercontent.com/93149034/141842497-98b89514-61ba-42d0-b24e-f21cf93658d4.png)
 
 boardseq 칼럼을 외래키로 지정하여 on delete cascade 게시글이 삭제되면 댓글도 삭제되게 처리하였습니다.
 
