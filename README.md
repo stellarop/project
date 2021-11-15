@@ -115,8 +115,7 @@ $(function(){
 
 ## 아이디 찾기
 
-![아이디 찾기 gif](https://user-images.githubusercontent.com/88939199/135714390-32d039fd-7435-4868-a371-20f9bf8d08db.gif)
-![아이디 찾기 false gif](https://user-images.githubusercontent.com/88939199/135714803-de47cd55-04a3-4a06-afa8-47ae0e810c63.gif)
+![아이디 찾기 gif](https://user-images.githubusercontent.com/93149034/141844299-a3aceb27-142f-4869-a329-df8e24c0888c.gif)
 
 ```
 <!-- 아이디 찾기 -->
