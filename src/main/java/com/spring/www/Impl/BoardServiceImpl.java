@@ -19,8 +19,9 @@ public class BoardServiceImpl implements BoardService {
 	private BoardDAO boardDAO;
 
 	@Override
-	public void insertBoard(BoardVO vo) {
+	public BoardVO insertBoard(BoardVO vo) {
 		boardDAO.insertBoard(vo);
+		return vo;
 	}
 
 	@Override
@@ -56,21 +57,30 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void upCount(int boardseq) {
-		boardDAO.upCount(boardseq);		
+	public int upCount(BoardVO vo) {
+		int upCount = boardDAO.upCount(vo);		
+		return upCount;
 	}
 
 	@Override
-	public void downCount(int boardseq) {
-		boardDAO.downCount(boardseq);
+	public int downCount(BoardVO vo) {
+		int downCount = boardDAO.downCount(vo);
+		return downCount;
 	}
-
+	
+	@Override
+	public int count(BoardVO vo) {
+		int count = boardDAO.count(vo);
+		return count;
+	}
+	
+	/*
 	@Override
 	public int boardPwdCheck(BoardVO vo) {
 		int result = boardDAO.boardPwdCheck(vo);
 		return result;
 	}
-	
+	*/
 	/*
 	@Override
 	public List<BoardVO> boardList() {

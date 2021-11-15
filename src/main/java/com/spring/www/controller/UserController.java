@@ -1,10 +1,11 @@
 package com.spring.www.controller;
 
-import javax.servlet.http.HttpServletRequest;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,106 +20,146 @@ public class UserController {
 
 	@Autowired
 	private UserService userservice;
-
+	
 	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
 	public String getLogin(@ModelAttribute("user") UserVO vo) {
-		vo.setId("lee");
-		vo.setPassword("lee");
+		//vo.setId("leeyeonjae");
+		//vo.setPassword("1234");
 		return "login.jsp";
 	}
 
-	// ·Î±×ÀÎ
+	// ë¡œê·¸ì¸
+	@ResponseBody
 	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
-	public String login(@ModelAttribute("user") UserVO vo, HttpSession session,RedirectAttributes rttr) {
+	public boolean login(@ModelAttribute("user") UserVO vo, HttpSession session,RedirectAttributes rttr) {
+		
+		//HashMap<String, Object> loginMap = new HashMap<String, Object>();
+		//loginMap.put("id", vo.getId());
+		//loginMap.put("password", vo.getPassword());
+		
+		//System.out.println("ï¿½ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ : " + loginMap);
+		
 		UserVO user = userservice.login(vo);
+		//System.out.println("dbï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ : " + user);
+		
+			if(user != null) {
+				session.setAttribute("userId", user.getId());
+				session.setAttribute("userName", user.getName());
+				session.setAttribute("userTime", user.getRegdate());
+				session.setAttribute("userPassword", user.getPassword()); 
+				return true;
+			}else {
+				session.setAttribute("login", false);
+				return false;
+			}	
+		
+		/*
+		UserVO user = userservice.login(vo);
+		
 		if (user != null) {
-			session.setAttribute("userName", user.getName());
 			session.setAttribute("userId", user.getId());
 			session.setAttribute("userTime", user.getRegdate());
 			session.setAttribute("userPassword", user.getPassword());
 			return "main.do";
 		} else {
-			// rttr.addFlashAttribute("result", "registerOK");
+			session.setAttribute("login", false);
+			//rttr.addFlashAttribute("login", false);
 			return "login.jsp";
 		}
-
+		*/
 	}
 
-	// ·Î±×¾Æ¿ô
+	// ë¡œê·¸ì•„ì›ƒ
 	@RequestMapping(value = "/logout.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String logout(HttpSession session) {
-		// ºê¶ó¿ìÀú¿Í ¿¬°áµÈ ¼¼¼Ç °´Ã¼¸¦ °­Á¦ Á¾·áÇÑ´Ù
 		session.invalidate();
 		return "login.jsp";
 	}
 
-	// È¸¿ø°¡ÀÔ
+	// íšŒì›ê°€ì…
+	@ResponseBody
 	@RequestMapping(value = "/createUser.do", method = RequestMethod.POST)
-	public String createUser(UserVO vo) {
+	public boolean createUser(UserVO vo) {
 		
+		// ì•„ì´ë”” ì¤‘ë³µ ì²´í¬
 		int result = userservice.idCheck(vo);
 		
+		// ì¤‘ë³µëœ ì•„ì´ë”” ì¸ì§€ í™•ì¸
 		if(result == 1) {
-			return "createUser.do";
-		}else if(result == 0) {
+			// ì¤‘ë³µëœ ì•„ì´ë””ë©´ false ë°˜í™˜
+			return false;
+		// ì‚¬ìš© ê°€ëŠ¥í•œ ì•„ì´ë”” ì¼ì‹œ  íšŒì›ê°€ì… ì§„í–‰
+		}else if(result == 0) {	
 			userservice.createUser(vo);
+			// ì‚¬ìš© ê°€ëŠ¥í•œ ì•„ì´ë”” ì¼ì‹œ true ë°˜í™˜
 		}
-		return "login.jsp";
+		return true;	
 	}
-
-	// È¸¿ø Á¤º¸ ¼öÁ¤
-	@RequestMapping(value = "/updateUser.do", method = RequestMethod.POST)
-	public String updateUser(UserVO vo, HttpSession session) {
-		userservice.updateUser(vo);
-		// È¸¿øÁ¤º¸ ¼öÁ¤ ÈÄ ¼¼¼Ç ²÷¾îÁÜ
-		session.invalidate();
-		return "login.jsp";
-	}
-
-	// id Ã£±â
+	
+	// ì•„ì´ë”” ì°¾ê¸°
+	@ResponseBody
 	@RequestMapping(value = "/findId.do", method = RequestMethod.POST)
-	public String findId(@ModelAttribute("user") UserVO vo, HttpSession session) {
+	public int findId(@ModelAttribute("user") UserVO vo, HttpSession session) {
+	
 		UserVO id = userservice.findId(vo);
+		
 		if (id != null) {
+			// ì‚¬ìš©ì ì´ë¦„ê³¼ ì•„ì´ë””ë¥¼ ë³´ë‚´ì¤Œ
 			session.setAttribute("userName", id.getName());
 			session.setAttribute("userId", id.getId());
-			return "Id.jsp";
+			session.setAttribute("getId", true);
+			return 0;
 		} else {
-			return "noId.jsp";
+			return 1;
 		}
 	} 
 
-	// password Ã£±â
+	// íŒ¨ìŠ¤ì›Œë“œ  ì°¾ê¸°
+	@ResponseBody
 	@RequestMapping(value = "/findPassword.do", method = RequestMethod.POST)
-	public String findPassword(@ModelAttribute("user") UserVO vo, HttpSession session) {
+	public int findPassword(@ModelAttribute("user") UserVO vo, HttpSession session) {
+		
 		UserVO password = userservice.findPassword(vo);
+		
 		if (password != null) {
+			// ì‚¬ìš©ì ì´ë¦„ê³¼ íŒ¨ìŠ¤ì›Œë“œë¥¼ ë³´ë‚´ì¤Œ
 			session.setAttribute("userName", password.getName());
 			session.setAttribute("userPassword", password.getPassword());
-			return "password.jsp";
+			session.setAttribute("getPassword", true);
+			return 0;
 		} else {
-			return "noPassword.jsp";
+			return 1;
 		}
 	}
 
-	// È¸¿øÅ»Åğ
+	// íšŒì›íƒˆí‡´ 
 	@RequestMapping(value = "/deleteUser.do", method = RequestMethod.POST)
 	public String deleteUser(UserVO vo, HttpSession session) {
-		// ¼¼¼Ç¿¡ ÀÖ´Â ºñ¹Ğ¹øÈ£
-		String sessionpassword = (String) session.getAttribute("userPassword");
-		// ÀÔ·ÂÇÑ ºñ¹Ğ¹øÈ£
-		String vopassword = vo.getPassword();
-		if (sessionpassword.equals(vopassword)) {
+	
+		// ì„¸ì…˜ì— ìˆëŠ” íŒ¨ìŠ¤ì›Œë“œ
+		String sessionPwd = (String) session.getAttribute("userPassword");
+		// ì‚¬ìš©ìê°€ ì…ë ¥í•œ íŒ¨ìŠ¤ì›Œë“œ 
+		String voPwd = vo.getPassword();
+		
+		// ë‘ ê°’ì„ ë¹„êµ í›„ ì¼ì¹˜í•˜ë©´ ì‚­ì œ, ì„¸ì…˜ì„ ëŠì–´ì¤Œ
+		if (sessionPwd.equals(voPwd)) {
 			userservice.deleteUser(vo);
 			session.invalidate();
 			return "login.jsp";
-		} else {
+		}else {
 			return "deleteUser.jsp";
-		}
-		
+		}		
 	}
 	
-	// ¾ÆÀÌµğ Ã¼Å©
+	// íšŒì› ì •ë³´ ìˆ˜ì •
+	@RequestMapping(value = "/updateUser.do", method = RequestMethod.POST)
+	public String updateUser(UserVO vo, HttpSession session) {
+		userservice.updateUser(vo);
+		session.invalidate();
+		return "login.jsp";
+	} 
+	
+	// ì•„ì´ë”” ì²´í¬
 	@ResponseBody
 	@RequestMapping(value = "/idCheck.do", method = RequestMethod.POST)
 	public int idCheck(UserVO vo) {
@@ -126,11 +167,13 @@ public class UserController {
 		return result;
 	}
 	
-	// ÆĞ½º¿öµå Ã¼Å©
+	
+	// íŒ¨ìŠ¤ì›Œë“œ ì²´í¬
 	@ResponseBody
 	@RequestMapping(value = "/passwordCheck.do", method = RequestMethod.POST)
 	public int passwordCheck(UserVO vo) {
 		int result = userservice.passwordCheck(vo);
 		return result;
 	}
+	
 }

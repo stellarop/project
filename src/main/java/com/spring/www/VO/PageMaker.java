@@ -6,17 +6,16 @@ import java.net.URLEncoder;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-// °Ô½ÃÆÇ ÆäÀÌÂ¡ Ã³¸®
 public class PageMaker {
-	// ÇöÀç ÆäÀÌÁö ¹øÈ£
+	// í˜ì´ì§€
 	private Criteria cri;
-	// ÃÑ °Ô½Ã±Û °¹¼ö
+	// ì´ ê²Œì‹œê¸€ ìˆ˜ 
 	private int totalCount;
 	private int startPage;
 	private int endPage;
 	private boolean prev;
 	private boolean next;
-	// È­¸é ÇÏ´Ü¿¡ º¸¿©Áö´Â ÆäÀÌÁö ¹öÆ°ÀÇ ¼ö
+	// í™”ë©´ í•˜ë‹¨ì— ë³´ì—¬ì§€ëŠ” í˜ì´ì§€ ìˆ˜ 
 	private int displayPageNum = 5;
 
 	public Criteria getCri() {
@@ -35,26 +34,28 @@ public class PageMaker {
 		this.totalCount = totalCount;
 		calcData();
 	}
+	
+	
 
-	private void calcData() {
-		// ³¡ ÆäÀÌÁö ¹øÈ£ = (ÇöÀç ÆäÀÌÁö ¹øÈ£ / È­¸é¿¡ º¸¿©Áú ÆäÀÌÁö ¹øÈ£ÀÇ °¹¼ö) * È­¸é¿¡ º¸¿©Áú ÆäÀÌÁö ¹øÈ£ÀÇ °¹¼ö
-		endPage = (int) (Math.ceil(cri.getPage() / (double) displayPageNum) * displayPageNum);
-		// ½ÃÀÛ ÆäÀÌÁö ¹øÈ£ = (³¡ ÆäÀÌÁö ¹øÈ£ - È­¸é¿¡ º¸¿©Áú ÆäÀÌÁö ¹øÈ£ÀÇ °¹¼ö) + 1
-		startPage = (endPage - displayPageNum) + 1;
-		if (startPage <= 0)
-			startPage = 1;
-		
-		//¸¶Áö¸· ÆäÀÌÁö ¹øÈ£ = ÃÑ °³½Ã±Û ¼ö / ÇÑ ÆäÀÌÁö´ç º¸¿©ÁÙ °³½Ã±ÛÀÇ °¹¼ö
-		int tempEndPage = (int) (Math.ceil(totalCount / (double) cri.getPerPageNum()));
-		if (endPage > tempEndPage) {
-			endPage = tempEndPage;
-		}
-		// ÀÌÀü ¹öÆ° »ı¼º ¿©ºÎ = ½ÃÀÛ ÆäÀÌÁö ¹øÈ£ == 1 ? false : true
-		prev = startPage == 1 ? false : true;
-		// ´ÙÀ½ ¹öÆ° »ı¼º ¿©ºÎ = ³¡ ÆäÀÌÁö ¹øÈ£ * ÇÑ ÆäÀÌÁö´ç º¸¿©ÁÙ °Ô½Ã±ÛÀÇ °¹¼ö < ÃÑ °Ô½Ã±ÛÀÇ ¼ö ? true : false
-		next = endPage * cri.getPerPageNum() < totalCount ? true : false;
-		
-	} 
+	 private void calcData() {
+	      // ë í˜ì´ì§€ ë²ˆí˜¸ = (í˜„ì¬ í˜ì´ì§€ ë²ˆí˜¸ / í™”ë©´ì— ë³´ì—¬ì§ˆ í˜ì´ì§€ ë²ˆí˜¸ì˜ ê°¯ìˆ˜) * í™”ë©´ì— ë³´ì—¬ì§ˆ í˜ì´ì§€ ë²ˆí˜¸ì˜ ê°¯ìˆ˜
+	      endPage = (int) (Math.ceil(cri.getPage() / (double) displayPageNum) * displayPageNum);
+	      // ì‹œì‘ í˜ì´ì§€ ë²ˆí˜¸ = (ë í˜ì´ì§€ ë²ˆí˜¸ - í™”ë©´ì— ë³´ì—¬ì§ˆ í˜ì´ì§€ ë²ˆí˜¸ì˜ ê°¯ìˆ˜) + 1
+	      startPage = (endPage - displayPageNum) + 1;
+	      if (startPage <= 0)
+	         startPage = 1;
+	      
+	      //ë§ˆì§€ë§‰ í˜ì´ì§€ ë²ˆí˜¸ = ì´ ê°œì‹œê¸€ ìˆ˜ / í•œ í˜ì´ì§€ë‹¹ ë³´ì—¬ì¤„ ê°œì‹œê¸€ì˜ ê°¯ìˆ˜
+	      int tempEndPage = (int) (Math.ceil(totalCount / (double) cri.getPerPageNum()));
+	      if (endPage > tempEndPage) {
+	         endPage = tempEndPage;
+	      }
+	      // ì´ì „ ë²„íŠ¼ ìƒì„± ì—¬ë¶€ = ì‹œì‘ í˜ì´ì§€ ë²ˆí˜¸ == 1 ? false : true
+	      prev = startPage == 1 ? false : true;
+	      // ë‹¤ìŒ ë²„íŠ¼ ìƒì„± ì—¬ë¶€ = ë í˜ì´ì§€ ë²ˆí˜¸ * í•œ í˜ì´ì§€ë‹¹ ë³´ì—¬ì¤„ ê²Œì‹œê¸€ì˜ ê°¯ìˆ˜ < ì´ ê²Œì‹œê¸€ì˜ ìˆ˜ ? true : false
+	      next = endPage * cri.getPerPageNum() < totalCount ? true : false;
+	      
+	   } 
 	
 
 	public int getStartPage() {
@@ -98,5 +99,7 @@ public class PageMaker {
 	public void setDisplayPageNum(int displayPageNum) {
 		this.displayPageNum = displayPageNum;
 	}
+
+	
 	
 }

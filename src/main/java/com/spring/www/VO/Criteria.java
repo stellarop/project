@@ -2,23 +2,23 @@ package com.spring.www.VO;
 
 
 
-//Æ¯Á¤ ÆäÀÌÁö Á¶È¸
 public class Criteria {
-	// ÇöÀç ÆäÀÌÁö ¹øÈ£
+	// í˜„ì¬ í˜ì´ì§€ ë²ˆí˜¸
 	private int page;
-	// ÇÑ ÆäÀÌÁö´ç º¸¿©ÁÙ °Ô½Ã±ÛÀÇ °¹¼ö
+	 // í•œ í˜ì´ì§€ë‹¹ ë³´ì—¬ì¤„ ê²Œì‹œê¸€ì˜ ê°¯ìˆ˜
 	private int perPageNum;
-	// °Ë»ö Å°¿öµå 
+	// ê²€ìƒ‰ í‚¤ì›Œë“œ 
 	private String keyword;
-	// °Ë»ö Å¸ÀÔ
+	// ê²€ìƒ‰ íƒ€ì…
 	private String searchType;
 	
 	
-	// Æ¯Á¤ ÆäÀÌÁöÀÇ °Ô½Ã±Û ½ÃÀÛ ¹øÈ£, °Ô½Ã±Û ½ÃÀÛ Çà ¹øÈ£
+	// íŠ¹ì • í˜ì´ì§€ì˜ ê²Œì‹œê¸€ ì‹œì‘ ë²ˆí˜¸, ê²Œì‹œê¸€ ì‹œì‘ í–‰ ë²ˆí˜¸
 	public int getPageStart() {
 		return (this.page - 1) * perPageNum;
 	}
-
+	
+	// í•œê°œì˜ í˜ì´ì§€ì— ê²Œì‹œê¸€ì„ 10ê°œ ë³´ì—¬ì¤Œ
 	public Criteria() {
 		this.page = 1;
 		this.perPageNum = 10;

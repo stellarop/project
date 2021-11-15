@@ -21,8 +21,9 @@ public class ReplyServieImpl implements ReplyServie {
 	}
 
 	@Override
-	public void insertReply(ReplyVO rvo) {
+	public ReplyVO insertReply(ReplyVO rvo) {
 		replyDAO.insertReply(rvo);
+		return rvo;
 	}
 	
 	@Override

@@ -19,17 +19,17 @@
 
 <!-- 댓글 입력 -->
 <insert id="insertreply">
-	INSERT INTO REPLY (BOARDSEQ,WRITER,CONTENT,PASSWORD) VALUES (#{boardseq},#{writer},#{content},#{password})
+	INSERT INTO REPLY (BOARDSEQ,WRITER,CONTENT) VALUES (#{boardseq},#{writer},#{content})
 </insert>
 
 <!-- 댓글 수정 -->
 <update id="updatereply">
-	UPDATE REPLY SET CONTENT=#{content} WHERE REPLYSEQ =#{replyseq} AND PASSWORD =#{password}
+	UPDATE REPLY SET CONTENT=#{content} WHERE REPLYSEQ =#{replyseq}
 </update>
 
 <!-- 댓글 삭제 -->
 <delete id="deletereply">
-	DELETE FROM REPLY WHERE REPLYSEQ = #{replyseq} AND PASSWORD =#{password}
+	DELETE FROM REPLY WHERE REPLYSEQ = #{replyseq}
 </delete>
 
 <!-- 댓글 보기 -->

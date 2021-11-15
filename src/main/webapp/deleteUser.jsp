@@ -10,17 +10,43 @@ integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706t
 <script>
 $(function(){
 	
+	// 메인으로 가기
 	$('#mainBtn').click(function(){
 		location.href = "main.do"
 	})
 	
+	// 회원탈퇴 유효성 검사
 	$('#deleteUserBtn').click(function(){
 		if($('#password').val()==''){
 			alert('패스워드를 입력하세요.');
 			$('#password').focus();
-			return false;
+			return false;	
 		}
 		
+		
+		$.ajax({
+			// 회원탈퇴 경로
+			url : 'passwordCheck.do',
+			type : 'post',
+			dataType : 'json',
+			// 폼 안에 있는 데이터 (사용자가 입력한 패스워드 값)
+			data : $('#deleteUser').serializeArray(),
+			success : function(data){
+				// 패스워드가 맞으면 = 1 맞지 않다면 0
+				if(data == 1){
+					if(confirm('회원 탈퇴 하시겠습니까?')){
+						// 사용자가 입력한 패스워드가 컨트롤러로 전송
+						$('#deleteUser').submit();
+						alert('탈퇴가 완료되었습니다.');
+					}
+				}else if(data == 0){
+					alert('패스워드가 일치하지 않습니다.');
+				}
+			}
+		})	
+	})
+});
+		/*
 		// 패스워드 확인
 		$.ajax({
 			// 컨트롤러 경로
@@ -33,23 +59,19 @@ $(function(){
 			success : function(data){
 				if(data == 0){
 					alert('패스워드가 일치하지 않습니다.');
-					return;
 				}else{
 					if(confirm("회원탈퇴하시겠습니까?")){
-						// 예를 누르면 사용자가 입력한 패스워드가 컨트롤러로 전송됨
+						// 사용자가 입력한 패스워드가 컨트롤러로 전송됨
 						$('#deleteUser').submit();
 						alert('탈퇴가 완료되었습니다.');
 					}
 				}
 			} 
 		})
-		
-	});	
-})
-
+		*/
 </script>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회원탈퇴 페이지</title>
 </head>
 <body>
 <div class="container" role="main">

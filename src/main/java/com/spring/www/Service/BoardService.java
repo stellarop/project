@@ -12,25 +12,28 @@ import com.spring.www.VO.Criteria;
 
 @Service
 public interface BoardService {
-	// ±Û ÀÔ·Â
-	public void insertBoard(BoardVO vo);
-	// ±Û ¼öÁ¤
+	// ê²Œì‹œê¸€ ì‘ì„±
+	public BoardVO insertBoard(BoardVO vo);
+	// ê²Œì‹œê¸€ ìˆ˜ì •
 	public void updateBoard(BoardVO vo);
-	// ±Û »èÁ¦
+	// ê²Œì‹œê¸€ ì‚­ì œ
 	public void deleteBoard(BoardVO vo);
-	// ±Û Á¶È¸
+	// ê²Œì‹œê¸€ ìƒì„¸ ë³´ê¸° 
 	public BoardVO getBoard(int boardseq);
-	// ±Û ¸®½ºÆ® + ÆäÀÌÂ¡
+	// ê²Œì‹œê¸€ ë¦¬ìŠ¤íŠ¸
 	public List<BoardVO> selectBoardList(Criteria cri);
-	// °Ô½Ã±Û °³¼ö
+	// ê²Œì‹œê¸€ ì´ ê°œìˆ˜
 	public int selectCount(Criteria cri);
-	// °Ô½Ã±Û Á¶È¸¼ö
+	// ì¶”ì²œìˆ˜
 	public void boardCount(int boardseq);
-	// °Ô½Ã±Û ÃßÃµ
-	public void upCount(int boardseq);
-	// °Ô½Ã±Û ¹İ´ë
-	public void downCount(int boardseq);
-	// °Ô½Ã±Û ¼öÁ¤ »èÁ¦ ÆĞ½º¿öµå Ã¼Å©
+	// ì¶”ì²œ
+	public int upCount(BoardVO vo);
+	// ë°˜ëŒ€
+	public int downCount(BoardVO vo);
+	/*
+	// ê²Œì‹œê¸† íŒ¨ìŠ¤ì›Œë“œ ì²´í¬
 	public int boardPwdCheck(BoardVO vo);
-	//public List<BoardVO> boardList();
+	public List<BoardVO> boardList();
+	 */
+	int count(BoardVO vo);
 }

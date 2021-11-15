@@ -24,17 +24,17 @@
 
 <!-- 게시글 입력 -->
 <insert id="insertBoard">
-	INSERT INTO BOARD (TITLE,WRITER,CONTENT,PASSWORD,FILENAME) VALUES (#{title},#{writer},#{content},#{password},#{filename})
+	INSERT INTO BOARD (TITLE,WRITER,CONTENT,FILENAME) VALUES (#{title},#{writer},#{content},#{filename})
 </insert>
 
 <!-- 게시글 수정 -->
 <update id="updateBoard">
-	UPDATE BOARD SET TITLE=#{title},CONTENT=#{content} WHERE BOARDSEQ=#{boardseq} AND PASSWORD =#{password}
+	UPDATE BOARD SET TITLE=#{title},CONTENT=#{content} WHERE BOARDSEQ=#{boardseq}
 </update>
 
 <!-- 게시글 삭제 -->
 <delete id="deleteBoard">
-	DELETE FROM BOARD WHERE BOARDSEQ=#{boardseq} AND PASSWORD =#{password}
+	DELETE FROM BOARD WHERE BOARDSEQ=#{boardseq}
 </delete>
  
 <!-- 게시글 조회수 -->
@@ -47,7 +47,7 @@
 	UPDATE BOARD SET COUNT = COUNT + 1 WHERE BOARDSEQ =#{boardseq}
 </update>
 
-<!-- 게시글 비추천 -->
+<!-- 게시글 반대 -->
 <update id="downCountBoard" parameterType="int">
 	UPDATE BOARD SET COUNT = COUNT - 1 WHERE BOARDSEQ =#{boardseq}
 </update>
@@ -65,6 +65,11 @@
 <select id="selectCount" resultType="int">
 	SELECT COUNT(*) FROM BOARD
 	<include refid="search"></include>
+</select>
+
+<!-- 추천 / 반대 수  -->
+<select id="count" resultType="int">
+ 	SELECT COUNT FROM BOARD WHERE BOARDSEQ=#{boardseq}
 </select>
 
 <!-- 글 수정 삭제 패스워드 체크 -->

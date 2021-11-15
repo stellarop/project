@@ -6,20 +6,50 @@
 <script src="<c:url value="/vendor/jquery/jquery.min.js"/>"></script>
 <script> 
 $(function(){
+	// 로그인 유효성 검사
 	$('#login').click(function(){
-		
 		if($('#id').val()==''){
 			alert('아이디를 입력해주세요.');
-			$('#id').focus();
+			$('#id').focus();		
+			return false;
+		}
+		if($('#password').val()==''){
+			alert('패스워드를 입력해주세요.')
+			$('#password').focus();	
 			return false;
 		}
 		
-		if($('#password').val()==''){
-			alert('패스워드를 입력해주세요.')
-			$('#password').focus();
-			return false;
-		}
-	});
+		$.ajax({
+			//컨트롤러 경로
+			url : 'login.do',
+			type : 'post',
+			dataType : 'json',
+			// 사용자가 입력한 아이디, 패스워드
+			data : {'id' : $('#id').val(),
+			'password' : $('#password').val()},
+			success : function(data){
+				// 컨트롤러에서 반환되는 값이 true 일시
+				if(data == true){
+					alert('로그인 성공');
+					// 메인 페이지로
+					location.href = "main.do";
+				// 컨트롤러에서 반환되는 값이 false 일시
+				}else if(data == false){
+					alert('로그인 실패');
+					// 로그인 페이지로
+					location.href = "login.jsp";
+				}
+			}
+		})
+	}); 
+	
+	/*
+	if(login == false){
+		$('#id').css('border-color', 'red');
+		$('#password').css('border-color', 'red');
+		return false;
+	}
+	*/
 })
 </script>
 <style>
@@ -51,10 +81,11 @@ a{
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 </head>
 <body>
+
 <form action="login.do" method="post">
 <center>
 <div class="simple-login-container">
-
+<h1>로그인</h1>
     <div class="row">
         <div class="col-md-12 form-group">
             <input type="text" name="id" id="id" class="form-control" placeholder="ID" value="${user.id }">
@@ -70,6 +101,11 @@ a{
            	<button type="submit" id="login" class="btn btn-block btn-login" >로그인</button>
         </div>
     </div>
+    
+    <c:if test="${login == false}">
+		<div class="alert alert-danger">로그인에 실패했습니다.<br> 아이디와 비밀번호를 확인해주세요.</div>
+	</c:if>
+	
     <div class="row">
          <div class="col-md-12">
            	<a href="findId.jsp">아이디를 잊으셨나요?</a>

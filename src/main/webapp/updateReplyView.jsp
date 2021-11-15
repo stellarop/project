@@ -16,12 +16,22 @@ $(function(){
 			$('#content').focus();		
 			return false;
 		}
-		if($('#password').val()==''){
-			alert('암호를 입력해주세요.');
-			$('#password').focus();
-			return false;
-		}
+		
+		$.ajax({
+			url : 'updateReply.do',
+			type : 'post',
+			dataType : 'json',
+			data : $('#updateReply').serializeArray(),
+			success : function(data){
+				if(confirm('수정 하시겠습니까?')){
+					$('#updateReply').submit();
+					alert('수정이 완료되었습니다.');
+					location.href = "getBoard.do?boardseq=${updateReply.boardseq}&replyseq=${updateReply.replyseq}";
+				}
+			}
+		})
 	})
+	
 }); 
 </script>
 <meta charset="UTF-8">
@@ -31,25 +41,25 @@ $(function(){
 <div class="container" role="main">
 <h1>댓글 수정</h1>
 
-<form action="updateReply.do" method="post">
-
+<form action="updateReply.do" id="updateReply" method="post">
 <input type="hidden" id="replyseq" name="replyseq" value="${updateReply.replyseq }" />
 <input type="hidden" id="boardseq" name="boardseq" value="${updateReply.boardseq }" />
 <input type="hidden" name="page" id="page" value="${cri.page }" page = "${cri.page }" />
-
+	
+	<div class="mb-3">
+		<label>작성자</label>
+		<input type="text" class="form-control" name="writer" id="writer" value="${updateReply.writer}" readonly="readonly"/>
+	</div>
+	
 	<div class="mb-3">
 		<label>댓글 내용</label>
-		<input type="text"  class="form-control" id="content" name="content" value="${updateReply.content }"  placeholder="댓글 내용을 입력해 주세요"/>
+		<textarea class="form-control" rows="5" id="content" name="content">${updateReply.content }</textarea>
 	</div>
-		<div class="mb-3">
-			<label>암호</label>
-			<input type="password" class="form-control" name="password" id="password" placeholder="암호를 입력해 주세요">
-		</div>
-		<div class="mb-3">
-			<button type="submit"  class="btn btn-sm btn-primary" id="updateReplyBtn">댓글 수정</button>
-		</div>
+	
+	<div class="mb-3">
+		<button type="button"  class="btn btn-sm btn-primary" id="updateReplyBtn">댓글 수정</button>
+	</div>
 
 </form>
-
 </body>
 </html>

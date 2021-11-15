@@ -2,6 +2,8 @@ package com.spring.www.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -31,160 +34,154 @@ import com.spring.www.VO.ReplyVO;
 import com.spring.www.VO.UserVO;
 
 
-
-
-/* @SessionAttributes´Â ¼öÁ¤ ÀÛ¾÷À» Ã³¸®ÇÒ ¶§ À¯¿ëÇÏ°Ô »ç¿ëµÇ´Â ¾î³ëÅ×ÀÌ¼Ç
- * Model¿¡ "board" ¶ó´Â ÀÌ¸§À¸·Î ÀúÀåµÇ´Â µ¥ÀÌÅÍ°¡ ÀÖ´Ù¸é ±× µ¥ÀÌÅÍ¸¦ ¼¼¼Ç ¿¡µµ ÀÚµ¿À¸·Î ÀúÀåÇÑ´Ù(getBoard µ¥ÀÌÅÍ¸¦ board ¶ó´Â ÀÌ¸§À¸·Î jsp·Î ³Ñ°ÜÁÖ¾ù±â ¶§¹®¿¡)
- * getBoard(°Ô½Ã±Û »ó¼¼º¸±â) ¸Ş¼­µå°¡ ½ÇÇàµÇ¾î »ó¼¼ È­¸éÀÌ Ãâ·ÂµÇ¸é Model¿¡ board¶ó´Â ÀÌ¸§À¸·Î
- * BoardVO °´Ã¼°¡ ÀúÀåµÇ°í ¼¼¼Ç¿¡µµ board¶ó´Â ÀÌ¸§À¸·Î BoardVO °´Ã¼°¡ ÀúÀåµÈ´Ù
- * BoardVO °´Ã¼¿¡´Â »ó¼¼ È­¸é¿¡ Ãâ·ÂµÈ ¸ğµç µ¥ÀÌÅÍ°¡ ÀúÀåµÇ¾î ÀÖ´Ù
- * »ç¿ëÀÚ°¡ ±Û ¼öÁ¤ ¹öÆ°À» Å¬¸¯ÇÏ¸é updateBoard ¸Ş¼­µå°¡ ½ÇÇàµÇ°í Áß¿äÇÑ °ÍÀÌ ¸Å°³º¯¼ö·Î ¼±¾ğµÈ @ModelAttribute("board") ÀÌ´Ù
- * controller¿¡¼­ updateBoard ¸Ş¼­µå°¡ È£ÃâµÉ ¶§ ½ºÇÁ¸µ ÄÁÅ×ÀÌ³Ê´Â ¿ì¼± @ModelAttribute("board") ¼³Á¤À» ÇØ¼®ÇÏ¿©
- * ¼¼¼Ç¿¡ board¶ó´Â ÀÌ¸§À¸·Î ÀúÀåµÈ µ¥ÀÌÅÍ°¡ ÀÖ´ÂÁö È®ÀÎÇÑ´Ù ÀÖ´Ù¸é ÇØ´ç °´Ã¼¸¦ ¼¼¼¢¿¡¼­ ²¨³» ¸Å°³º¯¼ö·Î ¼±¾ğµÈ vo º¯¼ö¿¡ ÇÒ´çÇÑ´Ù
- * ±×¸®°í »ç¿ëÀÚ°¡ ÀÔ·ÂÇÑ ÆÄ¶ó¹ÌÅÍ°ªÀ» vo °´Ã¼¿¡ ÇÒ´çÇÑ´Ù ÀÌ¶§ »ç¿ëÀÚ°¡ ¼öÁ¤ÇÑ µ¥ÀÌÅÍ °ª¸¸ »õ·Ó°Ô ÇÒ´çµÇ°í ³ª¸ÓÁö µ¥ÀÌÅÍ´Â »ó¼¼ º¸±â¸¦ ÇßÀ»¶§
- * ¼¼¼Ç¿¡ ÀúÀåµÈ µ¥ÀÌÅÍ°¡ À¯ÁöµÈ´Ù
- * 
- */
 @Controller
 public class BoardController {
 	@Autowired
 	private BoardService boardservice;
-	@Autowired
-	private ReplyServie replyservice;
 
-	
-	// °Ô½Ã±Û ÀÔ·Â
-	@RequestMapping(value = "/insertBoard.do", method = RequestMethod.POST)
-	public String insertBoard(BoardVO vo) throws IOException {		
-		MultipartFile uploadFile = vo.getUploadFile();
-		// ¾÷·ÎµåÇÏ´Â ÆÄÀÏÀÇ ½ÇÁ¦ ÀÌ¸§¸¦ ¹İÈ¯
-		String fileName = uploadFile.getOriginalFilename();
-		
-		// ¾÷·ÎµåÇÑ ÆÄÀÏÀÇ Á¸Àç¿©ºÎ
-		if(!uploadFile.isEmpty()) {
-			String originalFilename = uploadFile.getOriginalFilename();
-			// ¾÷·ÎµåÇÑ ÆÄÀÏÀÇ µ¥ÀÌÅÍ¸¦ ÀúÀå
-			uploadFile.transferTo(new File("C:\\Project ÆÄÀÏ ¾÷·Îµå\\" + fileName));
-		}	
-		// ÆÄÀÏ ÀÌ¸§À» db¿¡ ÀúÀå
-		vo.setFilename(fileName);
-		boardservice.insertBoard(vo);
-		return "main.do"; 
+	// ê²Œì‹œê¸€ ì‘ì„± view
+	@RequestMapping(value = "/insertBoard.do")
+	public String insertBoardUrl() {
+		return "insertBoard.jsp";
 	}
 	
-	// °Ô½Ã±Û ¼öÁ¤ ºä
-	@RequestMapping(value = "/updateBoardView.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String updateBoardView(BoardVO vo, Model model, Criteria cri) {
+	// ê²Œì‹œê¸€ ì‘ì„± 
+	@ResponseBody
+	@RequestMapping(value = "/ajaxinsertBoard.do", method = RequestMethod.POST
+			)//,produces = "application/text;charset=UTF-8")
+	public Map<String, Object> insertBoard(BoardVO vo, HttpSession session) throws IOException{
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		// ë¡œê·¸ì¸ í•œ ìœ ì € ì•„ì´ë”” getAttributeë¡œ ê°€ì ¸ì˜¤ê¸°
+		String user = (String)session.getAttribute("userId");
+		
+		// voì— ìˆëŠ” UploadFileì„ íŒŒì¼ í˜•ì‹ìœ¼ë¡œ ë³€ê²½
+		MultipartFile uploadFile = vo.getUploadFile();
+		// ì—…ë¡œë“œí•˜ëŠ” íŒŒì¼ì˜ ì‹¤ì œ ì´ë¦„ë¥¼ ë°˜í™˜
+		String fileName = uploadFile.getOriginalFilename();
+		
+		// ì—…ë¡œë“œí•œ íŒŒì¼ì˜ ì¡´ì¬ì—¬ë¶€
+		if(!uploadFile.isEmpty()) {
+			String originalFilename = uploadFile.getOriginalFilename();
+			// ì—…ë¡œë“œí•œ íŒŒì¼ì„ C:\\Project íŒŒì¼ ì—…ë¡œë“œ ì— ì €ì¥
+			uploadFile.transferTo(new File("C:\\Project íŒŒì¼ ì—…ë¡œë“œ\\" + fileName));
+		}	
+		// íŒŒì¼ ì´ë¦„ì„ ë°ì´í„°ë² ì´ìŠ¤ì— ì €ì¥
+		vo.setFilename(fileName);
+		// ê²Œì‹œê¸€ ì‘ì„±ìì— ë¡œê·¸ì¸ í•œ ìœ ì € ì•„ì´ë”” ë„£ì–´ì£¼ê¸°
+		vo.setWriter(user);
+		result.put("fileName", fileName);
+		//ê²Œì‹œê¸€ ì‘ì„±
+		result.put("insertBoard", boardservice.insertBoard(vo));
+		return result;
+	}
+	
+	
+	
+	// ê²Œì‹œê¸€ ìˆ˜ì • view
+	@RequestMapping(value = "/updateBoardView.do", method = RequestMethod.GET)
+	public String updateBoardView(BoardVO vo, Criteria cri, Model model) {
 		model.addAttribute("cri", cri);
 		model.addAttribute("updateBoard", boardservice.getBoard(vo.getBoardseq()));
 		return "updateBoardView.jsp";
 	}
 	
-	// °Ô½Ã±Û ¼öÁ¤ 
-	@RequestMapping(value = "/updateBoard.do", method = RequestMethod.POST)
-	public String updateBoard(BoardVO vo) {
-		// ÇØ´ç °Ô½Ã±Û µ¥ÀÌÅÍ
-		BoardVO getBoard = boardservice.getBoard(vo.getBoardseq());
-		// ÇØ´ç °Ô½Ã±Û ºñ¹Ğ¹øÈ£
-		String getBoardpassword = getBoard.getPassword();
-		// »ç¿ëÀÚ°¡ ÀÔ·ÂÇÑ ºñ¹Ğ¹øÈ£
-		String password = vo.getPassword();
-		
-		if(getBoardpassword.equals(password)) {
-			boardservice.updateBoard(vo);
-			return "main.do";
-			}
-		return "updateBoardView.do";
+	
+	
+	// ê²Œì‹œê¸€ ìˆ˜ì •
+	@ResponseBody
+	@RequestMapping(value = "/updateBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> updateBoard(BoardVO vo, Model model, Criteria cri) {
+		Map<String, Object> result = new HashMap<String,Object>();
+		// í˜ì´ì§€ ìœ ì§€
+		result.put("cri", cri);
+		// ì–´ë–¤ ê²Œì‹œê¸€ì„ ìˆ˜ì •í• ì§€
+		result.put("updateBoard", boardservice.getBoard(vo.getBoardseq()));
+		// ê²Œì‹œê¸€ ìˆ˜ì •
+		boardservice.updateBoard(vo);
+		return result;
 	}
 	
 	
-	// °Ô½Ã±Û »èÁ¦ ºä
-	@RequestMapping(value = "/deleteBoardView.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String deleteBoardView(BoardVO vo, Model model, Criteria cri) {
-		model.addAttribute("cri", cri);
-		model.addAttribute("deleteBoard", boardservice.getBoard(vo.getBoardseq()));
-		return "deleteBoardView.jsp";
-	}
-	
-	// °Ô½Ã±Û »èÁ¦ 
+	// ê²Œì‹œê¸€ ì‚­ì œ 
+	@ResponseBody
 	@RequestMapping(value = "/deleteBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String deleteBoard(BoardVO vo) {
-		// ÇØ´ç °Ô½Ã±Û µ¥ÀÌÅÍ
-		BoardVO getBoard = boardservice.getBoard(vo.getBoardseq());
-		// ÇØ´ç °Ô½Ã±Û ºñ¹Ğ¹øÈ£
-		String getBoardpassword = getBoard.getPassword();
-		// »ç¿ëÀÚ°¡ ÀÔ·ÂÇÑ ºñ¹Ğ¹øÈ£
-		String password = vo.getPassword();
-		
-		if(getBoardpassword.equals(password)) {
-			boardservice.deleteBoard(vo);
-			return "main.do";
-		}
-		return "deleteBoardView.do";
+	public Map<String, Object>  deleteBoardView(BoardVO vo, Criteria cri) {
+		Map<String, Object> result = new HashMap<String,Object>();
+		// í˜ì´ì§€ ìœ ì§€
+		result.put("cri", cri);
+		boardservice.deleteBoard(vo);
+		return result;
 	}
 	
-	// °Ô½Ã±Û Á¶È¸
+	// ê²Œì‹œê¸€ ìƒì„¸
 	@RequestMapping(value = "/getBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String getBoard(BoardVO vo,ReplyVO rvo, Model model, Criteria cri){
-		// °Ô½Ã±Û »ó¼¼ º¸±â 
+	public String getBoard(BoardVO vo,ReplyVO rvo, Model model, Criteria cri,HttpSession session){
+	
+		// í•´ë‹¹ ê²Œì‹œê¸€
 		model.addAttribute("board", boardservice.getBoard(vo.getBoardseq()));
-		// Æ¯Á¤ ÆäÀÌÁö Á¶È¸
+		// í˜ì´ì§€
 		model.addAttribute("cri", cri);
-		// ´ñ±Û ¸®½ºÆ®
-		model.addAttribute("replyList", replyservice.replyList(rvo));
 		return "getBoard.jsp";
 	}  
+	
 
-	// °Ô½Ã±Û ¸®½ºÆ®
+	
+	// ê²Œì‹œê¸€ ë¦¬ìŠ¤íŠ¸ View
 	@RequestMapping(value = "/main.do", method = {RequestMethod.GET,RequestMethod.POST}) 
 	public String boardList(Model model,  @ModelAttribute("cri") Criteria cri) {
-		//System.out.println("ÀÔ·ÂÇÑ °Ë»ö¾î : " + cri); 
-		// °Ô½Ã±Û ¸®½ºÆ®
-		model.addAttribute("boardList", boardservice.selectBoardList(cri));		
-		// ÆäÀÌÂ¡
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		// °Ô½Ã±Û ¼ö ³Ö¾îÁÖ±â
 		pageMaker.setTotalCount(boardservice.selectCount(cri));
-		//System.out.println("°Ô½Ã±Û ¼ö : " + boardservice.selectCount(cri));
-		//System.out.println("°Ô½Ã±Û ³»¿ë : " + boardservice.selectBoardList(cri));
 		model.addAttribute("pageMaker", pageMaker);
-		
-		/*
-		if(cri.getKeyword() != null) {
-			System.out.println("°Ë»ö½Ã Ãâ·Â : " + cri.getKeyword());
-			int pagenum = cri.getPage();
-			
-			System.out.println("ÆäÀÌÁö ³Ñ¹ö : " + pagenum);
-			System.out.println(pageMaker.getCri());
-			//return "main.do?page=1";
-		}else {
-			System.out.println("°Ë»öÇÏÁö¾ÊÀ»¶§  Ãâ·Â");
-		}
-		*/
+		model.addAttribute("boardList", boardservice.selectBoardList(cri));
 		return "main.jsp";
 	}
 	
-	// °Ô½Ã±Û ÃßÃµ
-	@RequestMapping(value = "/upCountBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String upCountBoard(BoardVO vo) {
-		boardservice.upCount(vo.getBoardseq());
-		return "getBoard.do";
+	// ê²Œì‹œê¸€ ì¶”ì²œ
+	@ResponseBody
+	@RequestMapping(value = "/upCountBoard.do", method = RequestMethod.POST)
+	public Map<String, Object> upCountBoard(BoardVO vo, HttpSession session) {
+		Map<String, Object> upCountMap = new HashMap<String, Object>();
+		
+		String userId = (String) session.getAttribute("userId");
+		int boardseq = vo.getBoardseq();
+		
+		upCountMap.put("userId", userId);
+		upCountMap.put("boardseq", boardseq);
+		
+		int upCount = boardservice.upCount(vo);
+		
+		
+		return upCountMap;
 	}
 	
-	// °Ô½Ã±Û ¹İ´ë
-	@RequestMapping(value = "/downCountBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String downCountBoard(BoardVO vo) {
-		boardservice.downCount(vo.getBoardseq());
-		return "getBoard.do";
+	/*
+	// ê²Œì‹œê¸€ ë°˜ëŒ€
+	@ResponseBody
+	@RequestMapping(value = "/downCountBoard.do", method = RequestMethod.POST)
+	public int downCountBoard(BoardVO vo) {
+		int downCount = boardservice.downCount(vo);
+		return downCount;
 	}
 	
-	// °Ô½Ã±Û ¼öÁ¤ »èÁ¦ ÆĞ½º¿öµå Ã¼Å©
+	// ì¶”ì²œ / ë°˜ëŒ€ ìˆ˜ 
+	@ResponseBody
+	@RequestMapping(value = "/count.do", method = RequestMethod.POST)
+	public int count(BoardVO vo) {
+		int count = boardservice.count(vo);
+		return count;
+	}
+	
+	*/
+	
+	/*
+	// ê²Œì‹œê¸€ íŒ¨ìŠ¤ì›Œë“œ ì²´í¬
 	@ResponseBody
 	@RequestMapping(value = "/boardPwdCheck.do", method = RequestMethod.POST)
 	public int boardPwdCheck(BoardVO vo) {
 		int result = boardservice.boardPwdCheck(vo);
 		return result;
 	}
-
+*/
 }

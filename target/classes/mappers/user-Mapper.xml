@@ -26,7 +26,7 @@
 
 <!-- 회원정보 수정 -->
 <update id="updateuser">
-	UPDATE USERS SET PASSWORD =#{password}, NAME =#{name} WHERE ID =#{id}
+	UPDATE USERS SET PASSWORD =#{password} WHERE ID =#{id}
 </update>
 
 <!-- 회원탈퇴  -->

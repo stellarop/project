@@ -37,15 +37,23 @@ public class BoardDAO {
 	public void boardCount(int boardseq) {
 		sqlsessiontemplate.update("BoardDAO.boardCount", boardseq);
 	}
-	public void upCount(int boardseq) {
-		sqlsessiontemplate.update("BoardDAO.upCountBoard" , boardseq);
+	public int upCount(BoardVO vo) {
+		int upCount = sqlsessiontemplate.update("BoardDAO.upCountBoard" , vo);
+		return upCount;
 	}
-	public void downCount(int boardseq) {
-		sqlsessiontemplate.update("BoardDAO.downCountBoard", boardseq);
+	public int downCount(BoardVO vo) {
+		int downCount = sqlsessiontemplate.update("BoardDAO.downCountBoard", vo);
+		return downCount;
 	} 
+	public int count(BoardVO vo) {
+		int count = sqlsessiontemplate.selectOne("BoardDAO.count",vo);
+		return count;
+	}
+	/*
 	public int boardPwdCheck(BoardVO vo) {
 		int result = sqlsessiontemplate.selectOne("BoardDAO.boardPwdCheck",vo);
 		return result;
 	}
+	*/
 	
 }

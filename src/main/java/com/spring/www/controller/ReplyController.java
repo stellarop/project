@@ -1,6 +1,8 @@
 package com.spring.www.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -26,70 +29,77 @@ public class ReplyController {
 	@Autowired
 	private ReplyServie replyservice;
 	
-	// ��� ���
-	@RequestMapping(value = "/insertReply.do" , method = {RequestMethod.GET, RequestMethod.POST})
-	public String insertReply(ReplyVO rvo, Model model, Criteria cri) {
-		model.addAttribute("cri", cri);
-		replyservice.insertReply(rvo);
-		return "getBoard.do";
-  } 
+	// 댓글 리스트
+	@ResponseBody
+	@RequestMapping(value = "/replyList.do",method = RequestMethod.POST)
+	public Map<String, Object> getBoard(BoardVO vo, ReplyVO rvo,HttpSession session){
+		Map<String, Object> result = new HashMap<String, Object>();
+		// 로그인한 유저 아이디 getAttribute로 가져오기
+		String userId = (String) session.getAttribute("userId");
+		// 댓글 리스트
+		result.put("reply", replyservice.replyList(rvo));
+		// 유저 아이디
+		result.put("user", userId);
+		return result;
+	}
 	
-	// ��� ���� ��
+	// 댓글 작성
+	@ResponseBody
+	@RequestMapping(value = "/insertReply.do", method = RequestMethod.POST)
+	public Map<String, Object> insertReply(ReplyVO rvo, Criteria cri,HttpSession session){
+		Map<String, Object> result = new HashMap<String, Object>();
+		// 로그인한 유저 아이디 getAttribute로 가져오기
+		String user = (String) session.getAttribute("userId");
+		// 댓글 작성자에 로그인한 유저 아이디를 넣어준다
+		rvo.setWriter(user);
+		// 댓글 작성
+		result.put("insertReply", replyservice.insertReply(rvo));
+		return result;
+	}
+	
+	
+	// 댓글 수정 view
 	@RequestMapping(value = "/updateReplyView.do" , method = {RequestMethod.GET,RequestMethod.POST})
 	public String updateReplyView(ReplyVO rvo, Model model, Criteria cri) {
 		model.addAttribute("cri", cri);
 		model.addAttribute("updateReply", replyservice.selectReply(rvo.getReplyseq()));
 		return "updateReplyView.jsp";
 	}
+	
+	// 댓글 수정
+	@ResponseBody
+	@RequestMapping(value = "/updateReply.do", method = RequestMethod.POST)
+	public Map<String, Object> updateReply(ReplyVO rvo){
+		Map<String, Object> result = new HashMap<String, Object>();
 		
-	// ��� ����
-	@RequestMapping(value = "/updateReply.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String updateReply(ReplyVO rvo) {
-		
-		ReplyVO selectreply = replyservice.selectReply(rvo.getReplyseq()); 
-		
-		String replypassword = selectreply.getPassword();
-		String password = rvo.getPassword();
-		
-		if(replypassword.equals(password)) {
-			replyservice.updateReply(rvo);
-			return "getBoard.do";
-		}
-		return "updateReplyView.do";
+		// 어떤 댓글을 수정할지
+		result.put("updateReply", replyservice.selectReply(rvo.getReplyseq()));
+		// 댓글 수정
+		replyservice.updateReply(rvo);
+		return result;
 	}
 	
-	// ��� ���� ��
-	@RequestMapping(value = "/deleteReplyView.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String deleteReplyView(ReplyVO rvo, Model model, Criteria cri) {
-		model.addAttribute("cri", cri);
-		model.addAttribute("deleteReply", replyservice.selectReply(rvo.getReplyseq()));
-		return "deleteReplyView.jsp";
+	// 댓글 삭제
+	@ResponseBody
+	@RequestMapping(value = "/deleteReply.do", method = RequestMethod.POST)
+	public Map<String, Object> deleteReply(ReplyVO rvo){
+		Map<String, Object> result = new HashMap<String, Object>();
+		// 어떤 댓글을 삭제할지
+		result.put("deleteReply", replyservice.selectReply(rvo.getReplyseq()));
+		replyservice.deleteReply(rvo);
+		return result;
 	}
 	
-	// ��� ����
-	@RequestMapping(value = "/deleteReply.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String deleteReply(ReplyVO rvo){		
-		
-		ReplyVO selectreply = replyservice.selectReply(rvo.getReplyseq()); 
-		
-		String replypassword = selectreply.getPassword();
-		String password = rvo.getPassword();
-		
-		if(replypassword.equals(password)) {
-			replyservice.deleteReply(rvo);
-			return "getBoard.do";
-		}
-		return "deleteReplyView.do";
-	}
 	
-	// ��� ��õ
+	
+	// 댓글 추천
 	@RequestMapping(value = "/upCountReply.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String upCountReply(ReplyVO rvo) {
 		replyservice.upCountReply(rvo.getReplyseq());
 		return "getBoard.do";
 	}
 	
-	// ��� �ݴ�
+	// 댓글 반대
 	@RequestMapping(value = "/downCountReply.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String downCountReply(ReplyVO rvo) {
 		replyservice.downCountReply(rvo.getReplyseq());

@@ -25,6 +25,16 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	
+	<!-- MultipartFilter 적용 --> 
+	<filter>
+ 		<filter-name>MultipartFilter</filter-name>
+ 		<filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class>
+ 	</filter>
+ 	<filter-mapping> 
+ 		<filter-name>MultipartFilter</filter-name>
+ 		<url-pattern>/*</url-pattern>
+ 	</filter-mapping>
+ <!-- MultipartFilter 적용 -->
 	
 		<!-- 한글 인코딩 Start -->
 	<filter>

@@ -27,18 +27,34 @@ integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706t
 				$('#content').focus();
 				return false;
 			}
+		
 			
-			if($('#password').val()==''){
-				alert('암호을 입력하세요.');
-				$('#password').focus();
-				return false;
-			}
-			
-			// ajax 들어가야함
 			$.ajax({
+				url : 'updateBoard.do',
+				type : 'post',
+				dataType : 'json',
+				data : $('#updateBoard').serializeArray(),
+				success : function(data){
+					if(confirm('수정 하시겠습니까?')){
+						$('#updateBoard').submit();
+						alert('게시글 수정이 완료되었습니다.');
+						location.href = "main.do";
+					}
+				},
+				error : function(data){
+					alert('게시글 수정에 실패 하였습니다.');
+					location.href = "updateBoardView.do?boardseq=${board.boardseq}&page=${cri.page}"
+				}
+			})
+		})
+	});
+			/*
+			$.ajax({
+				// 패스워드 체크 경로 
 				url : 'boardPwdCheck.do',
 				type : 'post',
 				datetype : 'json',
+				// updateBoard form에 있는 패스워드
 				data : $('#updateBoard').serializeArray(),
 				success : function(date){
 					if(date == 0){
@@ -46,15 +62,15 @@ integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706t
 						return;
 					}else{
 						if(confirm('수정하시겠습니까?')){
+							// 패스워드를 컨트롤러로 전송
 							$('#updateBoard').submit();
 							alert('게시글이 수정되었습니다.');
 						}
 					}
 				}
 			})
-		})
-		
-	})
+			*/
+
 </script>
 <meta charset="UTF-8">
 <title>게시글 수정</title>
@@ -85,11 +101,6 @@ integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706t
 			<label>작성날짜</label>
 			<input type="text" class="form-control" value="${updateBoard.regdate}" readonly="readonly"/>
 		</div>	
-		
-		<div class="mb-3">
-			<label>암호</label>
-			<input type="password" class="form-control" name="password" id="password" placeholder="암호를 입력해주세요" />
-		</div>
 		
 		<div class="mb-3">
 			<button type="button"  class="btn btn-sm btn-primary" id="updateBoardBtn" >수정</button>

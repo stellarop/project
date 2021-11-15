@@ -1,10 +1,23 @@
 package com.spring.www.VO;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import lombok.Data;
+
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+//@Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
+
 public class BoardVO {
+	
 	private int boardseq;
 	private String title;
 	private String writer;
@@ -13,8 +26,12 @@ public class BoardVO {
 	private int boardcount;
 	private int count;
 	private String password;
-	private Date regdate;
+	//@JsonFormat(pattern = "yyyy-MM-dd")
+	private Timestamp regdate;
+	@JsonIgnore
 	private MultipartFile uploadFile;
+	
+	
 	public int getBoardseq() {
 		return boardseq;
 	}
@@ -63,10 +80,10 @@ public class BoardVO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Date getRegdate() {
+	public Timestamp getRegdate() {
 		return regdate;
 	}
-	public void setRegdate(Date regdate) {
+	public void setRegdate(Timestamp regdate) {
 		this.regdate = regdate;
 	}
 	public MultipartFile getUploadFile() {
@@ -75,6 +92,7 @@ public class BoardVO {
 	public void setUploadFile(MultipartFile uploadFile) {
 		this.uploadFile = uploadFile;
 	}
+	
 	@Override
 	public String toString() {
 		return "BoardVO [boardseq=" + boardseq + ", title=" + title + ", writer=" + writer + ", content=" + content
@@ -83,6 +101,7 @@ public class BoardVO {
 	}
 	
 	
+
 	
 	
 	

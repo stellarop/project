@@ -10,7 +10,7 @@ import com.spring.www.VO.ReplyVO;
 @Service
 public interface ReplyServie {
 	public List<ReplyVO> replyList(ReplyVO rvo);	
-	public void insertReply(ReplyVO rvo);
+	public ReplyVO insertReply(ReplyVO rvo);
 	public void updateReply(ReplyVO rvo);	
 	public void deleteReply(ReplyVO rvo);
 	public ReplyVO selectReply(int replyseq);
