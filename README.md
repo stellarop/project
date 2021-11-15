@@ -206,9 +206,7 @@ public int findId(@ModelAttribute("user") UserVO vo, HttpSession session) {
 
 ## 패스워드 찾기
 
-![패스워드 찾기 true gif](https://user-images.githubusercontent.com/88939199/135753686-12664a51-f69a-40c4-9654-9dbd4aee5c22.gif)
-![패스워드 찾기 false gif](https://user-images.githubusercontent.com/88939199/135753690-934d66da-9a91-4c18-b5a1-8587ecdd1f02.gif)
-
+![패스워드 찾기 gif](https://user-images.githubusercontent.com/93149034/141845315-89fae9ae-91f7-4242-baad-d2dfe781697f.gif)
 
 ```
 <!-- 패스워드 찾기  -->
