@@ -113,188 +113,6 @@ $(function(){
 ```
 4. 로그인에 실패했을 시(컨트롤러에서 로그인에 실패하면 login = false) 다시 로그인 페이지로 이동 후 로그인 실패 구문을 나타내줍니다
 
-
-## 아이디 찾기
-
-![아이디 찾기 gif](https://user-images.githubusercontent.com/93149034/141844299-a3aceb27-142f-4869-a329-df8e24c0888c.gif)
-
-```
-<!-- 아이디 찾기 -->
-<select id="findid" resultType="user" parameterType="user">
-   SELECT * FROM USERS WHERE EMAIL =#{email}
-</select>
-```
-
-```
-$(function(){
-
-   // 로그인
-   $('#login').click(function(){
-      location.href = "login.do"
-   })
-   
-   // 패스워드 찾기
-   $('#findPwn').click(function(){
-      location.href = "findPassword.jsp"
-   })
-   
-   $('#id').click(function(){
-   
-      // 아이디 찾기 유효성 검사
-      if($('#email').val()==''){
-         alert('이메일을 입력하세요.');
-         $('#email').focus();
-         return false;
-      }
-      
-      $.ajax({
-         // 아이디 찾기 경로 
-         url : 'findId.do',
-         type : 'post',
-         dataType : 'json',
-         // 사용자가 입력한 이메일 값
-         data : {'email' : $('#email').val()},
-         success : function(data){
-            // 조회 되는 이메일 일시
-            if(data == 0){
-               // 기존 페이지로 보내주고 아이디 구문 나타내줌
-               window.location.href = "findId.jsp";
-            // 없는 이메일 이면 alert으로 알려주고 기존 페이지로
-            }else if(data == 1){
-               alert('사용자의 이메일로 등록된 아이디가 없습니다.');
-               window.location.href = "findId.jsp";
-            }
-         }
-      })   
-   })   
-});
-```
-
-```
-// 아이디 찾기
-@ResponseBody
-@RequestMapping(value = "/findId.do", method = RequestMethod.POST)
-public int findId(@ModelAttribute("user") UserVO vo, HttpSession session) {
-
-   UserVO id = userservice.findId(vo);
-   
-   if (id != null) {
-      // 사용자 이름과 아이디를 보내줌
-      session.setAttribute("userName", id.getName());
-      session.setAttribute("userId", id.getId());
-      // 일치 하면 구문 출력
-      session.setAttribute("getId", true);
-      return 0;
-   } else {
-      return 1;
-   }
-} 
-```
-
-1. 사용자가 이메일을 입력하면 입력한 이메일 값이 컨트롤러로 이동합니다 사용자가 입력한 이메일값으로 회원가입이 되있다면 0을 반환
-2. 사용자가 입력한 이메일 값으로 조회가 안된다면 1을 반환 받습니다 이후에 ajax에서 컨트롤러로 반환 받은 값이 0이면 사용자 이름과 아이디를 나타내주고 
-3. 반환 받은 값이 1 이면 등록된 아이디가 없다고 알려줍니다.
-
-```
-<c:if test="${getId == true}">
-   <div class="alert alert-primary">${userName }님의 아이디는 <b>${userId }</b>입니다.</div>
-   <button type="button" class="btn btn-sm btn-primary" id="login">로그인</button>
-   <button type="button" class="btn btn-sm btn-primary" id="findPwn">패스워드 찾기</button>
-</c:if>
-```
-
-4. 사용자가 입력한 이메일로 회원가입이 되있다면(getId == true) 다시 기존 페이지로 되돌아간후 회원정보를 구문으로 알려줍니다
-
-## 패스워드 찾기
-
-![패스워드 찾기 gif](https://user-images.githubusercontent.com/93149034/141845315-89fae9ae-91f7-4242-baad-d2dfe781697f.gif)
-
-```
-<!-- 패스워드 찾기  -->
-<select id="findpassword" resultType="user" parameterType="user">
-   SELECT * FROM USERS WHERE ID =#{id}
-</select>
-```
-
-```
-$(function(){
-   
-   // 로그인
-   $('#login').click(function(){
-      location.href = "login.do"
-   })
-   
-   // 아이디 찾기
-   $('#findId').click(function(){
-      location.href = "findId.jsp"
-   })
-   
-   $('#find').click(function(){
-      
-      // 패스워드 찾기 유효성 검사
-      if($('#id').val()==''){
-         alert('아이디를 입력하세요.');
-         $('#id').focus();
-         return false;
-      }
-      
-      $.ajax({
-         // 패스워드 찾기 경로
-         url : 'findPassword.do',
-         type : 'post',
-         dataType : 'json',
-         // 사용자가 입력한 아이디 값
-         data : {'id' : $('#id').val()},
-         success : function(data){
-            // 조회되는 아이디 일시 
-            if(data == 0){
-               // 기존 페이지로 보내주고 패스워드 구문 출력
-               window.location.href = "findPassword.jsp";
-            // 조회되지 않은 아이디 일시
-            }else if(data == 1){
-               alert('등록되지 않은 아이디 입니다.');
-               window.location.href = "findPassword.jsp";
-            }
-         }
-      })
-   })
-});
-```
-
-```
-// 패스워드  찾기
-@ResponseBody
-@RequestMapping(value = "/findPassword.do", method = RequestMethod.POST)
-public int findPassword(@ModelAttribute("user") UserVO vo, HttpSession session) {
-   
-   UserVO password = userservice.findPassword(vo);
-   
-   if (password != null) {
-      // 사용자 이름과 패스워드를 보내줌
-      session.setAttribute("userName", password.getName());
-      session.setAttribute("userPassword", password.getPassword());
-      // 일치 하면 구문 출력 
-      session.setAttribute("getPassword", true);
-      return 0;
-   } else {
-      return 1;
-   }
-}
-```
-
-1. 사용자가 아이디 값을 입력하면 아이디 값이 컨트롤러로 이동합니다.
-2. 아이디 값을 조회 후 회원가입이 된 아이디라면 0, 회원가입 이력이 없는 아이디 라면 1을 반환해줍니다.
-3. 컨트롤러에서 반환 받은 값에 따라 ajax에서 0이면 사용자 패스워드를 알려주고 1이면 등록되지 않은 아이디란걸 알려줍니다
-4. 회원가입된 아이디면(getPassword = true) 다시 기존 페이지로 되돌아간후 사용자 패스워드 값을 알려줍니다
-
-```
-<c:if test="${getPassword == true}">
-   <div class="alert alert-primary">${userName }님의 패스워드는 <b>${userPassword }</b>입니다.</div>
-   <button type="button" class="btn btn-sm btn-primary" id="login">로그인</button>
-   <button type="button" class="btn btn-sm btn-primary" id="findId">아이디 찾기</button>
-</c:if>
-```
-
 ## 회원가입
 
 ![회원가입 gif](https://user-images.githubusercontent.com/88939199/136156549-9d65c7cd-6c3f-498d-9b2e-bff47be9b0f7.gif)
@@ -490,6 +308,187 @@ $('#pwdCheck').click(function(){
 
 6. 패스워드 일치, 불일치 구문을 hide으로 숨기고 사용자가 입력한 패스워드와 패스워드 재확인을 변수로 받아서
   두 값이 맞으면 일치구문 출력, 두 값이 틀리다면 불일치 구문을 출력해줍니다.
+
+## 아이디 찾기
+
+![아이디 찾기 gif](https://user-images.githubusercontent.com/93149034/141844299-a3aceb27-142f-4869-a329-df8e24c0888c.gif)
+
+```
+<!-- 아이디 찾기 -->
+<select id="findid" resultType="user" parameterType="user">
+   SELECT * FROM USERS WHERE EMAIL =#{email}
+</select>
+```
+
+```
+$(function(){
+
+   // 로그인
+   $('#login').click(function(){
+      location.href = "login.do"
+   })
+   
+   // 패스워드 찾기
+   $('#findPwn').click(function(){
+      location.href = "findPassword.jsp"
+   })
+   
+   $('#id').click(function(){
+   
+      // 아이디 찾기 유효성 검사
+      if($('#email').val()==''){
+         alert('이메일을 입력하세요.');
+         $('#email').focus();
+         return false;
+      }
+      
+      $.ajax({
+         // 아이디 찾기 경로 
+         url : 'findId.do',
+         type : 'post',
+         dataType : 'json',
+         // 사용자가 입력한 이메일 값
+         data : {'email' : $('#email').val()},
+         success : function(data){
+            // 조회 되는 이메일 일시
+            if(data == 0){
+               // 기존 페이지로 보내주고 아이디 구문 나타내줌
+               window.location.href = "findId.jsp";
+            // 없는 이메일 이면 alert으로 알려주고 기존 페이지로
+            }else if(data == 1){
+               alert('사용자의 이메일로 등록된 아이디가 없습니다.');
+               window.location.href = "findId.jsp";
+            }
+         }
+      })   
+   })   
+});
+```
+
+```
+// 아이디 찾기
+@ResponseBody
+@RequestMapping(value = "/findId.do", method = RequestMethod.POST)
+public int findId(@ModelAttribute("user") UserVO vo, HttpSession session) {
+
+   UserVO id = userservice.findId(vo);
+   
+   if (id != null) {
+      // 사용자 이름과 아이디를 보내줌
+      session.setAttribute("userName", id.getName());
+      session.setAttribute("userId", id.getId());
+      // 일치 하면 구문 출력
+      session.setAttribute("getId", true);
+      return 0;
+   } else {
+      return 1;
+   }
+} 
+```
+
+1. 사용자가 이메일을 입력하면 입력한 이메일 값이 컨트롤러로 이동합니다 사용자가 입력한 이메일값으로 회원가입이 되있다면 0을 반환
+2. 사용자가 입력한 이메일 값으로 조회가 안된다면 1을 반환 받습니다 이후에 ajax에서 컨트롤러로 반환 받은 값이 0이면 사용자 이름과 아이디를 나타내주고 
+3. 반환 받은 값이 1 이면 등록된 아이디가 없다고 알려줍니다.
+
+```
+<c:if test="${getId == true}">
+   <div class="alert alert-primary">${userName }님의 아이디는 <b>${userId }</b>입니다.</div>
+   <button type="button" class="btn btn-sm btn-primary" id="login">로그인</button>
+   <button type="button" class="btn btn-sm btn-primary" id="findPwn">패스워드 찾기</button>
+</c:if>
+```
+
+4. 사용자가 입력한 이메일로 회원가입이 되있다면(getId == true) 다시 기존 페이지로 되돌아간후 회원정보를 구문으로 알려줍니다
+
+## 패스워드 찾기
+
+![패스워드 찾기 gif](https://user-images.githubusercontent.com/93149034/141845315-89fae9ae-91f7-4242-baad-d2dfe781697f.gif)
+
+```
+<!-- 패스워드 찾기  -->
+<select id="findpassword" resultType="user" parameterType="user">
+   SELECT * FROM USERS WHERE ID =#{id}
+</select>
+```
+
+```
+$(function(){
+   
+   // 로그인
+   $('#login').click(function(){
+      location.href = "login.do"
+   })
+   
+   // 아이디 찾기
+   $('#findId').click(function(){
+      location.href = "findId.jsp"
+   })
+   
+   $('#find').click(function(){
+      
+      // 패스워드 찾기 유효성 검사
+      if($('#id').val()==''){
+         alert('아이디를 입력하세요.');
+         $('#id').focus();
+         return false;
+      }
+      
+      $.ajax({
+         // 패스워드 찾기 경로
+         url : 'findPassword.do',
+         type : 'post',
+         dataType : 'json',
+         // 사용자가 입력한 아이디 값
+         data : {'id' : $('#id').val()},
+         success : function(data){
+            // 조회되는 아이디 일시 
+            if(data == 0){
+               // 기존 페이지로 보내주고 패스워드 구문 출력
+               window.location.href = "findPassword.jsp";
+            // 조회되지 않은 아이디 일시
+            }else if(data == 1){
+               alert('등록되지 않은 아이디 입니다.');
+               window.location.href = "findPassword.jsp";
+            }
+         }
+      })
+   })
+});
+```
+
+```
+// 패스워드  찾기
+@ResponseBody
+@RequestMapping(value = "/findPassword.do", method = RequestMethod.POST)
+public int findPassword(@ModelAttribute("user") UserVO vo, HttpSession session) {
+   
+   UserVO password = userservice.findPassword(vo);
+   
+   if (password != null) {
+      // 사용자 이름과 패스워드를 보내줌
+      session.setAttribute("userName", password.getName());
+      session.setAttribute("userPassword", password.getPassword());
+      // 일치 하면 구문 출력 
+      session.setAttribute("getPassword", true);
+      return 0;
+   } else {
+      return 1;
+   }
+}
+```
+
+1. 사용자가 아이디 값을 입력하면 아이디 값이 컨트롤러로 이동합니다.
+2. 아이디 값을 조회 후 회원가입이 된 아이디라면 0, 회원가입 이력이 없는 아이디 라면 1을 반환해줍니다.
+3. 컨트롤러에서 반환 받은 값에 따라 ajax에서 0이면 사용자 패스워드를 알려주고 1이면 등록되지 않은 아이디란걸 알려줍니다
+4. 회원가입된 아이디면(getPassword = true) 다시 기존 페이지로 되돌아간후 사용자 패스워드 값을 알려줍니다
+
+```
+<c:if test="${getPassword == true}">
+   <div class="alert alert-primary">${userName }님의 패스워드는 <b>${userPassword }</b>입니다.</div>
+   <button type="button" class="btn btn-sm btn-primary" id="login">로그인</button>
+   <button type="button" class="btn btn-sm btn-primary" id="findId">아이디 찾기</button>
+</c:if>
+```
   
 ## 회원탈퇴
 
