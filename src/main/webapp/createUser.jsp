@@ -272,7 +272,7 @@ $(function(){
 	 
 	// 주소 클릭 시 발동
 	$('#address').click(function(){
-	// 클릭 시 	주소 검색 팝업창  
+	// 클릭 시 주소 검색 팝업창  
 	new daum.Postcode({
 		// 사용자가 입력한 주소(실제 주소 이름,위도,경도)
 		oncomplete : function(data){
@@ -282,25 +282,25 @@ $(function(){
 			$('#address').val(address);
 			// 사용자가 입력한 주소를 검색한다
 			 geocoder.addressSearch(address, function(results, status){
-				 // 주소 검색에 성공하면 status == ok
-				 if (status == daum.maps.services.Status.OK){
-					console.log(results);
-					// 사용자가 검색한 주소 정보(구주소,도로명 주소, 해당 주소에 해당하는 좌표)
-					 var result = results[0];
-					 // 사용자가 검색한 주소의 좌표
-					 var coords = new daum.maps.LatLng(result.y, result.x);
+			// 주소 검색에 성공하면 status == ok
+			if (status == daum.maps.services.Status.OK){
+				console.log(results);
+				// 사용자가 검색한 주소 정보(구주소,도로명 주소, 해당 주소에 해당하는 좌표)
+				 var result = results[0];
+				 // 사용자가 검색한 주소의 좌표
+				 var coords = new daum.maps.LatLng(result.y, result.x);
                      // 주소의 위도, 경도의 중심으로 이동한다.
                      map.setCenter(coords);
                      // 지도 마커를 좌표 중심에 설정해준다.
                      marker.setPosition(coords)
                      // 검색이 완료되면 지도를 나타내준다
                      $('#map').show();
-				 }
-				// 사용자가 주소 검색을 끝내면 상세 주소로 이동
-				$('#address2').focus();
-			 })
-		}
-	}).open();	
+		 }
+		// 사용자가 주소 검색을 끝내면 상세 주소로 이동
+		$('#address2').focus();
+		 })
+	}
+}).open();	
 })	
 	
 })
