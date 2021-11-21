@@ -679,7 +679,6 @@ $(function(){
 ```
 
 ```
-// 게시글 작성
 // 게시글 작성 
 @ResponseBody
 @RequestMapping(value = "/ajaxinsertBoard.do", method = RequestMethod.POST)
