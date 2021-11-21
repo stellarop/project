@@ -48,16 +48,18 @@ public class BoardController {
 	// 게시글 작성 
 	@ResponseBody
 	@RequestMapping(value = "/ajaxinsertBoard.do", method = RequestMethod.POST
-			)//,produces = "application/text;charset=UTF-8")
+			) //,produces = "application/text;charset=UTF-8",consumes="multipart/form-data")
 	public Map<String, Object> insertBoard(BoardVO vo, HttpSession session) throws IOException{
 		Map<String, Object> result = new HashMap<String, Object>();
-		
+		System.out.println(result);
 		// 로그인 한 유저 아이디 getAttribute로 가져오기
 		String user = (String)session.getAttribute("userId");
 		
 		// vo에 있는 UploadFile을 파일 형식으로 변경
 		MultipartFile uploadFile = vo.getUploadFile();
+		System.out.println(uploadFile);
 		// 업로드하는 파일의 실제 이름를 반환
+		
 		String fileName = uploadFile.getOriginalFilename();
 		
 		// 업로드한 파일의 존재여부
