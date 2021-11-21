@@ -306,8 +306,68 @@ $('#pwdCheck').click(function(){
 <div class="alert alert-danger" id="falsepassword">패스워드가 일치하지 않습니다. 다시 입력 해주세요.</div>
 ```
 
-6. 패스워드 일치, 불일치 구문을 hide으로 숨기고 사용자가 입력한 패스워드와 패스워드 재확인을 변수로 받아서
+6. 패스워드 일치, 불일치 구문을 hide으로 숨기고 사용자가 입력한 패스워드와 패스워드 재확인을 비교해서
   두 값이 맞으면 일치구문 출력, 두 값이 틀리다면 불일치 구문을 출력해줍니다.
+  
+ ```
+// 주소 클릭시 주소 검색 & 지도에 해당 주소 표시
+// 지도 영역
+var divMap = document.getElementById('map')
+		
+	// 위도 경도 기본 설정
+	mapOption = {
+	   // 지도의  좌표 (서울 시청을 기본으로 설정)
+           center: new daum.maps.LatLng(37.5666805, 126.9784147), 
+            // 지도 확대 레벨
+            level: 5 
+       	}; 
+	   
+	// 지도 영역에 실제 지도 넣기
+	var map = new daum.maps.Map(divMap, mapOption);
+	 // 주소 => 좌표로 변환
+	var geocoder = new daum.maps.services.Geocoder();
+	
+	 // 지도 마커를 생성
+    var marker = new daum.maps.Marker({
+        map: map
+    });
+	
+	 // 지도를 사용자가 검색하기 전에  숨기기
+	  $('#map').hide();
+	 
+	// 주소 클릭 시 발동
+	$('#address').click(function(){
+	// 클릭 시 	주소 검색 팝업창  
+	new daum.Postcode({
+		// 사용자가 입력한 주소(실제 주소 이름,위도,경도)
+		oncomplete : function(data){
+		// data값 자체를 넣어주면 실제 주소와,위도,경도 여러가지 값이 넣어지기 때문에 data안에 있는 주소만 널어준다
+		var address = (data.address);
+		// 주소 입력 칸에 사용자가 검색한 실제 주소 이름 넣어주기
+		$('#address').val(address);
+		// 사용자가 입력한 주소를 검색한다
+		 geocoder.addressSearch(address, function(results, status){
+			// 주소 검색에 성공하면 status == ok
+			if (status == daum.maps.services.Status.OK){
+				console.log(results);
+				// 사용자가 검색한 주소 정보(구주소,도로명 주소, 해당 주소에 해당하는 좌표)
+				var result = results[0];
+				// 사용자가 검색한 주소의 좌표
+				var coords = new daum.maps.LatLng(result.y, result.x);
+                    	 	// 주소의 위도, 경도의 중심으로 이동한다.
+                    		 map.setCenter(coords);
+                    		 // 지도 마커를 좌표 중심에 설정해준다.
+                    		 marker.setPosition(coords)
+                    		 // 검색이 완료되면 지도를 나타내준다
+                    		 $('#map').show();
+			 }
+				// 사용자가 주소 검색을 끝내면 상세 주소로 이동
+				$('#address2').focus();
+			 })
+		}
+	}).open();	
+})	
+ ```
 
 ## 아이디 찾기
 
