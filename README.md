@@ -25,7 +25,7 @@ Back
 
 ## ERD 
 
-![ERD](https://user-images.githubusercontent.com/93149034/141842497-98b89514-61ba-42d0-b24e-f21cf93658d4.png)
+![ERD](https://user-images.githubusercontent.com/93149034/142772745-51282138-525b-4923-82ba-a52faea23958.png)
 
 boardseq 칼럼을 외래키로 지정하여 on delete cascade 게시글이 삭제되면 댓글도 삭제되게 처리하였습니다.
 
