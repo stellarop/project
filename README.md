@@ -121,7 +121,7 @@ $(function(){
 ```
 <!-- 회원가입  -->
 <insert id="createuser" parameterType="user">
-   INSERT INTO USERS(ID,PASSWORD,NAME,EMAIL) VALUES(#{id},#{password},#{name},#{email})
+	INSERT INTO USERS(ID,PASSWORD,NAME,EMAIL,ADDRESS,ADDRESS2) VALUES(#{id},#{password},#{name},#{email},#{address},#{address2})
 </insert>
 
 <!-- 회원가입 아이디 체크 -->
