@@ -347,7 +347,7 @@ var divMap = document.getElementById('map')
 	var geocoder = new daum.maps.services.Geocoder();
 	
 	 // 지도 마커를 생성
-    var marker = new daum.maps.Marker({
+    	var marker = new daum.maps.Marker({
         map: map
     });
 	
