@@ -306,9 +306,11 @@ $('#pwdCheck').click(function(){
 <div class="alert alert-danger" id="falsepassword">패스워드가 일치하지 않습니다. 다시 입력 해주세요.</div>
 ```
 
+
 6. 패스워드 일치, 불일치 구문을 hide으로 숨기고 사용자가 입력한 패스워드와 패스워드 재확인을 비교해서
   두 값이 맞으면 일치구문 출력, 두 값이 틀리다면 불일치 구문을 출력해줍니다.
   
+ 
  
 ```
 <!-- 카카오 주소 찾기 API -->
@@ -320,9 +322,11 @@ $('#pwdCheck').click(function(){
 <!-- 카카오에서 받은 인증키를 반드시 넣어줘야함 -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=여기에 인증키가 들어갑니다.&libraries=services,clusterer,drawing"></script>
 ```
-
+ 
+ 
 7. 주소 검색 같은 경우 api 호출만 해주면 되지만 지도는 개발자 등록과 사이트 도메인 등록, 스크립트 경로에 카카오에서 발급받은 api 인증키를 넣어주고 사용자가 입력한 주소를 좌표로 변환하여
 지도로 나타내주어야 하기 때문에 스크립트 경로에 지도 라이브러리도 같이 추가 해주었습니다.
+
 
 ```
 // 주소 클릭시 주소 검색 & 지도에 해당 주소 표시
