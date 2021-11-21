@@ -335,13 +335,13 @@ var divMap = document.getElementById('map')
 	 // 지도를 사용자가 검색하기 전에  숨기기
 	  $('#map').hide();
 	 
-	// 주소 클릭 시 발동
+	// 주소 입력 칸 클릭 시 발동
 	$('#address').click(function(){
-	// 클릭 시 	주소 검색 팝업창  
+	// 주소 검색 팝업창  
 	new daum.Postcode({
 		// 사용자가 입력한 주소(실제 주소 이름,위도,경도)
 		oncomplete : function(data){
-		// data값 자체를 넣어주면 실제 주소와,위도,경도 여러가지 값이 넣어지기 때문에 data안에 있는 주소만 널어준다
+		// data값 자체를 넣어주면 실제 주소와,위도,경도 여러가지 값이 넣어지기 때문에 data안에 있는 실제 주소 이름만 널어준다
 		var address = (data.address);
 		// 주소 입력 칸에 사용자가 검색한 실제 주소 이름 넣어주기
 		$('#address').val(address);
