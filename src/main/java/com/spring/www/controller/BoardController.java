@@ -104,7 +104,7 @@ public class BoardController {
 		return result;
 	}
 	
-	
+	 
 	// 게시글 삭제 
 	@ResponseBody
 	@RequestMapping(value = "/deleteBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
