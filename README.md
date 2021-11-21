@@ -388,6 +388,7 @@ var divMap = document.getElementById('map')
 })	
  ```
 
+
 8. html 에 지도 영역을 만들어주고 기본 지도 좌표를 입력 해줍니다.
 9. html 지도 영역에 실제 지도와 기본으로 설정한 지도 좌표를 넣어주고 사용자가 입력한 주소를 좌표로 변경하는 지도 라이브러리를 선언 해줍니다.
 10. 사용자가 주소 검색을 하면 지도 중심에 마커를 나타내주는 마커를 생성합니다.
@@ -673,28 +674,39 @@ $(function(){
 ```
 <!-- 게시글 작성 -->
 <insert id="insertBoard">
-   INSERT INTO BOARD (TITLE,WRITER,CONTENT,PASSWORD,FILENAME) VALUES (#{title},#{writer},#{content},#{password},#{filename})
+	INSERT INTO BOARD (TITLE,WRITER,CONTENT,FILENAME) VALUES (#{title},#{writer},#{content},#{filename})
 </insert>
 ```
 
 ```
-// 게시글 입력
-@RequestMapping(value = "/insertBoard.do", method = RequestMethod.POST)
-public String insertBoard(BoardVO vo) throws IOException {      
-   MultipartFile uploadFile = vo.getUploadFile();
-   // 업로드하는 파일의 실제 이름를 반환
-   String fileName = uploadFile.getOriginalFilename();
-   
-   // 업로드한 파일의 존재여부
-   if(!uploadFile.isEmpty()) {
-      String originalFilename = uploadFile.getOriginalFilename();
-      // 업로드한 파일의 데이터를 저장
-      uploadFile.transferTo(new File("C:\\Project 파일 업로드\\" + fileName));
-   }   
-   // 파일 이름을 db에 저장
-   vo.setFilename(fileName);
-   boardservice.insertBoard(vo);
-   return "main.do"; 
+// 게시글 작성
+// 게시글 작성 
+@ResponseBody
+@RequestMapping(value = "/ajaxinsertBoard.do", method = RequestMethod.POST)
+public Map<String, Object> insertBoard(BoardVO vo, HttpSession session) throws IOException{
+	Map<String, Object> result = new HashMap<String, Object>();
+	// 로그인 한 유저 아이디 getAttribute로 가져오기
+	String user = (String)session.getAttribute("userId");
+	
+	// vo에 있는 UploadFile을 파일 형식으로 변경
+	MultipartFile uploadFile = vo.getUploadFile();
+	// 업로드하는 파일의 실제 이름를 반환
+	String fileName = uploadFile.getOriginalFilename();
+	
+	// 업로드한 파일의 존재여부
+	if(!uploadFile.isEmpty()) {
+		String originalFilename = uploadFile.getOriginalFilename();
+		// 업로드한 파일을 C:\\Project 파일 업로드 에 저장
+		uploadFile.transferTo(new File("C:\\Project 파일 업로드\\" + fileName));
+	}	
+	// 파일 이름을 데이터베이스에 저장
+	vo.setFilename(fileName);
+	// 게시글 작성자에 로그인 한 유저 아이디 넣어주기
+	vo.setWriter(user);
+	result.put("fileName", fileName);
+	//게시글 작성
+	result.put("insertBoard", boardservice.insertBoard(vo));
+	return result;
 }
 ```
 
