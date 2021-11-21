@@ -78,29 +78,29 @@ $(function(){
       }
       
    $.ajax({
-      //컨트롤러 경로
-      url : 'login.do',
-      type : 'post',
-      dateType : 'json',
-      // 사용자가 입력한 아이디, 패스워드
-      // 입력한 값이 컨트롤러로 보내진다
-      data : {'id' : $('#id').val(),
-      'password' : $('#password').val()},
-      success : function(data){
-         // 컨트롤러에서 가져온 값이 true 일시
-         if(data == true){
-            alert('로그인 성공');
-            // 메인 페이지로
-            window.location.href = "main.do";
-         // 컨트롤러에서 가져온 값이 false 일시
-         }else if(data == false){
-            alert('로그인 실패')
-            // 로그인 페이지에 머무름
-            window.location.href = "login.jsp";
+         //컨트롤러 경로
+         url : 'login.do',
+         type : 'post',
+         dateType : 'json',
+         // 사용자가 입력한 아이디, 패스워드
+         // 입력한 값이 컨트롤러로 보내진다
+         data : {'id' : $('#id').val(),
+         'password' : $('#password').val()},
+         success : function(data){
+            // 컨트롤러에서 가져온 값이 true 일시
+            if(data == true){
+               alert('로그인 성공');
+               // 메인 페이지로
+               window.location.href = "main.do";
+            // 컨트롤러에서 가져온 값이 false 일시
+            }else if(data == false){
+               alert('로그인 실패')
+               // 로그인 페이지에 머무름
+               window.location.href = "login.jsp";
+            }
          }
-      }
-   })
-});
+      })
+   });
 ```
 1. 로그인 요청 시 사용자가 입력한 값이 컨트롤러로 보내집니다.
 2. 이후 컨트롤러에서 DB에 저장된 사용자 아이디와 비밀번호를 사용자가 입력한 아이디 비밀번호 값과 비교합니다. 
