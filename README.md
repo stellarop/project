@@ -115,7 +115,7 @@ $(function(){
 
 ## 회원가입
 
-![회원가입 gif](https://user-images.githubusercontent.com/88939199/136156549-9d65c7cd-6c3f-498d-9b2e-bff47be9b0f7.gif)
+기능 촬영 영상 들어가야함
 
 
 ```
@@ -660,7 +660,7 @@ $(function(){
 
 ## 글 작성
 
-![글작성 gif](https://user-images.githubusercontent.com/88939199/136687130-05e1e8c7-7e9e-4c5f-b033-601c6749c6e3.gif)
+기능 촬영 영상 들어가야함
 
 
 ```
@@ -741,14 +741,13 @@ var formData = new FormData($('#insertBoard')[0]);
 5. 사용자가 입력한 글 작성 form을 서버로 보내준 후 리턴 받은 값을 submit() 저장 후 메인 페이지로 보내줍니다.
 
 
-글 작성에 파일첨부를 할 수 있도록 하였습니다
-BoardVO 필드에 MultipartFile uploadFile 를 추가 해줍니다.
+6. BoardVO 필드에 MultipartFile uploadFile 를 추가 해줍니다.
 
 ```
 private MultipartFile uploadFile;
 ```
 
-servlet-context.xml에서 파일 업로드 빈을 등록 해주고 파일 사이즈를 정해줍니다.
+7. servlet-context.xml에서 파일 업로드 빈을 등록 해주고 파일 사이즈를 정해줍니다.
 
 ```
 <!-- 파일 업로드  -->
@@ -757,13 +756,13 @@ servlet-context.xml에서 파일 업로드 빈을 등록 해주고 파일 사이
    </beans:bean>
 ```
 
-servlet-context.xml에서 파일이 저장된 경로를 설정해줍니다.
+8. servlet-context.xml에서 파일이 저장된 경로를 설정해줍니다.
 
 ```
 <resources mapping="/img/**" location="C:\Project 파일 업로드" />
 ```
 
-server.xml에서 이미지 파일 경로를 지정해줍니다.
+9. server.xml에서 이미지 파일 경로를 지정해줍니다.
 
 ```
   <!-- 이미지 파일 경로 -->
@@ -771,7 +770,7 @@ server.xml에서 이미지 파일 경로를 지정해줍니다.
 ```
 
 
-이미지를 불러올때 /img/ +  db에 저장된 파일이름 으로 불러옵니다.
+10. 이미지를 불러올때 /img/ +  db에 저장된 파일이름 으로 불러옵니다.
 
 ```
 <img width=1110px, height=600px src="/img/${board.filename }"  onerror="this.style.display='none';"/>
@@ -779,107 +778,89 @@ server.xml에서 이미지 파일 경로를 지정해줍니다.
 
 ## 글 수정
 
-![글수정 gif](https://user-images.githubusercontent.com/88939199/136687428-84cad32e-09f7-474f-abe0-a5220828b086.gif)
+기능 촬영 영상 들어가야함
 
-글 수정 페이지는 글 작성때 등록한 암호를 입력하지 않으면 수정이 안되게 만들었습니다.
+```
+<!-- 세션으로 로그인된 아이디와 작성자와 일치하면 수정,삭제  -->
+<c:if test="${sessionScope.userId == board.writer }">
+	<button type="button" class="btn btn-outline-primary" id="updateBoardBtn" boardseq = "${board.boardseq }">게시글 수정</button>
+	<button type="button" class="btn btn-outline-danger" id="deleteBoardBtn" boardseq = "${board.boardseq }">게시글 삭제</button>
+</c:if>
+```
+1. 글 수정과 글 삭제는 아이디와 작성자가 일치해야 수정,삭제 버튼이 보이게 만들었습니다.
 
 ```
 <!-- 게시글 수정 -->
 <update id="updateBoard">
-   UPDATE BOARD SET TITLE=#{title},CONTENT=#{content} WHERE BOARDSEQ=#{boardseq} AND PASSWORD =#{password}
+	UPDATE BOARD SET TITLE=#{title},CONTENT=#{content} WHERE BOARDSEQ=#{boardseq}
 </update>
 ```
-```
-<!-- 글 수정 삭제 패스워드 체크 -->
-<select id="boardPwdCheck" resultType="int">
-   SELECT COUNT(*) FROM BOARD WHERE BOARDSEQ=#{boardseq} AND PASSWORD =#{password}
-</select>
-```
 
 ```
-// 게시글 수정 뷰
-@RequestMapping(value = "/updateBoardView.do", method = {RequestMethod.GET,RequestMethod.POST})
-public String updateBoardView(BoardVO vo, Model model, Criteria cri) {
-   model.addAttribute("cri", cri);
-   model.addAttribute("updateBoard", boardservice.getBoard(vo.getBoardseq()));
-   return "updateBoardView.jsp";
-}
-   
-// 게시글 수정 
-@RequestMapping(value = "/updateBoard.do", method = RequestMethod.POST)
-public String updateBoard(BoardVO vo) {
-   // 해당 게시글 데이터
-   BoardVO getBoard = boardservice.getBoard(vo.getBoardseq());
-   // 해당 게시글 비밀번호
-   String getBoardpassword = getBoard.getPassword();
-   // 사용자가 입력한 비밀번호
-   String password = vo.getPassword();
-   
-   if(getBoardpassword.equals(password)) {
-      boardservice.updateBoard(vo);
-      return "main.do";
-      }
-   return "updateBoardView.do";
+// 게시글 수정 view
+@RequestMapping(value = "/updateBoardView.do", method = RequestMethod.GET)
+public String updateBoardView(BoardVO vo, Criteria cri, Model model) {
+	model.addAttribute("cri", cri);
+	model.addAttribute("updateBoard", boardservice.getBoard(vo.getBoardseq()));
+	return "updateBoardView.jsp";
+}		
+	
+// 게시글 수정
+@ResponseBody
+@RequestMapping(value = "/updateBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
+public Map<String, Object> updateBoard(BoardVO vo, Model model, Criteria cri) {
+	Map<String, Object> result = new HashMap<String,Object>();
+	// 페이지 유지
+	result.put("cri", cri);
+	// 어떤 게시글을 수정할지
+	result.put("updateBoard", boardservice.getBoard(vo.getBoardseq()));
+	// 게시글 수정
+	boardservice.updateBoard(vo);
+	return result;
 }
 ```
 
-글 작성때 입력한 비밀번호를 가져와서 사용자가 입력한 비밀번호와 equals로 문자열 비교를 합니다.
-맞으면 글 수정 처리, 게시글list로 보내주고 맞지 않으면 글 수정 페이지에 머무릅니다.
-
 ```
-$('#mainBtn').click(function(){
-      location.href = "main.do?page=${cri.page}"
-   })
-      
-   $('#updateBoardBtn').click(function(){   
-      if($('#title').val()==''){
-         alert('제목을 입력하세요.');
-         $('#title').focus();
-         return false;
-      }
-         
-      if($('#content').val()==''){
-         alert('내용을 입력하세요.');
-         $('#content').focus();
-         return false;
-      }
-         
-      if($('#password').val()==''){
-         alert('암호을 입력하세요.');
-         $('#password').focus();
-         return false;
-      }
-      
-      $.ajax({
-         url : 'boardPwdCheck.do',
-         type : 'post',
-         datetype : 'json',
-         data : $('#updateBoard').serializeArray(),
-         success : function(date){
-            if(date == 0){
-               alert('암호가 일치하지 않습니다.');
-               return;
-            }else{
-               if(confirm('수정하시겠습니까?')){
-                  $('#updateBoard').submit();
-                  alert('게시글이 수정되었습니다.');
-               }
-            }
-         }
-      })
-   })
+$('#updateBoardBtn').click(function(){		
+	if($('#title').val()==''){
+		alert('제목을 입력하세요.');
+		$('#title').focus();
+		return false;
+	}
+	if($('#content').val()==''){
+		alert('내용을 입력하세요.');
+		$('#content').focus();
+		return false;
+	}
+		
+	$.ajax({
+		url : 'updateBoard.do',
+		type : 'post',
+		dataType : 'json',
+		data : $('#updateBoard').serializeArray(),
+		success : function(data){
+			if(confirm('수정 하시겠습니까?')){
+				$('#updateBoard').submit();
+				alert('게시글 수정이 완료되었습니다.');
+				location.href = "main.do?page=${cri.page}";
+			}
+		},
+		error : function(data){
+			alert('게시글 수정에 실패 하였습니다.');
+			location.href = "updateBoardView.do?boardseq=${board.boardseq}&page=${cri.page}"
+			}
+	})
+})
 ```
 
-해당 게시글 번호와 암호가 일치하지 않으면 0 두 값이 일치하면 1을 반환 해줍니다.
+2. 사용자가 글 수정 버튼을 클릭하면 수정 form 안에 있는 데이터가 컨트롤러로 전송 됩니다.
 
-컨트롤러로 보내는 암호는 equals로 문자열 비교를 해서 맞으면 글 수정 처리를 하고 맞지 않으면 그 페이지에 머무릅니다.
+3. 컨트롤러에서 수정된 데이터를 리턴 시켜서 수정 데이터를 submit() 저장시켜 준 후 메인 페이지로 이동합니다.
+
 
 # 글 삭제
 
-![게시글 삭제 gif](https://user-images.githubusercontent.com/88939199/136689314-30385b6b-74e0-4ab4-b56b-ed61ddcf9742.gif)
-
-
-글 삭제도 수정과 같이 암호를 입력하지 않으면 삭제되지 않게 만들었습니다.
+기능촬영 영상 들어가야함
 
 ```
 <!-- 게시글 삭제 -->
@@ -888,70 +869,38 @@ $('#mainBtn').click(function(){
 </delete>
 ```
 
-게시글 번호와 패스워드가 맞으면 삭제됩니다.
 
-```
-// 게시글 삭제 뷰
-@RequestMapping(value = "/deleteBoardView.do", method = {RequestMethod.GET,RequestMethod.POST})
-public String deleteBoardView(BoardVO vo, Model model, Criteria cri) {
-   model.addAttribute("cri", cri);
-   model.addAttribute("deleteBoard", boardservice.getBoard(vo.getBoardseq()));
-   return "deleteBoardView.jsp";
-}
-   
+```   
 // 게시글 삭제 
+@ResponseBody
 @RequestMapping(value = "/deleteBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
-public String deleteBoard(BoardVO vo) {
-   // 해당 게시글 데이터
-   BoardVO getBoard = boardservice.getBoard(vo.getBoardseq());
-   // 해당 게시글 비밀번호
-   String getBoardpassword = getBoard.getPassword();
-   // 사용자가 입력한 비밀번호
-   String password = vo.getPassword();
-   
-   if(getBoardpassword.equals(password)) {
-      boardservice.deleteBoard(vo);
-      return "main.do";
-   }
-   return "deleteBoardView.do";
-}
+public String  deleteBoardView(BoardVO vo) {
+	boardservice.deleteBoard(vo);
+	return "main.do";
+} 
 ```
 
-글 작성때 입력한 비밀번호를 가져와서 사용자가 입력한 비밀번호와 equals로 문자열 비교를 합니다.
-맞으면 글 삭제 처리, 메인으로 보내줍니다.
-맞지 않으면 암호 페이지에 머무릅니다.
+```
+// 게시글 삭제
+$('#deleteBoardBtn').click(function(){
+$.ajax({
+	// 게시글 삭제 경로
+	url : 'deleteBoard.do',
+	type : 'post',
+	// 삭제할 해당 게시글 번호
+	data : {'boardseq' : $('#boardseq').val()},
+	success : function(data){
+		if(confirm('삭제 하시겠습니까?')){
+			$('#getBoard').submit();
+			alert('삭제가 완료되었습니다.');
+			// 메인
+			location.href = "main.do?page=${cri.page}"
+		}
+	}
+})
+```
+1. 글 삭제 버튼을 누르면 게시글 번호를 컨트롤러로 보내서 사용자가 보낸 게시글 번호가 삭제됩니다.
 
-```
-$('#mainBtn').click(function(){
-   location.href = "main.do?boardseq=${deleteBoard.boardseq}&page=${cri.page}"
-});
-      
-   $('#deleteBoardBtn').click(function(){
-      if($('#password').val()==''){
-         alert('암호를 입력하세요.');
-         $('#password').focus();
-         return false;
-      }
-      
-      $.ajax({
-         url : 'boardPwdCheck.do',
-         type : 'post',
-         datetype : 'json',
-         data : $('#deleteBoard').serializeArray(),
-         success : function(date){
-            if(date == 0){
-               alert('암호가 일치하지 않습니다.');
-               return;
-            }else{
-               if(confirm('삭제하시겠습니까?')){
-                  $('#deleteBoard').submit();
-                  alert('게시글이 삭제되었습니다.');
-               }
-            }
-         }
-      })
-   })
-```
 
 ## 게시글 검색, 페이징
 
