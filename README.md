@@ -726,7 +726,6 @@ var formData = new FormData($('#insertBoard')[0]);
 		//async: false,
 		type : 'post',
 		success : function(data){
-			// form에 있는 데이터를 컨트롤러로 전송
 			$('#insertBoard').submit();
 			alert('게시글이 등록 되었습니다.');
 			location.href = "main.do";
