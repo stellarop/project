@@ -904,7 +904,7 @@ $.ajax({
 
 ## 게시글 검색, 페이징
 
-![검색 페이징 gif](https://user-images.githubusercontent.com/88939199/136689594-baa63a7b-e994-4639-9f2d-7aeed8bf965b.gif)
+기능촬영 영상 들어가야함
 
 ```
 // 현재 페이지 번호
@@ -1068,73 +1068,53 @@ searchType(검색키워드)가 없을 시 총 게시글 수를 구해서 view로
 
 ## 댓글 등록
 
-![댓글등록 gif](https://user-images.githubusercontent.com/88939199/136691126-430cd119-2f13-47ff-963f-8646ebc47774.gif)
+기능촬영 영상 들어가야함
 
 ```
-<!-- 댓글 입력 -->
+<!-- 댓글 작성 -->
 <insert id="insertreply">
-   INSERT INTO REPLY (BOARDSEQ,WRITER,CONTENT,PASSWORD) VALUES (#{boardseq},#{writer},#{content},#{password})
+	INSERT INTO REPLY (BOARDSEQ,WRITER,CONTENT) VALUES (#{boardseq},#{writer},#{content})
 </insert>
 ```
 
 ```
-// 댓글 등록
-@RequestMapping(value = "/insertReply.do" , method = {RequestMethod.GET, RequestMethod.POST})
-public String insertReply(ReplyVO rvo, Model model, Criteria cri) {
-   model.addAttribute("cri", cri);
-   replyservice.insertReply(rvo);
-   return "getBoard.do";
-  }
+// 댓글 작성
+@ResponseBody
+@RequestMapping(value = "/insertReply.do", method = RequestMethod.POST)
+public Map<String, Object> insertReply(ReplyVO rvo, Criteria cri,HttpSession session){
+	Map<String, Object> result = new HashMap<String, Object>();
+	// 로그인한 유저 아이디 getAttribute로 가져오기
+	String user = (String) session.getAttribute("userId");
+	// 댓글 작성자에 로그인한 유저 아이디를 넣어준다
+	rvo.setWriter(user);
+	// 댓글 작성
+	result.put("insertReply", replyservice.insertReply(rvo));
+	return result;
+}
 ```
 ```
 // 댓글 작성
-   $('#insertreplyBtn').click(function(){
-      
-      if($('#replyWriter').val()==''){
-         alert('작성자를 입력하세요.');
-         $('#replyWriter').focus();
-         return false;
-      } 
-      if($('#replyContent').val()==''){
-         alert('내용을 입력하세요.');
-         $('#content').focus();
-         return false;
-      }   
-      if($('#replyPassword').val()==''){
-         alert('암호을 입력하세요.');
-         $('#replyPassword').focus();
-         return false;
-      }
-      
-      var form = $("form[name='insertreply']");
-      form.attr('action', 'insertReply.do');
-      form.submit(); 
-      alert('댓글이 등록되었습니다.'); 
-      
-   });
+$('#insertreplyBtn').click(function(){
+	if($('#replyContent').val()==''){
+		alert('댓글 내용을 입력하세요.');
+		$('#replyContent').focus();
+		return false;
+	}	
+	$.ajax({
+		url : 'insertReply.do',
+		type : 'post',
+		dataType : 'json',
+		data : $('#insertReply').serializeArray(),
+		success : function(data){
+			alert('댓글이 등록되었습니다.');
+			$('#insertReply').submit();
+			location.href = "getBoard.do?boardseq=${board.boardseq}&page=${cri.page}";
+		},
+		error : function(data){
+			alert('댓글 등록에 실패하였습니다.');
+		}
+	})
 
-<!-- 댓글 작성 -->
-<form name="insertreply" method="post"> 
-<input type="hidden" name="boardseq" value="${board.boardseq }" />
-<input type="hidden" name="page" id="page" value="${cri.page }" page = "${cri.page }" />
-
-   <div class="mb-3">
-      <label>댓글 작성자</label>
-      <input type="text" class="form-control" id="replyWriter" name="writer" placeholder="작성자를 입력해 주세요">
-   </div>
-   <div class="mb-3">
-      <label>댓글 내용</label>
-      <input type="text" class="form-control" id="replyContent" name="content" placeholder="내용을 입력해 주세요">
-   </div>
-   <div class="mb-3">
-      <label>암호</label>
-      <input type="password" class="form-control" id="replyPassword" name="password" placeholder="암호를 입력해 주세요">
-   </div>
-   <div class="mb-3">
-      <button type="button" class="btn btn-sm btn-primary" id="insertreplyBtn">댓글작성</button>
-   </div>
-
-</form>
 ```
 글 상세 보기의 폼을 두 개로 나누어서(글 상세보기, 댓글 리스트 폼 과 댓글 폼) 
 댓글 작성을 하고 댓글 작성 버튼을 누르게 되면 댓글작성 폼 안에 있는 내용들이 컨트롤러로 이동하게 됩니다.
