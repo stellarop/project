@@ -701,6 +701,10 @@ public Map<String, Object> insertBoard(BoardVO vo, HttpSession session) throws I
 }
 ```
 
+1. 글 작성시 작성자를 유저 아이디로 넣어주기 위해 로그인시 넘겨준 유저 아이디를 가져옵니다.
+2. 업로드한 파일을 경로에 넣어주고 파일 이름을 저장합니다.
+3. 작성자가 입력한 글 작성 데이터를 클라이언트로 리턴 시켜줍니다.
+
 ```
 // form 전체의 데이터를 보낼때(파일 업로드)
 var formData = new FormData($('#insertBoard')[0]);
@@ -734,7 +738,8 @@ var formData = new FormData($('#insertBoard')[0]);
 	})
 ```
 
-1. 
+4. ajax로 파일 업로드 할 시 form 안에 있는 내용 전체를 전송하기위해 formData 객체를 사용하였습니다.
+5. 사용자가 입력한 글 작성 form을 서버로 보내준 후 리턴 받은 값을 submit() 저장 후 메인 페이지로 보내줍니다.
 
 
 글 작성에 파일첨부를 할 수 있도록 하였습니다
@@ -766,10 +771,6 @@ server.xml에서 이미지 파일 경로를 지정해줍니다.
    <Context docBase="C:\Project 파일 업로드" path="/img" reloadable="true"/>
 ```
 
-form태그에서 파일을 입력받습니다.
-
-```
-<form action="insertBoard.do" method="post" enctype="multipart/form-data">
 ```
 
 이미지를 불러올때 /img/ +  db에 저장된 파일이름 으로 불러옵니다.
