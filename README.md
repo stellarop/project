@@ -389,7 +389,7 @@ var divMap = document.getElementById('map')
  ```
 
 
-8. html 에 지도 영역을 만들어주고 기본 지도 좌표를 입력 해줍니다.
+8. html 에 지도 영역을 만들어주고 기본 지도 좌표를 입력 해줍니다.  
 9. html 지도 영역에 실제 지도와 기본으로 설정한 지도 좌표를 넣어주고 사용자가 입력한 주소를 좌표로 변경하는 지도 라이브러리를 선언 해줍니다.
 10. 사용자가 주소 검색을 하면 지도 중심에 마커를 나타내주는 마커를 생성합니다.
 11. 서울시청으로 설정한 지도를 사용자가 주소 검색을 할 때까지 hide() 으로 지도를 숨겨줍니다.
@@ -1066,6 +1066,76 @@ searchType(검색키워드)가 null이 아니라면 사용자가 설정한 해�
 searchType(검색키워드)가 없을 시 총 게시글 수를 구해서 view로 나타내줍니다.
 
 
+## 댓글 리스트
+
+기능촬영 영상 들어가야 함
+
+
+```
+<!-- 댓글 리스트 -->
+<select id="replyList" resultMap="replyResult">
+	SELECT * FROM REPLY WHERE BOARDSEQ =#{boardseq}
+</select>
+```
+
+```
+// 댓글 리스트
+@ResponseBody
+@RequestMapping(value = "/replyList.do",method = RequestMethod.POST)
+public Map<String, Object> getBoard(BoardVO vo, ReplyVO rvo,HttpSession session){
+	Map<String, Object> result = new HashMap<String, Object>();
+	// 로그인한 유저 아이디 getAttribute로 가져오기
+	String userId = (String) session.getAttribute("userId");
+	// 댓글 리스트
+	result.put("reply", replyservice.replyList(rvo));
+	// 유저 아이디
+	result.put("user", userId);
+	return result;
+}
+```
+
+```
+//댓글 리스트
+function replyList(){
+	$.ajax({
+	// 해당 게시글의 댓글 리스트 
+	url : 'replyList.do?boardseq=${board.boardseq}',
+	type : 'post',
+	dataType : 'json',
+	success : function(data){
+		replyList = '<h2>댓글</h2>';
+		// 댓글 리스트에 길이가 0 이면 (댓글이 없으면)
+		if(data.reply.length < 1){
+			// 출력
+			replyList += '<p>등록된 댓글이 없습니다.</p>';
+		// 댓글 리스트에 길이가 1 이상이면(댓글이 등록되어 있으면)
+		}else{
+			// 댓글 리스트 길이만큼 댓글 출력
+			$(data.reply).each(function(key, value){
+				replyList += '<input type="hidden" name="boardseq" id="boardseq" value=' + value.boardseq + '>';
+				replyList += '<input type="hidden" name="replyseq" id="replyseq" value=' + value.replyseq + '>';
+				replyList += '<div class="mb-3">';
+				replyList += '<label>' + '작성자 : ' + '<b>' + value.writer + '</b>' + '&nbsp' + '작성날짜 : ' + value.regdate + '&nbsp';
+				// 로그인한 유저 아이디와 작성자가 일치하면 수정,삭제 가능
+				if(data.user == value.writer){
+				replyList += '<a href="updateReplyView.do?replyseq=' + value.replyseq + '">수정</a>' + '&nbsp';
+				// 삭제하려는 댓글 번호를 deleteReply()함수로 보내야 한다 (List에서 댓글 삭제 시 어떤 댓글을 삭제 해주어야 할지 정해야 하기 때문에)
+				replyList += '<a href="javascript:void(0);" onclick="deleteReply(' + value.replyseq + ');">삭제</a>';
+				}
+				replyList += '</div>';
+				replyList += '<div class="mb-3">';
+				// 댓글 내용
+				replyList += '<label>' + value.content + '</label>';
+				replyList += '</div>';
+			});
+		}
+		// replyList form에 댓글 목록 추가
+		$('#replyList').html(replyList);
+	}
+});
+```
+
+1. 
 ## 댓글 등록
 
 기능촬영 영상 들어가야함
@@ -1116,10 +1186,9 @@ $('#insertreplyBtn').click(function(){
 	})
 
 ```
-글 상세 보기의 폼을 두 개로 나누어서(글 상세보기, 댓글 리스트 폼 과 댓글 폼) 
-댓글 작성을 하고 댓글 작성 버튼을 누르게 되면 댓글작성 폼 안에 있는 내용들이 컨트롤러로 이동하게 됩니다.
 
-글 리스트에서 게시글번호, 페이징번호를 같이 넘겨주어서 댓글을 작성하게 되면 해당 게시글로 이동하고 페이징 유지가 되게 만들었습니다.
+1. 댓글 작성 후 작성 버튼을 누르면 insertReply form 안에서 작성한 댓글이 컨트롤러로 보냅니다.
+2. 컨트롤러로 보내지면 inertReply form에 있는 댓글을 submit() 저장 시켜 준 후 댓글을 등록한 페이지로 이동합니다.
 
 
 ## 댓글 수정
