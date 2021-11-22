@@ -609,15 +609,7 @@ public String deleteUser(UserVO vo, HttpSession session) {
    }      
 }
 ```
-```
-// 패스워드 체크
-@ResponseBody
-@RequestMapping(value = "/passwordCheck.do", method = RequestMethod.POST)
-public int passwordCheck(UserVO vo) {
-   int result = userservice.passwordCheck(vo);
-   return result;
-}
-```
+
 1. 로그인에서 session.setAttribute 로 넘겨준 비밀번호를 getAttribute 로 가져옵니다 .
 2. 로그인에서 가져온 패스워드와 사용자가 입력한 비밀번호를 equals 문자열 비교를 해서 맞으면 세션을 끊어준 후 로그인 창으로 틀리다면 기존 페이지에 머무릅니다.
 
