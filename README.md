@@ -709,6 +709,42 @@ public Map<String, Object> insertBoard(BoardVO vo, HttpSession session) throws I
 }
 ```
 
+```
+// form 전체의 데이터를 보낼때(파일 업로드)
+var formData = new FormData($('#insertBoard')[0]);
+		
+	$.ajax({
+		// 게시글 작성 경로
+		url : 'ajaxinsertBoard.do',
+		enctype : 'multipart/form-data',
+		//=== ajax에서 파일 업로드를 할 시 필수로 입력 해야 하는 것 ===
+		// false로 선언 시 formData를 string으로 변환하지 않음
+		processData : false,
+		// false 로 선언 시 content-type 헤더가 multipart/form-data로 전송되게 함
+		contentType : false,
+		cache: false,
+		//==========================================
+		// form 전체의 데이터
+		data : formData,
+		dataType : 'json',
+		//async: false,
+		type : 'post',
+		success : function(data){
+			// form에 있는 데이터를 컨트롤러로 전송
+			$('#insertBoard').submit();
+			alert('게시글이 등록 되었습니다.');
+			location.href = "main.do";
+		},
+		error : function(data){
+			console.log(data);
+			alert('게시글 등록에 실패 하였습니다.');
+		}
+	})
+```
+
+1. 
+
+
 글 작성에 파일첨부를 할 수 있도록 하였습니다
 BoardVO 필드에 MultipartFile uploadFile 를 추가 해줍니다.
 
