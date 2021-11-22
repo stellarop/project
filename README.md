@@ -771,9 +771,9 @@ server.xml에서 이미지 파일 경로를 지정해줍니다.
    <Context docBase="C:\Project 파일 업로드" path="/img" reloadable="true"/>
 ```
 
-```
 
 이미지를 불러올때 /img/ +  db에 저장된 파일이름 으로 불러옵니다.
+
 ```
 <img width=1110px, height=600px src="/img/${board.filename }"  onerror="this.style.display='none';"/>
 ```
