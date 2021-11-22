@@ -1124,51 +1124,6 @@ searchType(검색키워드)를 view에서 선택합니다.
 searchType(검색키워드)가 null이 아니라면 사용자가 설정한 해당 searchType과 검색한 내용이 게시글리스트 + 페이징 쿼리문에 적용됩니다.
 searchType(검색키워드)가 없을 시 총 게시글 수를 구해서 view로 나타내줍니다.
 
-## 글 추천,반대
-
-![게시글 추천반대 GIF](https://user-images.githubusercontent.com/88939199/136690724-a5edcef3-c728-4e6e-a99b-7b730b40f86d.gif)
-
-```
-<!-- 게시글 추천 -->
-<update id="upCountBoard" parameterType="int">
-   UPDATE BOARD SET COUNT = COUNT + 1 WHERE BOARDSEQ =#{boardseq}
-</update>
-```
-```
-<!-- 게시글 반대 -->
-<update id="downCountBoard" parameterType="int">
-   UPDATE BOARD SET COUNT = COUNT - 1 WHERE BOARDSEQ =#{boardseq}
-</update>
-```
-```
-// 게시글 추천
-@RequestMapping(value = "/upCountBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
-public String upCountBoard(BoardVO vo) {
-   boardservice.upCount(vo.getBoardseq());
-   return "getBoard.do";
-}
-```
-```
-// 게시글 반대
-@RequestMapping(value = "/downCountBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
-public String downCountBoard(BoardVO vo) {
-   boardservice.downCount(vo.getBoardseq());
-   return "getBoard.do";
-}
-```
-
-
-```
-<p>추천수 ${board.count }
-<!-- 게시글 추천 -->
-<a id="upCountBoardBtn" href="upCountBoard.do?boardseq=${board.boardseq}&page=${cri.page}">👍</a>
-<!-- 게시글 반대 -->
-&nbsp;<a id="downCountBoardBtn" href="downCountBoard.do?boardseq=${board.boardseq}&page=${cri.page}">👎</a></p> 
-```
-추천과 반대를 클릭하면 글 수정, 글 삭제와 같이 페이징 유지가 되도록 만들었습니다. 
-
-👍,👎를 누르게 되면 해당 컨트롤러로 이동하여 추천수가 변하도록 만들었습니다.
-
 
 ## 댓글 등록
 
@@ -1345,45 +1300,3 @@ $(function(){
 
 댓글 삭제도 댓글 작성시 입력한 암호를 통해서 삭제되게 만들었습니다.
 
-## 댓글 추천,반대
-
-![댓글 추천 반대 gif](https://user-images.githubusercontent.com/88939199/136737723-7eb70ed2-24f6-4bb1-854b-0e272c5eb3c9.gif)
-
-```
-<!-- 댓글 추천 -->
-<update id="upCountReply" parameterType="int">
-   UPDATE REPLY SET COUNT = COUNT + 1 WHERE REPLYSEQ =#{replyseq}
-</update>
-
-<!-- 댓글 비추천 -->
-<update id="downCountReply"  parameterType="int">
-   UPDATE REPLY SET COUNT = COUNT - 1 WHERE REPLYSEQ =#{replyseq}
-</update>
-```
-
-```
-   // 댓글 추천
-   @RequestMapping(value = "/upCountReply.do", method = {RequestMethod.GET,RequestMethod.POST})
-   public String upCountReply(ReplyVO rvo) {
-      replyservice.upCountReply(rvo.getReplyseq());
-      return "getBoard.do";
-   }
-   
-   // 댓글 반대
-   @RequestMapping(value = "/downCountReply.do", method = {RequestMethod.GET,RequestMethod.POST})
-   public String downCountReply(ReplyVO rvo) {
-      replyservice.downCountReply(rvo.getReplyseq());
-      return "getBoard.do";
-   }
-```
-
-댓글 추천과 반대는 게시글 추천 반대와 마찬가지로 a태그에 해당 메서드 경로와 게시글 번호, 페이징 번호, 댓글번호를 설정하여 추천,반대를 눌렀을때도 해당 게시글 번호로 돌아오고 페이징 유지도 되게 만들었습니다.
-
-```
-<label>${reply.writer } ${reply.regdate } 추천수 ${reply.count }
-   <a href="upCountReply.do?boardseq=${board.boardseq}&page=${cri.page}&replyseq=${reply.replyseq}"  id="upCountReplyBtn" >👍</a>
-   <a href="downCountReply.do?boardseq=${board.boardseq}&page=${cri.page}&replyseq=${reply.replyseq}"  id="downCountReplyBtn" >👎</a>
-   <a href="updateReplyView.do?boardseq=${board.boardseq}&page=${cri.page}&replyseq=${reply.replyseq}">수정</a>
-   <a href="deleteReplyView.do?boardseq=${board.boardseq}&page=${cri.page}&replyseq=${reply.replyseq}">삭제</a>
-</label>
-```
