@@ -1257,7 +1257,7 @@ $('#updateBoardBtn').click(function(){
 		success : function(data){
 			if(confirm('수정 하시겠습니까?')){
 				$('#updateBoard').submit();
-				alert('게시글 수정이 완료되었습니다.');
+				alert('댓글 수정이 완료되었습니다.');
 				location.href = "main.do?page=${cri.page}";
 			}
 		},
@@ -1268,6 +1268,10 @@ $('#updateBoardBtn').click(function(){
 	})
 })
 ```
+
+1. 댓글 수정을 클릭하면 사용자가 입력한 댓글 수정 페이지로 이동합니다.
+2. 댓글 수정 후 수정 버튼을 누르면 댓글 수정 form에 있는 내용이 컨트롤러로 전송됩니다.
+3. 사용자가 수정한 데이터를 리턴 후 submit() 저장시켜 준 후 메인 페이지로 이동합니다.
 
 ## 댓글 삭제 
 
@@ -1340,7 +1344,7 @@ Json으로 변환할 vo필드에 @JsonIgnore 를 선언 해주는 것
 
 댓글 삭제(deleteReply() ) 함수에 댓글 번호(replyseq)를 같이 보내주어서 클릭한 댓글만 삭제되게 구현하였습니다.
 
-### 파일 업로드
+### 파일 업로드 & 게시글 한글 깨짐
 
 게시글 작성에서 파일 업로드를 할 시 업로드가 안되는 현상입니다.
 
