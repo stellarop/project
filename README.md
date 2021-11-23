@@ -899,7 +899,7 @@ $.ajax({
 	}
 })
 ```
-1. 글 삭제 버튼을 누르면 게시글 번호를 컨트롤러로 보내서 사용자가 보낸 게시글 번호가 삭제됩니다.
+1. 글 삭제 버튼을 누르면 게시글 번호를 컨트롤러로 보내서 해당하는 게시글이 삭제됩니다.
 
 
 ## 게시글 검색, 페이징
@@ -1093,7 +1093,9 @@ public Map<String, Object> getBoard(BoardVO vo, ReplyVO rvo,HttpSession session)
 	return result;
 }
 ```
+1. 댓글 수정, 댓글 삭제 버튼을 작성자만 보이게 만들기 위하여 로그인 성공 시 유저 아이디를 가져옵니다.
 
+2. 댓글 리스트와 유저 아이디를 클라이언트로 리턴 시켜줍니다.
 ```
 //댓글 리스트
 function replyList(){
@@ -1135,7 +1137,12 @@ function replyList(){
 });
 ```
 
-1. 
+3. url을 게시글 번호에 댓글 리스트로 설정해줍니다.
+4. 컨트롤러에서 리턴받은 댓글 리스트에 길이(length)가 0이면 댓글이 없음을 알려주고 리스트의 길이가 1이상이면 리스트에 길이만큼 출력 해줍니다. 
+5. 컨트롤러에서 리턴받은 유저 아이디는 댓글 수정, 댓글 삭제 시 자신의 댓글만 수정, 삭제 처리하기 때문입니다.
+6. 작성자가 유저 아이디로 들어가기 때문에 user == writer 유저 아이디와 작성자가 일치하면 댓글 수정, 삭제 버튼이 보이게 만들었습니다.
+7. replyList form에 해당하는 댓글 리스트를 넣어주고 replyList(); 리스트 함수를 실행시킵니다.
+
 ## 댓글 등록
 
 기능촬영 영상 들어가야함
@@ -1162,6 +1169,10 @@ public Map<String, Object> insertReply(ReplyVO rvo, Criteria cri,HttpSession ses
 	return result;
 }
 ```
+
+1. 작성자를 유저 아이디로 하기 위해 유저 아이디를 가져옵니다.
+2. 댓글 작성자에 유저 아이디를 넣어주고 댓글 작성을 클라이언트로 리턴 시킵니다.
+
 ```
 // 댓글 작성
 $('#insertreplyBtn').click(function(){
@@ -1187,106 +1198,96 @@ $('#insertreplyBtn').click(function(){
 
 ```
 
-1. 댓글 작성 후 작성 버튼을 누르면 insertReply form 안에서 작성한 댓글이 컨트롤러로 보냅니다.
-2. 컨트롤러로 보내지면 inertReply form에 있는 댓글을 submit() 저장 시켜 준 후 댓글을 등록한 페이지로 이동합니다.
+3. 컨트롤러에서 리턴받은 데이터를 submit() 저장 시킨 후 등록된 페이지로 보내줍니다.
 
 
 ## 댓글 수정
 
-![댓글 수정 gif](https://user-images.githubusercontent.com/88939199/136736637-24ea7086-6de8-470a-9298-7bbdf9a3a833.gif)
+기능촬영 영상 들어가야함
 
 ```
 <!-- 댓글 수정 -->
 <update id="updatereply">
-   UPDATE REPLY SET CONTENT=#{content} WHERE REPLYSEQ =#{replyseq} AND PASSWORD =#{password}
+   UPDATE REPLY SET CONTENT=#{content} WHERE REPLYSEQ =#{replyseq}
 </update>
 ```
 ```
-// 댓글 수정 뷰
-   @RequestMapping(value = "/updateReplyView.do" , method = {RequestMethod.GET,RequestMethod.POST})
-   public String updateReplyView(ReplyVO rvo, Model model, Criteria cri) {
-      model.addAttribute("cri", cri);
-      model.addAttribute("updateReply", replyservice.selectReply(rvo.getReplyseq()));
-      return "updateReplyView.jsp";
-   }
-      
-   // 댓글 수정
-   @RequestMapping(value = "/updateReply.do", method = {RequestMethod.GET,RequestMethod.POST})
-   public String updateReply(ReplyVO rvo) {
-      
-      ReplyVO selectreply = replyservice.selectReply(rvo.getReplyseq()); 
-      
-      String replypassword = selectreply.getPassword();
-      String password = rvo.getPassword();
-      
-      if(replypassword.equals(password)) {
-         replyservice.updateReply(rvo);
-         return "getBoard.do";
-      }
-      return "updateReplyView.do";
-   }
+// 댓글 수정 view
+@RequestMapping(value = "/updateReplyView.do" , method = {RequestMethod.GET,RequestMethod.POST})
+public String updateReplyView(ReplyVO rvo, Model model, Criteria cri) {
+	model.addAttribute("cri", cri);
+	model.addAttribute("updateReply", replyservice.selectReply(rvo.getReplyseq()));
+	return "updateReplyView.jsp";
+}
+
+// 댓글 수정
+@ResponseBody
+@RequestMapping(value = "/updateReply.do", method = RequestMethod.POST)
+public Map<String, Object> updateReply(ReplyVO rvo){
+	Map<String, Object> result = new HashMap<String, Object>();
+	
+	// 어떤 댓글을 수정할지
+	result.put("updateReply", replyservice.selectReply(rvo.getReplyseq()));
+	// 댓글 수정
+	replyservice.updateReply(rvo);
+	return result;
+}
 ```
 
-댓글작성시 입력한 암호를 통해서 댓글수정,댓글삭제 하도록 하였습니다.
-
-db에 저장된 댓글 암호와 사용자가 입력한 댓글 암호를 비교하여 맞으면 수정처리, 맞지 않으면 댓글 수정에 머무르게 만들었습니다.
+1. 
 
 ```
-$(function(){
-   $('#updateReplyBtn').click(function(){
-      
-      if($('#content').val()==''){
-         alert('댓글 내용을 입력해주세요.');
-         $('#content').focus();      
-         return false;
-      }
-      if($('#password').val()==''){
-         alert('암호를 입력해주세요.');
-         $('#password').focus();
-         return false;
-      }
-      alert('댓글 수정이 완료되었습니다.');
-   })
-   
-}); 
+$('#updateBoardBtn').click(function(){		
+	if($('#title').val()==''){
+		alert('제목을 입력하세요.');
+		$('#title').focus();
+		return false;
+	}
+	if($('#content').val()==''){
+		alert('내용을 입력하세요.');
+		$('#content').focus();
+		return false;
+	}
+		
+	$.ajax({
+		url : 'updateBoard.do',
+		type : 'post',
+		dataType : 'json',
+		data : $('#updateBoard').serializeArray(),
+		success : function(data){
+			if(confirm('수정 하시겠습니까?')){
+				$('#updateBoard').submit();
+				alert('게시글 수정이 완료되었습니다.');
+				location.href = "main.do?page=${cri.page}";
+			}
+		},
+		error : function(data){
+			alert('게시글 수정에 실패 하였습니다.');
+			location.href = "updateBoardView.do?boardseq=${board.boardseq}&page=${cri.page}"
+		}
+	})
+})
 ```
 
 ## 댓글 삭제 
 
-![댓글 삭제 gif](https://user-images.githubusercontent.com/88939199/136737168-749371a1-1a99-4c93-900d-a60a8a8fe5f7.gif)
+기능촬영 영상 들어가야함
 
 ```
 <!-- 댓글 삭제 -->
 <delete id="deletereply">
-   DELETE FROM REPLY WHERE REPLYSEQ = #{replyseq} AND PASSWORD =#{password}
+   DELETE FROM REPLY WHERE REPLYSEQ = #{replyseq}
 </delete>
 ```
 
 ```
-   // 댓글 삭제 뷰
-   @RequestMapping(value = "/deleteReplyView.do", method = {RequestMethod.GET,RequestMethod.POST})
-   public String deleteReplyView(ReplyVO rvo, Model model, Criteria cri) {
-      model.addAttribute("cri", cri);
-      model.addAttribute("deleteReply", replyservice.selectReply(rvo.getReplyseq()));
-      return "deleteReplyView.jsp";
-   }
-   
-   // 댓글 삭제
-   @RequestMapping(value = "/deleteReply.do", method = {RequestMethod.GET,RequestMethod.POST})
-   public String deleteReply(ReplyVO rvo){      
-      
-      ReplyVO selectreply = replyservice.selectReply(rvo.getReplyseq()); 
-      
-      String replypassword = selectreply.getPassword();
-      String password = rvo.getPassword();
-      
-      if(replypassword.equals(password)) {
-         replyservice.deleteReply(rvo);
-         return "getBoard.do";
-      }
-      return "deleteReplyView.do";
-   }
+  // 댓글 삭제
+@ResponseBody
+@RequestMapping(value = "/deleteReply.do", method = RequestMethod.POST)
+public String deleteReply(ReplyVO rvo){
+	replyservice.deleteReply(rvo);
+	return "getBoard.do";
+}
 ```
 
-댓글 삭제도 댓글 작성시 입력한 암호를 통해서 삭제되게 만들었습니다.
 
