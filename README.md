@@ -1338,8 +1338,28 @@ Json으로 변환할 vo필드에 @JsonIgnore 를 선언 해주는 것
 
 #### 해결 방법
 
-댓글 삭제(deleteReply() ) 함수에 댓글 번호(replyseq)를 같이 보내주어서 클릭한 댓글만 삭제되게 구현
+댓글 삭제(deleteReply() ) 함수에 댓글 번호(replyseq)를 같이 보내주어서 클릭한 댓글만 삭제되게 구현하였습니다.
 
-### 게시글 작성 시 한글 깨짐 현상
+### 파일 업로드
 
+게시글 작성에서 파일 업로드를 할 시 업로드가 안되는 현상입니다.
+
+#### 해결 방법
+
+contentType을 false로 지정해주었습니다. 
+contentType을 지정 하지 않을시 기본값이 application/x-www-form-urlencoded 로 지정됩니다.
+application/x-www-form-urlencoded 으로 지정 시 Body로 데이터가 전달되지 않는 현상이였습니다.
+클라이언트에서 전송받은 데이터를 RequestBody으로 처리 하였기 때문에 application/x-www-form-urlencoded 지정 시 RequestParam으로 받아서 처리 하여야 하는데
+formData 객체로 파일 업로드와 같이 게시글 작성을 구현하는 것이여서
+contentType을 false 지정해주면 multipart/fprm-data로 전송이 되게 해주어서 파일 업로드를 해주었습니다.
+
+### 지도를 좌표로 변경이 안되는 현상
+
+사용자가 검색한 주소를 좌표로 변환이 안되는 현상입니다.
+
+#### 해결 방법
+
+libraries=services
+
+지도 api 스크립트 선언 시 인증키 옆에 주소를 좌표로 변환하는 라이브러리를 추가하여 해결하였습니다.
 
