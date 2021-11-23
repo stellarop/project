@@ -1322,12 +1322,24 @@ function deleteReply(replyseq){
 
 ## error
 
-#### no serializer found for class
+### no serializer found for class
 
 파일에 실제 이름을 저장하는 과정에서 에러 발견 
 
 데이터를 Json 타입의 데이터로 변환하는 과정에서 getter/setter 를 이용하기 때문에 private로 vo필드를 선언해줄시 Json으로 변환 과정에서 에러가 남
 
-=> 해결 방법 
+#### 해결 방법 
 
 Json으로 변환할 vo필드에 @JsonIgnore 를 선언 해주는 것 
+
+### 댓글이 순차적으로 삭제
+
+댓글 삭제를 클릭하면 클릭한 댓글이 삭제되는것이 아니라 첫번째 댓글부터 순차적으로 삭제되는 현상
+
+#### 해결 방법
+
+댓글 삭제(deleteReply() ) 함수에 댓글 번호(replyseq)를 같이 보내주어서 클릭한 댓글만 삭제되게 구현
+
+### 게시글 작성 시 한글 깨짐 현상
+
+
