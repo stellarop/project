@@ -590,6 +590,15 @@ public int findPassword(@ModelAttribute("user") UserVO vo, HttpSession session) 
 ```
 
 ```
+
+// 패스워드 체크
+@ResponseBody
+@RequestMapping(value = "/passwordCheck.do", method = RequestMethod.POST)
+public int passwordCheck(UserVO vo) {
+	int result = userservice.passwordCheck(vo);
+	return result;
+}
+
 // 회원탈퇴 
 @RequestMapping(value = "/deleteUser.do", method = RequestMethod.POST)
 public String deleteUser(UserVO vo, HttpSession session) {
@@ -654,9 +663,11 @@ $(function(){
 });
 ```
 
+
 3. 사용자가 패스워드를 입력하고 탈퇴 버튼을 클릭하면 사용자가 입력한 패스워드가 컨트롤러로 보내집니다.
-4. 사용자가 입력한 패스워드와 세션에 있는 패스워드를 비교 후 두 값이 맞으면 로그인 창으로 보내주고 틀리다면 해당 페이지에 머무릅니다
-5. 컨트롤러에서 반환받은 값에 따라 탈퇴 여부가 결정 됩니다
+4. 패스워드가 일치하지 않는다면 패스워드가 일치하지 않는다는 알림을 알려줍니다.
+5. 패스워드가 일치하다면 사용자가 입력한 패스워드를 deleteUser.do 경로로 보내줍니다.
+6. 사용자가 입력한 패스워드와 세션에 있는 패스워드를 비교 후 두 값이 맞으면 로그인 창으로 보내주고 틀리다면 해당 페이지에 머무릅니다.
 
 ## 글 작성
 
