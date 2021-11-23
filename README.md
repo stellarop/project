@@ -1290,29 +1290,44 @@ public String deleteReply(ReplyVO rvo){
 }
 ```
 
-
 ```
 replyList += '<a href="javascript:void(0);" onclick="deleteReply(' + value.replyseq + ');">삭제</a>';
 ```
 
+1. 댓글 리스트에서 삭제를 클릭하면 deleteReply() 함수를 실행시킵니다.
+2. deleteReply() 함수 파라미터에 삭제할 댓글 번호를 같이 보내줍니다.
+
 ```
 //댓글 삭제
 function deleteReply(replyseq){
-// onclick으로 받은 댓글 번호로 해당 댓글 삭제
-$.ajax({
-	// 댓글 리스트에서 받은 해당 댓글 번호 삭제
-	url : 'deleteReply.do?replyseq=' + replyseq,
-	type : 'post', 
-	success : function(data){
-		if(confirm('댓글을 삭제 하시겠습니까?')){
+	// onclick으로 받은 댓글 번호로 해당 댓글 삭제
+	$.ajax({
+		// 댓글 리스트에서 받은 해당 댓글 번호 삭제
+		url : 'deleteReply.do?replyseq=' + replyseq,
+		type : 'post', 
+		// 컨트롤러로 삭제할 댓글 번호를 보내준다
+		success : function(data){	
 			alert('삭제가 완료되었습니다.');
-			$('#replyList').submit();
-			location.href = "getBoard.do?boardseq=${board.boardseq}&page=${cri.page}";
+			location.href = "getBoard.do?boardseq=${board.boardseq}&page=${cri.page}";	
+		},
+		error : function(data){
+			alert('댓글 삭제에 실패하였습니다.');
 		}
-	},
-	error : function(data){
-		alert('댓글 삭제에 실패하였습니다.');
-	}
-})
+	})
+}
 ```
 
+3. url에 댓글 삭제 경로와 삭제할 댓글 번호를 같이 지정하여 해당 댓글이 삭제되게 지정하였습니다.
+4. 댓글 삭제가 완료되면 해당 게시글로 이동합니다.
+
+## error
+
+#### no serializer found for class
+
+파일에 실제 이름을 저장하는 과정에서 에러 발견 
+
+데이터를 Json 타입의 데이터로 변환하는 과정에서 getter/setter 를 이용하기 때문에 private로 vo필드를 선언해줄시 Json으로 변환 과정에서 에러가 남
+
+=> 해결 방법 
+
+Json으로 변환할 vo필드에 @JsonIgnore 를 선언 해주는 것 
