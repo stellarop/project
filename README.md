@@ -1260,21 +1260,14 @@ $('#updateBoardBtn').click(function(){
 		return false;
 	}
 		
-	$.ajax({
-		url : 'updateBoard.do',
+		$.ajax({
+		url : 'updateReply.do',
 		type : 'post',
 		dataType : 'json',
-		data : $('#updateBoard').serializeArray(),
+		data : $('#updateReply').serializeArray(),
 		success : function(data){
-			if(confirm('수정 하시겠습니까?')){
-				$('#updateBoard').submit();
-				alert('댓글 수정이 완료되었습니다.');
-				location.href = "main.do?page=${cri.page}";
-			}
-		},
-		error : function(data){
-			alert('게시글 수정에 실패 하였습니다.');
-			location.href = "updateBoardView.do?boardseq=${board.boardseq}&page=${cri.page}"
+			alert('수정이 완료되었습니다.');
+			location.href = "getBoard.do?boardseq=${updateReply.boardseq}&replyseq=${updateReply.replyseq}";
 		}
 	})
 })
@@ -1282,7 +1275,7 @@ $('#updateBoardBtn').click(function(){
 
 1. 댓글 수정을 클릭하면 사용자가 입력한 댓글 수정 페이지로 이동합니다.
 2. 댓글 수정 후 수정 버튼을 누르면 댓글 수정 form에 있는 내용이 컨트롤러로 전송됩니다.
-3. 사용자가 수정한 데이터를 리턴 후 submit() 저장시켜 준 후 메인 페이지로 이동합니다.
+3. 전송 후 댓글 수정을 한 페이지로 이동합니다.
 
 ## 댓글 삭제 
 
