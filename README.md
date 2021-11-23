@@ -115,7 +115,7 @@ $(function(){
 
 ## 회원가입
 
-기능 촬영 영상 들어가야함
+![회원가입 gif](https://user-images.githubusercontent.com/93149034/143124175-06900ea5-12e3-4319-8497-841376d830ea.gif)
 
 
 ```
