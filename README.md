@@ -1214,7 +1214,7 @@ $('#insertreplyBtn').click(function(){
 
 ## 댓글 수정
 
-기능촬영 영상 들어가야함
+![댓글 수정 gif](https://user-images.githubusercontent.com/93149034/143158987-bdcf3593-e163-4264-baab-d24fb9dfe27a.gif)
 
 ```
 <!-- 댓글 수정 -->
