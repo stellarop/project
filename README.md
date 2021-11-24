@@ -790,7 +790,7 @@ private MultipartFile uploadFile;
 
 ## 글 수정
 
-기능 촬영 영상 들어가야함
+![글 수정 테스트 gif](https://user-images.githubusercontent.com/93149034/143154199-48828e0f-125e-4469-a5ef-ae2f52fb8eb2.gif)
 
 ```
 <!-- 세션으로 로그인된 아이디와 작성자와 일치하면 수정,삭제  -->
