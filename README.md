@@ -872,7 +872,7 @@ $('#updateBoardBtn').click(function(){
 
 # 글 삭제
 
-기능촬영 영상 들어가야함
+![게시글 삭제 gif](https://user-images.githubusercontent.com/93149034/143155001-6e62199d-2a78-461b-8335-c8344d7f9971.gif)
 
 ```
 <!-- 게시글 삭제 -->
