@@ -118,6 +118,7 @@ $(function(){
 ![회원가입 gif](https://user-images.githubusercontent.com/93149034/143124175-06900ea5-12e3-4319-8497-841376d830ea.gif)
 
 주소 클릭 시 나오는 팝업창 입니다.
+주소 검색을 완료하면 해당 주소를 지도로 나타내줍니다.
 
 ![주소검색 gif](https://user-images.githubusercontent.com/93149034/143127339-1a6a7ebb-7513-4120-a651-a23246693fa0.gif)
 
