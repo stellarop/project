@@ -741,7 +741,6 @@ var formData = new FormData($('#insertBoard')[0]);
 		//async: false,
 		type : 'post',
 		success : function(data){
-			$('#insertBoard').submit();
 			alert('게시글이 등록 되었습니다.');
 			location.href = "main.do";
 		},
@@ -753,8 +752,7 @@ var formData = new FormData($('#insertBoard')[0]);
 ```
 
 4. ajax로 파일 업로드 할 시 form 안에 있는 내용 전체를 전송하기위해 formData 객체를 사용하였습니다.
-5. 사용자가 입력한 글 작성 form을 서버로 보내준 후 리턴 받은 값을 submit() 저장 후 메인 페이지로 보내줍니다.
-
+5. formData(insertBoard) 안에 있는 데이터를 서버로 보내준 후 메인 페이지로 보내줍니다.
 
 6. BoardVO 필드에 MultipartFile uploadFile 를 추가 해줍니다.
 
@@ -870,7 +868,7 @@ $('#updateBoardBtn').click(function(){
 
 2. 사용자가 글 수정 버튼을 클릭하면 수정 form 안에 있는 데이터가 컨트롤러로 전송 됩니다.
 
-3. 컨트롤러에서 수정된 데이터를 리턴 시켜서 수정 데이터를 submit() 저장시켜 준 후 메인 페이지로 이동합니다.
+3. 수정 데이터를 submit() 저장시켜 준 후 메인 페이지로 이동합니다.
 
 
 # 글 삭제
@@ -914,8 +912,7 @@ $.ajax({
 	}
 })
 ```
-1. 글 삭제 버튼을 누르면 게시글 번호를 컨트롤러로 보내서 해당하는 게시글이 삭제됩니다.
-
+1. 글 삭제 버튼을 누르면 게시글 번호가 컨트롤러로 보내져서 해당하는 게시글이 삭제됩니다.
 
 ## 게시글 검색, 페이징
 
