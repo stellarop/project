@@ -915,7 +915,7 @@ $.ajax({
 
 ## 게시글 검색, 페이징
 
-기능촬영 영상 들어가야함
+![검색 gif](https://user-images.githubusercontent.com/93149034/143157208-a74b15d3-c7b7-46ac-b131-a2818dde4b28.gif)
 
 ```
 // 현재 페이지 번호
