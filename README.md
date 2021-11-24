@@ -905,7 +905,6 @@ $.ajax({
 	data : {'boardseq' : $('#boardseq').val()},
 	success : function(data){
 		if(confirm('삭제 하시겠습니까?')){
-			$('#getBoard').submit();
 			alert('삭제가 완료되었습니다.');
 			// 메인
 			location.href = "main.do?page=${cri.page}"
@@ -913,7 +912,8 @@ $.ajax({
 	}
 })
 ```
-1. 글 삭제 버튼을 누르면 게시글 번호가 컨트롤러로 보내져서 해당하는 게시글이 삭제됩니다.
+1. 글 삭제 버튼을 클릭하면 글 상세에 있는 게시글 번호를 컨트롤러로 전송합니다.
+2. 글 상세에서 보내준 게시글 번호를 삭제하고 메인 페이지로 보내줍니다.
 
 ## 게시글 검색, 페이징
 
