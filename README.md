@@ -736,7 +736,6 @@ var formData = new FormData($('#insertBoard')[0]);
 		contentType : false,
 		cache: false,
 		//==========================================
-		// form 전체의 데이터
 		data : formData,
 		dataType : 'json',
 		//async: false,
