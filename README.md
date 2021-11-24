@@ -1332,14 +1332,17 @@ function deleteReply(replyseq){
 
 ### no serializer found for class
 
-파일에 실제 이름을 저장하는 과정에서 에러 발견 
+파일에 이름을 저장하는 과정에서 발견
 
 데이터를 Json 타입의 데이터로 변환하는 과정에서 getter/setter 를 이용하기 때문에 private로 vo필드를 선언해줄시 Json으로 변환 과정 중 발견
 
 #### 해결 방법 
 
-Json으로 변환할 vo필드에 @JsonIgnore 를 선언 해주는 것 
+Json으로 변환할 필드에 @JsonIgnore 를 선언 해주는 것
 
+@JsonIgnore
+private MultipartFile uploadFile;
+	
 ### 댓글이 순차적으로 삭제
 
 댓글 삭제를 클릭하면 클릭한 댓글이 삭제되는것이 아니라 첫번째 댓글부터 순차적으로 삭제되는 현상
@@ -1356,10 +1359,8 @@ Json으로 변환할 vo필드에 @JsonIgnore 를 선언 해주는 것
 
 contentType을 false로 지정해주었습니다. 
 contentType을 지정 하지 않을시 기본값이 application/x-www-form-urlencoded 로 지정됩니다.
-application/x-www-form-urlencoded 으로 지정 시 Body로 데이터가 전달되지 않는 현상이였습니다.
-클라이언트에서 전송받은 데이터를 RequestBody으로 처리 하였기 때문에 application/x-www-form-urlencoded 지정 시 RequestParam으로 받아서 처리 하여야 하는데
-formData 객체로 파일 업로드와 같이 게시글 작성을 구현하는 것이여서
-contentType을 false 지정해주면 multipart/fprm-data로 전송이 되게 해주어서 파일 업로드를 해주었습니다.
+application/x-www-form-urlencoded 으로 지정 시 Body로 데이터가 전달되지 않아서 RequestParam으로 데이터를 받아야 합니다.
+contentType을 false 지정해주면 multipart/fprm-data로 지정되서 파일 업로드가 가능해집니다.
 
 ### 지도를 좌표로 변경이 안되는 현상
 
