@@ -1079,7 +1079,7 @@ searchType(검색키워드)가 없을 시 총 게시글 수를 구해서 view로
 
 ## 댓글 리스트
 
-기능촬영 영상 들어가야 함
+![댓글 리스트 gif](https://user-images.githubusercontent.com/93149034/143158465-323908cf-a39c-4974-bd40-50e7121e2d6e.gif)
 
 
 ```
@@ -1156,7 +1156,7 @@ function replyList(){
 
 ## 댓글 등록
 
-기능촬영 영상 들어가야함
+![댓글 리스트 gif](https://user-images.githubusercontent.com/93149034/143158470-8b460851-2daf-42ed-8e70-a9f7a58316a8.gif)
 
 ```
 <!-- 댓글 작성 -->
