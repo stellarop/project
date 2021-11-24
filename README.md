@@ -676,8 +676,7 @@ $(function(){
 
 ## 글 작성
 
-기능 촬영 영상 들어가야함
-
+![글 작성 테스트 gif](https://user-images.githubusercontent.com/93149034/143153447-d8e43a2c-08d6-4ed1-8815-674bd790ad3c.gif)
 
 ```
 <!-- 게시글 작성 -->
