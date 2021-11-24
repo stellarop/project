@@ -1317,7 +1317,6 @@ function deleteReply(replyseq){
 		// 댓글 리스트에서 받은 해당 댓글 번호 삭제
 		url : 'deleteReply.do?replyseq=' + replyseq,
 		type : 'post', 
-		// 컨트롤러로 삭제할 댓글 번호를 보내준다
 		success : function(data){	
 			alert('삭제가 완료되었습니다.');
 			location.href = "getBoard.do?boardseq=${board.boardseq}&page=${cri.page}";	
