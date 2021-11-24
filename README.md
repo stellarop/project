@@ -1279,7 +1279,7 @@ $('#updateBoardBtn').click(function(){
 
 ## 댓글 삭제 
 
-기능촬영 영상 들어가야함
+![댓글 삭제 gif](https://user-images.githubusercontent.com/93149034/143159466-1ac7fadb-7522-4e12-aed8-36925d659cdc.gif)
 
 ```
 <!-- 댓글 삭제 -->
