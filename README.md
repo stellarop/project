@@ -741,6 +741,7 @@ var formData = new FormData($('#insertBoard')[0]);
 		type : 'post',
 		success : function(data){
 			alert('게시글이 등록 되었습니다.');
+			$('#insertBoard').submit();
 			location.href = "main.do";
 		},
 		error : function(data){
