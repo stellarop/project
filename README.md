@@ -1157,7 +1157,7 @@ function replyList(){
 
 ## 댓글 등록
 
-![댓글 리스트 gif](https://user-images.githubusercontent.com/93149034/143158470-8b460851-2daf-42ed-8e70-a9f7a58316a8.gif)
+![댓글 등록 gif](https://user-images.githubusercontent.com/93149034/143910807-043f41c2-59ef-4f26-92b4-1d3a966bfd20.gif)
 
 ```
 <!-- 댓글 작성 -->
