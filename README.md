@@ -27,7 +27,7 @@ Back
 
 ![ERD](https://user-images.githubusercontent.com/93149034/142772745-51282138-525b-4923-82ba-a52faea23958.png)
 
-boardseq 칼럼을 외래키로 지정하여 on delete cascade 게시글이 삭제되면 댓글도 삭제되게 처리하였습니다.
+게시글 번호 칼럼을 외래키로 지정하여 on delete cascade 게시글이 삭제되면 댓글도 삭제되게 처리하였습니다.
 
 ## 로그인 기능
 
