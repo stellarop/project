@@ -1,0 +1,48 @@
+package com.spring.www.VO;
+
+import org.springframework.web.multipart.MultipartFile;
+
+public class UploadFileVO {
+	private int fileseq;
+	private int boardseq;
+	private String filename;
+	private MultipartFile uploadFile;
+	public int getFileseq() {
+		return fileseq;
+	}
+	public void setFileseq(int fileseq) {
+		this.fileseq = fileseq;
+	}
+	public int getBoardseq() {
+		return boardseq;
+	}
+	public void setBoardseq(int boardseq) {
+		this.boardseq = boardseq;
+	}
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+	public MultipartFile getUploadFile() {
+		return uploadFile;
+	}
+	public void setUploadFile(MultipartFile uploadFile) {
+		this.uploadFile = uploadFile;
+	}
+	@Override
+	public String toString() {
+		return "UploadFileVO [fileseq=" + fileseq + ", boardseq=" + boardseq + ", filename=" + filename
+				+ ", uploadFile=" + uploadFile + "]";
+	}
+	
+	
+	
+
+	
+	
+	
+	
+}
+	
