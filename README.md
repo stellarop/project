@@ -5,6 +5,15 @@
 
 ## 개발환경
 
+|  <center>개발 환경 분류</center> |  <center>사용 기술</center> |  <center>비고</center> |
+|:--------|:--------:|--------:|
+|**Develop Tools** | <center> Eclipse v4.12.0  &nbsp;  SQL Developer v19.2.0.206  &nbsp;   Visual Studio Code v1.56.2 </center> |*-* |
+|**Develop Language For Front end** | <center> HTML5  &nbsp;  JSP &nbsp;   JavaScript  &nbsp;  jQuery v3.4.1  &nbsp;  Bootstrap v4.3.1 </center> |*-* |
+|**Develop Language For Back end** | <center> java v1.6  &nbsp;  Spring Framework v3.1.1 &nbsp;   OJDBC v6  &nbsp;  ~JUnit v4.7~ </center> |*JUnit은 거의 사용 안함* |
+|**Data Base** | <center> Oracle Database 11g v11.2.0.1.0 </center> |*-* |
+|**Server** | <center> Apache Tomcat v9.0 </center> |*기존에 8.0버전 사용* |
+|**Web** | <center> Chrome v95.0.4638.5  &nbsp;  Microsoft Edge v95.0.1020.30 </center> |*-* |
+
 Front
 
 1. Bootstrap 4
