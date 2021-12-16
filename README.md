@@ -11,7 +11,7 @@
 |**Develop Language For Front end** | <center> HTML5  &nbsp;  JSP &nbsp;   JavaScript  &nbsp;  jQuery v3.6.0  &nbsp;  Bootstrap v4.3.1 </center> |*-* |
 |**Develop Language For Back end** | <center> java v1.8  &nbsp;  Spring Framework v4.2.4 &nbsp; Mybatis 3.4.1 </center> |*-* |
 |**Data Base** | <center> Mysql 8.0 </center> |*-* |
-|**Server** | <center> Apache Tomcat v8.0 </center> |* Tomcat v9.0 버전도 사용함*|
+|**Server** | <center> Apache Tomcat v8.0 </center> |*Tomcat v9.0 버전도 사용함* |
 |**Web** | <center> Chrome v95.0.4638.5  &nbsp;  Microsoft Edge v95.0.1020.30 </center> |*-* |
 
 ## 프로젝트 구조
