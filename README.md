@@ -14,19 +14,6 @@
 |**Server** | <center> Apache Tomcat v8.0 </center> |*-*|
 |**Web** | <center> Chrome v95.0.4638.5  &nbsp;  Microsoft Edge v95.0.1020.30 </center> |*-* |
 
-Front
-
-1. Bootstrap 4
-2. Jquery 3.6
-
-Back
-
-1. JDK1.8
-2. Mysql 8.0.22
-3. Mybatis 3.4.1
-4. Spring 4.2.4
-5. Tomcat 8
-
 ## 프로젝트 구조
 
 ![프로젝트 구조 1](https://user-images.githubusercontent.com/93149034/141842473-dfb7e5a8-3a50-4974-ab9f-d127a4e72fb3.png)
