@@ -1,4 +1,3 @@
-
 <div align=center><h1> 댓글 게시판 프로그램 - 개인 프로젝트</h1></div>
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fstellarop%2Fhit-counter&count_bg=%2379C83D&title_bg=%23555555&icon=litecoin.svg&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
@@ -41,33 +40,7 @@
 
 ![로그인 gif](https://user-images.githubusercontent.com/88939199/135759759-6b8f1df1-0c5a-41c2-8610-9b3db077dc4b.gif)
 
-```
-<!-- 로그인  -->
-<select id="login" resultType="user" parameterType="user">
-   SELECT * FROM USERS WHERE ID =#{id} AND PASSWORD=#{password}
-</select>
-```
 
-```
-// 로그인
-@ResponseBody
-@RequestMapping(value = "/login.do", method = RequestMethod.POST)
-public boolean login(@ModelAttribute("user") UserVO vo, HttpSession session,RedirectAttributes rttr) {
-      
-   UserVO user = userservice.login(vo);
-
-      if(user != null) {
-         session.setAttribute("userId", user.getId());
-         session.setAttribute("userName", user.getName());
-         session.setAttribute("userTime", user.getRegdate());
-         session.setAttribute("userPassword", user.getPassword()); 
-         return true;
-      }else {
-         session.setAttribute("login", false);
-         return false;
-      }    
-   }
-```
 
 ```
 $(function(){
@@ -91,25 +64,50 @@ $(function(){
          type : 'post',
          dateType : 'json',
          // 사용자가 입력한 아이디, 패스워드
-         // 입력한 값이 컨트롤러로 보내진다
          data : {'id' : $('#id').val(),
          'password' : $('#password').val()},
          success : function(data){
             // 컨트롤러에서 가져온 값이 true 일시
             if(data == true){
                alert('로그인 성공');
-               // 메인 페이지로
+               // 메인 페이지로 이동
                window.location.href = "main.do";
             // 컨트롤러에서 가져온 값이 false 일시
             }else if(data == false){
                alert('로그인 실패')
-               // 로그인 페이지에 머무름
+               // 로그인 페이지로 이동
                window.location.href = "login.jsp";
             }
          }
       })
    });
 ```
+
+로그인 기능에 로그인 유효성 검사와 사용자가 아이디, 패스워드를 입력 후 로그인 버튼을 누를 시 
+
+```
+// 로그인
+@ResponseBody
+@RequestMapping(value = "/login.do", method = RequestMethod.POST)
+public boolean login(@ModelAttribute("user") UserVO vo, HttpSession session) {
+   
+   // 사용자가 입력한 아이디 패스워드 == 유저 테이블에 저장된 사용자 아이디, 패스워드 값 대조 
+   UserVO user = userservice.login(vo);
+      // 값이 null 이 아니라면 true
+      if(user != null) {
+         session.setAttribute("userId", user.getId());
+         session.setAttribute("userName", user.getName());
+         session.setAttribute("userTime", user.getRegdate());
+         session.setAttribute("userPassword", user.getPassword()); 
+         return true;
+      }else {
+         // 로그인 실패 구문을 띄우기위해 false 지정
+         session.setAttribute("login", false);
+         return false;
+      }    
+   }
+```
+
 1. 로그인 요청 시 사용자가 입력한 값이 컨트롤러로 보내집니다.
 2. 이후 컨트롤러에서 DB에 저장된 사용자 아이디와 비밀번호를 사용자가 입력한 아이디 비밀번호 값과 비교합니다. 
 3. 값이 맞으면 true 맞지 않으면 false를 반환 후 반환 받은 값에 따라 로그인 성공, 실패 여부를 알려주고 해당 페이지로 이동합니다
@@ -120,6 +118,9 @@ $(function(){
 </c:if>
 ```
 4. 로그인에 실패했을 시(컨트롤러에서 로그인에 실패하면 login = false) 다시 로그인 페이지로 이동 후 로그인 실패 구문을 나타내줍니다
+
+
+=== 로그인 로직 ppt로 추가할 곳===
 
 ## 회원가입
 
