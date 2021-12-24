@@ -3,7 +3,8 @@
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fstellarop%2Fhit-counter&count_bg=%2379C83D&title_bg=%23555555&icon=litecoin.svg&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 
-<div align=center>안녕하세요 웹 개발자를 지망하는 이연재 입니다.  제 포트폴리오를 보러 와주셔서 감사드립니다.
+<div align=center>안녕하세요 웹 개발자를 지망하는 이연재 입니다.
+제 포트폴리오를 보러 와주셔서 감사드립니다.
 제가 만든 포트폴리오는 게시판 기반 포트폴리오 입니다 게시판 기반 포트폴리오를 만든 이유는
 모든 기능이 CRUD 응용과 기본 소양이 게시판이라고 생각하는 것과 
 기본 소양이 게시판인것처럼 기본기에 충실하고 싶었기 때문입니다.
