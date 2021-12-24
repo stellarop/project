@@ -27,8 +27,8 @@
 |**Server** | <center> Apache Tomcat v8.0 </center> |*Tomcat v9.0 버전도 사용함* |
 |**Web** | <center> Chrome v95.0.4638.5  &nbsp;  Microsoft Edge v95.0.1020.30 </center> |*-* |
 
-<div align=center><h2>프로젝트 구조</h2></div>
-<div align=center>
+<div align=center><h2>프로젝트 구조</h2>
+
 ![프로젝트 구조 1](https://user-images.githubusercontent.com/93149034/141842473-dfb7e5a8-3a50-4974-ab9f-d127a4e72fb3.png)
 ![프로젝트 구조 2](https://user-images.githubusercontent.com/93149034/141842482-91fcb060-d039-4e9e-a45e-2d2f5e4ebae7.png)
 </div>
