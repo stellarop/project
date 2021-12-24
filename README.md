@@ -1,6 +1,7 @@
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fstellarop%2Fhit-counter&count_bg=%2379C83D&title_bg=%23555555&icon=litecoin.svg&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 
-<center># 댓글 게시판 프로그램 - 개인 프로젝트</center>  
+# 댓글 게시판 프로그램 - 개인 프로젝트 
+
 신입 개발자의 기본 소양인 게시판 & 댓글 프로그램을 만들었습니다.
 들어가는 기능은 로그인, 로그아웃,회원가입, 아이디 찾기, 비밀번호 찾기, 회원정보수정, 회원탈퇴, 게시판crud, 댓글 crud, 이미지 등록, 게시글 페이징, 검색기능 입니다.
 
