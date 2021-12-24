@@ -32,11 +32,10 @@
 ![프로젝트 구조 1](https://user-images.githubusercontent.com/93149034/141842473-dfb7e5a8-3a50-4974-ab9f-d127a4e72fb3.png)
 ![프로젝트 구조 2](https://user-images.githubusercontent.com/93149034/141842482-91fcb060-d039-4e9e-a45e-2d2f5e4ebae7.png)
 </div>
-<div align=center><h2>ERD</h2></div>
+<div align=center><h2>ERD</h2>
 
 ![ERD](https://user-images.githubusercontent.com/93149034/142772745-51282138-525b-4923-82ba-a52faea23958.png)
-
-게시글 번호 칼럼을 외래키로 지정하여 on delete cascade 게시글이 삭제되면 댓글도 삭제되게 처리하였습니다.
+</div>
 
 <div align=center><h2>로그인 기능</h2></div>
 
