@@ -10,7 +10,7 @@
 |  <center>개발 환경 분류</center> |  <center>사용 기술</center> |  <center>비고</center> |
 |:--------|:--------:|--------:|
 |**Develop Tools** | <center> Eclipse v4.12.0  &nbsp; MySQLWorkbench v8.0  </center> |*-* |
-|**Develop Language For Front end** | <center> HTML5  &nbsp;  JSP &nbsp;   JavaScript  &nbsp;  JQuery v3.6.0  &nbsp;  Bootstrap v4.0.0 </center> |*-* |
+|**Develop Language For Front end** | <center> HTML5  &nbsp;  JSP &nbsp;   JavaScript  &nbsp;  jQuery v3.6.0  &nbsp;  Bootstrap v4.0.0 </center> |*-* |
 |**Develop Language For Back end** | <center> Java v1.8  &nbsp;  Spring Framework v4.2.4 &nbsp; Mybatis 3.4.1 </center> |*-* |
 |**Data Base** | <center> Mysql 8.0 </center> |*-* |
 |**Server** | <center> Apache Tomcat v8.0 </center> |*Tomcat v9.0 버전도 사용함* |
