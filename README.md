@@ -83,7 +83,8 @@ $(function(){
    });
 ```
 
-로그인 기능에 로그인 유효성 검사와 사용자가 아이디, 패스워드를 입력 후 로그인 버튼을 누를 시 
+로그인 페이지에선 아이디,패스워드 유효성 검사와 사용자가 아이디, 패스워드를 입력 후 로그인 버튼을 누를 시 
+사용자가 입력한 아이디, 패스워드 값이 서버로 전송됩니다.
 
 ```
 // 로그인
@@ -97,8 +98,6 @@ public boolean login(@ModelAttribute("user") UserVO vo, HttpSession session) {
       if(user != null) {
          session.setAttribute("userId", user.getId());
          session.setAttribute("userName", user.getName());
-         session.setAttribute("userTime", user.getRegdate());
-         session.setAttribute("userPassword", user.getPassword()); 
          return true;
       }else {
          // 로그인 실패 구문을 띄우기위해 false 지정
@@ -108,19 +107,26 @@ public boolean login(@ModelAttribute("user") UserVO vo, HttpSession session) {
    }
 ```
 
-1. 로그인 요청 시 사용자가 입력한 값이 컨트롤러로 보내집니다.
-2. 이후 컨트롤러에서 DB에 저장된 사용자 아이디와 비밀번호를 사용자가 입력한 아이디 비밀번호 값과 비교합니다. 
-3. 값이 맞으면 true 맞지 않으면 false를 반환 후 반환 받은 값에 따라 로그인 성공, 실패 여부를 알려주고 해당 페이지로 이동합니다
+=== 로그인 로직 ppt로 추가할 곳===
+
+로그인 페이지에서 사용자가 입력한 아이디,패스워드 값이 컨트롤러로 전송되면
+ UserVO user = userservice.login(vo);
+사용자가 입력한 아이디,패스워드의 값과 DB에 있는 아이디, 패스워드 값과 비교합니다.
+
+두 값이 일치하면 로그인 페이지에 true를 반환하고 일치하지 않다면 false를 반환합니다.
+
+setAttribute로 사용자 아이디와 이름을 넘겨주는 것은 추후 작성자를 사용자 아이디로 사용하는것도 있지만
+수정, 삭제 처리 시 사용자 아이디와 작성자가 일치하면 수정, 삭제 처리하기 위함입니다.
 
 ```
 <c:if test="${login == false}">
    <div class="alert alert-danger">로그인에 실패했습니다.<br> 아이디와 비밀번호를 확인해주세요.</div>
 </c:if>
 ```
-4. 로그인에 실패했을 시(컨트롤러에서 로그인에 실패하면 login = false) 다시 로그인 페이지로 이동 후 로그인 실패 구문을 나타내줍니다
 
 
-=== 로그인 로직 ppt로 추가할 곳===
+
+
 
 ## 회원가입
 
