@@ -36,10 +36,10 @@
 ![ERD](https://user-images.githubusercontent.com/93149034/142772745-51282138-525b-4923-82ba-a52faea23958.png)
 </div>
 
-<div align=center><h2>로그인 기능</h2></div>
+<div align=center><h2>로그인 기능</h2>
 
 ![로그인 gif](https://user-images.githubusercontent.com/88939199/135759759-6b8f1df1-0c5a-41c2-8610-9b3db077dc4b.gif)
-
+</div>
 
 
 ```
