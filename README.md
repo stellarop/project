@@ -116,40 +116,50 @@ public boolean login(@ModelAttribute("user") UserVO vo, HttpSession session) {
 두 값이 일치하면 로그인 페이지에 true를 반환하고 일치하지 않다면 false를 반환합니다.
 
 setAttribute로 사용자 아이디와 이름을 넘겨주는 것은 추후 작성자를 사용자 아이디로 사용하는것도 있지만
-수정, 삭제 처리 시 사용자 아이디와 작성자가 일치하면 수정, 삭제 처리하기 위함입니다.
+수정, 삭제 처리 시 본인이 작성한 게시글과 댓글을 수정, 삭제 처리하기 때문입니다.
 
-```
-<c:if test="${login == false}">
-   <div class="alert alert-danger">로그인에 실패했습니다.<br> 아이디와 비밀번호를 확인해주세요.</div>
-</c:if>
-```
+setAttribute로 false를 로그인 페이지에 보내주는것은 로그인 실패시 로그인페이지 아래에 로그인 실패 구문을 나타내주기 때문입니다.
+alert으로 로그인 실패를 알려줘도 되지만 확실하게 로그인 페이지 아래에 구문으로 알려주는게 좋다고 판단되어 넣은 기능입니다.
 
 
 
+<div align=center><h2>회원가입 기능</h2>
+</div>
 
+회원가입은 기본적인 사용자 정보(아이디, 이름, 이메일, 주소, 상세주소)로 가입이 이루어지며 ajax를 이용한 아이디 체크
+중복된 아이디로 회원가입을 진행할 시 중복된 아이디로 회원가입을 진행하지 못하게 막아두었습니다.(추후 작성자로 사용자의 아이디를 넣기 위함입니다.)
 
-## 회원가입
+사용자가 주소창 클릭 시 주소 검색 api를 활용하여 편리하게 주소 검색을 할수있게 구현하였고 검색한 주소의 좌표를 이용하여 사용자가 입력한 주소를 지도로 나타내주는 지도 api도 활용 해보았습니다.
 
 ![회원가입 gif](https://user-images.githubusercontent.com/93149034/143124175-06900ea5-12e3-4319-8497-841376d830ea.gif)
 
-주소 클릭 시 나오는 팝업창 입니다.
-주소 검색을 완료하면 검색한 주소를 지도로 나타내줍니다.
-
-![주소검색 gif](https://user-images.githubusercontent.com/93149034/143127339-1a6a7ebb-7513-4120-a651-a23246693fa0.gif)
-
-
 ```
-<!-- 회원가입  -->
-<insert id="createuser" parameterType="user">
-	INSERT INTO USERS(ID,PASSWORD,NAME,EMAIL,ADDRESS,ADDRESS2) VALUES(#{id},#{password},#{name},#{email},#{address},#{address2})
-</insert>
-
-<!-- 회원가입 아이디 체크 -->
-<select id="idcheck" resultType="int">
-   SELECT COUNT(*) FROM USERS WHERE ID =#{id}
-</select>
+      $.ajax({
+      // 회원가입 경로
+      url : 'createUser.do',
+      type : 'post',
+      dataType : 'json',
+      // 사용자가 입력한 회원가입 정보
+      data : $('#createUser').serializeArray(),
+      success : function(data){
+         // 사용 가능한 아이디면(컨트롤러에서 반환돠는 값이 true일시)회원가입 진행
+         if(data == true){
+            if(confirm('회원가입 하시겠습니까?')){
+               // 폼 안에 있는 회원 정보가 컨트롤러로 전송됨
+               $('#createUser').submit();
+               alert('회원가입이 완료 되었습니다.');
+               // 로그인 창으로 보내줌
+               window.location.href = "login.do";
+            }
+         // 중복된 아이디 일때(컨트롤러에서 반환되는 값이 false일시)
+         }else if(data == false){
+            alert('중복된 아이디로는 회원가입을 진행 할 수 없습니다.');
+            // 회원가입 창으로 보내줌
+            window.location.href = "createUser.jsp";
+         }
+      }
+   })      
 ```
-
 ```
 // 아이디 체크
 @ResponseBody
@@ -182,9 +192,6 @@ function id_duplicate(){
 }
 ```
 
-1. 사용자가 아이디를 입력하고 아이디확인 버튼을 클릭하면 아이디 중복확인 함수가 실행됩니다.
-2. 사용자가 입력한 아이디 값이 중복된 아이디면 1, 사용 가능한 아이디면 0을 반환받습니다.
-3. 반환 받은 숫자에 따라 중복된 아이디 인지, 사용 가능한 아이디 인지 알려줍니다.
 
 ```
 // 회원가입
@@ -207,85 +214,6 @@ public boolean createUser(UserVO vo) {
    return true;
 }
 ```
-```
-// 회원가입 유효성 검사
-   $('#uses').click(function(){
-      if($('#id').val()==''){
-         alert('아이디를 입력하세요.');
-         $('#id').focus();
-         return false;
-      }
-      if($('#password1').val()==''){
-         alert('패스워드를 입력하세요.');
-         $('#password1').focus();
-         return false;
-      }
-      if($('#password2').val()==''){
-         alert('패스워드를 입력하세요.');
-         $('#password2').focus();
-         return false;
-      }
-      if($('#name').val()==''){
-         alert('이름을 입력하세요.');
-         $('#name').focus();
-         return false;
-      } 
-      if($('#email').val()==''){
-         alert('이메일을 입력하세요.');
-         $('#email').focus();
-         return false;
-      }
-      
-      $.ajax({
-      // 회원가입 경로
-      url : 'createUser.do',
-      type : 'post',
-      dataType : 'json',
-      // 사용자가 입력한 회원가입 정보
-      data : $('#createUser').serializeArray(),
-      success : function(data){
-         // 사용 가능한 아이디면(컨트롤러에서 반환돠는 값이 true일시)회원가입 진행
-         if(data == true){
-            if(confirm('회원가입 하시겠습니까?')){
-               // 폼 안에 있는 회원 정보가 컨트롤러로 전송됨
-               $('#createUser').submit();
-               alert('회원가입이 완료 되었습니다.');
-               // 로그인 창으로 보내줌
-               window.location.href = "login.do";
-            }
-         // 중복된 아이디 일때(컨트롤러에서 반환되는 값이 false일시)
-         }else if(data == false){
-            alert('중복된 아이디로는 회원가입을 진행 할 수 없습니다.');
-            // 회원가입 창으로 보내줌
-            window.location.href = "createUser.jsp";
-         }
-      }
-   })      
-});
-   
-   // 이메일  받기
-   $('#select').change(function() {
-        if ($('#select').val() == 'directly') {
-            $('#email').attr('disabled', false);
-            $('#email').val('');
-            $('#email').focus();
-        } else {
-            $('#email').val($('#select').val());
-        }
-    });   
-```
-```
-<select id="select" class="form-control">
-   <option value="" disabled selected>E-Mail 선택</option>
-   <option value="@naver.com" id="naver.com">naver.com</option>
-   <option value="@daum.net" id="hanmail.net">daum.net</option>
-   <option value="@gmail.com" id="gmail.com">gmail.com</option>
-   <option value="@nate.com" id="nate.com">nate.com</option>
-   <option value="directly" id="textEmail">직접 입력하기</option>
-</select>
-```
-4. 사용자가 입력한 회원가입 데이터를 컨트롤러로 보내준 후 중복된 아이디면 회원가입 진행을 할 수 없도록 기존 페이지로 보내주고 
-5. 사용 가능한 아이디라면 회원가입을 진행시키고 로그인 페이지로 보내줍니다.
  
 ```
 // 패스워드 일치 불일치 구문
@@ -326,12 +254,6 @@ $('#pwdCheck').click(function(){
 <div class="alert alert-danger" id="falsepassword">패스워드가 일치하지 않습니다. 다시 입력 해주세요.</div>
 ```
 
-
-6. 패스워드 일치, 불일치 구문을 hide으로 숨기고 사용자가 입력한 패스워드와 패스워드 재확인을 비교해서
-  두 값이 맞으면 일치구문 출력, 두 값이 틀리다면 불일치 구문을 출력해줍니다.
-  
- 
- 
 ```
 <!-- 카카오 주소 찾기 API -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
