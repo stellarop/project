@@ -93,7 +93,7 @@ public boolean login(@ModelAttribute("user") UserVO vo, HttpSession session) {
    
    // 사용자가 입력한 아이디 패스워드 == 유저 테이블에 저장된 사용자 아이디, 패스워드 값 대조 
    UserVO user = userservice.login(vo);
-      // 값이 null 이 아니라면 true
+      // 두 값이 일치하지 않다면 true
       if(user != null) {
          session.setAttribute("userId", user.getId());
          session.setAttribute("userName", user.getName());
