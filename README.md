@@ -139,7 +139,7 @@ alert으로 로그인 실패를 알려줘도 되지만 확실하게 로그인 �
       url : 'createUser.do',
       type : 'post',
       dataType : 'json',
-      // 사용자가 입력한 회원가입 정보
+      // 사용자가 입력한 회원가입 정보 
       data : $('#createUser').serializeArray(),
       success : function(data){
          // 사용 가능한 아이디면(컨트롤러에서 반환돠는 값이 true일시)회원가입 진행
