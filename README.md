@@ -207,9 +207,9 @@ public boolean createUser(UserVO vo) {
 
 중복된 아이디면 =1 사용 가능한 아이디면 =0 의 값을 가지고 오게 됩니다.
 
-중복된 아이디면 해당 ajax 로직으로 false를 리턴 후 중복된 아이디로 회원가입을 하기 어렵다고 알려주고
+중복된 아이디면 해당 ajax 로직으로 false를 리턴 후 중복된 아이디로 회원가입 진행이 안된다고 alert으로 알려주고
 
-사용 가능한 아이디면 true 리턴과 함께 회원가입을 정상적으로 진행 시킵니다.
+사용 가능한 아이디면 true 리턴과 함께 회원가입을 정상적으로 진행 시켜줍니다.
 	
 
 ```
@@ -244,49 +244,21 @@ function id_duplicate(){
 }
 ```
 
+사용자가 아이디를 입력 후 아이디 확인 버튼을 클릭하면 (onclick='id_duplicate();')  id_duplicate(); 함수가 실행됩니다.
+
+이때 사용자가 입력한 아이디를 아이디 체크 controller로 보내준 후 입력한 아이디와 DB에 있는 아이디를 조회한 후 
+
+사용자가 입력한 아이디 == DB에 있는 아이디 = 1
+중복된 아이디면 1를 해당 ajax 로직에 리턴 시켜주고
+중복된 아이디란걸 alert으로 띄워줍니다.
+
+사용자가 입력한 아이디 != DB에 있는 아이디 = 0
+사용 가능한 아이디면 0을 해당 ajax 로직에 리턴 시켜주고
+사용 가능한 아이디란걸 alert으로 띄워줍니다
+```
 
 
- 
-```
-// 패스워드 일치 불일치 구문
-$('#truepassword').hide();
-$('#falsepassword').hide();
-   
-//패스워드 값 확인
-$('#pwdCheck').click(function(){
-   // 패스워드 유효성 검사
-   if($('#password1').val()==''){
-      alert('패스워드를 입력하세요.');
-      $('#password1').focus();
-      return false;
-   }
-   if($('#password2').val()==''){
-      alert('패스워드를 입력하세요.');
-      $('#password2').focus();
-      return false;
-   }
-   // 사용자가 입력한 패스워드 값 
-   var password1 =$('#password1').val();
-   var password2 =$('#password2').val();
-      
-   // 사용자가 입력한 두 개의 패스워드 값 비교
-   if(password1 == password2){
-      // 값이 맞으면 일치 구문 출력
-      $('#truepassword').show();
-      $('#falsepassword').hide();
-   }else{
-      // 값이 틀리면 불일치 구문 출력
-      $('#truepassword').hide();
-      $('#falsepassword').show();
-   }      
-});
-```
-```
-<div class="alert alert-success" id="truepassword">패스워드가 일치합니다.</div>
-<div class="alert alert-danger" id="falsepassword">패스워드가 일치하지 않습니다. 다시 입력 해주세요.</div>
-```
 
-```
 <!-- 카카오 주소 찾기 API -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 ```
