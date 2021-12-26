@@ -134,7 +134,7 @@ alert으로 로그인 실패를 알려줘도 되지만 확실하게 로그인 �
 
 
 회원가입은 기본적인 사용자 정보(아이디, 패스워드, 이름, 이메일, 주소, 상세주소)로 가입이 이루어지며 ajax를 이용한 아이디 체크
-중복된 아이디로 회원가입을 진행할 시 중복된 아이디로 회원가입을 진행하지 못하게 막아두었습니다.(추후 작성자로 사용자의 아이디를 넣기 위함입니다.)
+중복된 아이디로 회원가입을 진행할 시 controller에서 중복된 아이디인지 확인한 후 중복된 아이디면 회원가입을 진행하지 못하게 막아두었습니다.(추후 작성자로 사용자의 아이디를 넣기 위함입니다.)
 
 사용자가 주소창 클릭 시 주소 검색 api를 활용하여 편리하게 주소 검색을 할수있게 구현하였고 검색한 주소의 좌표를 이용하여 사용자가 입력한 주소를 지도로 나타내주는 지도 api도 활용 해보았습니다.
 
@@ -168,6 +168,39 @@ alert으로 로그인 실패를 알려줘도 되지만 확실하게 로그인 �
       }
    })      
 ```
+
+사용자가 입력한 회원가입 데이터(<form> 태그 내부의 값)를 배열(name,key)로 controller에 보내줍니다.
+
+이때 사용자가 입력한 아이디가 중복된 아이디라면 controller에서 중복된 아이디인지 확인한 후 중복된 아이디라면 회원가입을 못하게 막아두고
+사용 가능한 아이디면 정상적으로 회원가입을 진행시키도록 구현하였습니다.
+
+	
+
+```
+// 회원가입
+@ResponseBody
+@RequestMapping(value = "/createUser.do", method = RequestMethod.POST)
+public boolean createUser(UserVO vo) {
+   
+   // 아이디 중복 체크
+   int result = userservice.idCheck(vo);
+   
+   // 중복된 아이디 인지 확인
+   if(result == 1) {
+      // 중복된 아이디면 false 반환
+      return false;
+   // 사용 가능한 아이디 일시  회원가입 진행
+   }else if(result == 0) {
+      userservice.createUser(vo);
+   }
+   // 사용 가능한 아이디 일시 true 반환
+   return true;
+}
+```	
+
+추가==
+	
+
 ```
 // 아이디 체크
 @ResponseBody
@@ -201,27 +234,7 @@ function id_duplicate(){
 ```
 
 
-```
-// 회원가입
-@ResponseBody
-@RequestMapping(value = "/createUser.do", method = RequestMethod.POST)
-public boolean createUser(UserVO vo) {
-   
-   // 아이디 중복 체크
-   int result = userservice.idCheck(vo);
-   
-   // 중복된 아이디 인지 확인
-   if(result == 1) {
-      // 중복된 아이디면 false 반환
-      return false;
-   // 사용 가능한 아이디 일시  회원가입 진행
-   }else if(result == 0) {
-      userservice.createUser(vo);
-   }
-   // 사용 가능한 아이디 일시 true 반환
-   return true;
-}
-```
+
  
 ```
 // 패스워드 일치 불일치 구문
