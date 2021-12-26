@@ -37,6 +37,8 @@
 </div>
 
 <div align=center><h2>로그인 기능</h2>
+	
+로그인 기능에선 유효성 검사와 아이디나 패스워드가 일치하지 않을시 아이디,패스워드 불일치 구문을 출력해주게 구현하였습니다.
 
 ![로그인 gif](https://user-images.githubusercontent.com/88939199/135759759-6b8f1df1-0c5a-41c2-8610-9b3db077dc4b.gif)
 	
@@ -116,10 +118,14 @@ public boolean login(@ModelAttribute("user") UserVO vo, HttpSession session) {
 
 두 값이 일치하면 로그인 페이지에 true를 반환하고 일치하지 않다면 false를 반환합니다.
 
-setAttribute로 사용자 아이디와 이름을 넘겨주는 것은 추후 작성자를 사용자 아이디로 사용하는것도 있지만
+success에 true를 controller에서 리턴 받으면 로그인에 성공 = 게시판 메인 페이지로 이동합니다.
+
+success에 false controller에서 리턴 받으면 로그인에 실패 = 로그인 페이지로 돌아온 후 로그인 실패 구문을 출력 해줍니다.
+
+session.setAttribute에 사용자에 아이디와 이름을 저장한것은 추후 작성자를 사용자 아이디로 사용하는것도 있지만
 수정, 삭제 처리 시 본인이 작성한 게시글과 댓글을 수정, 삭제 처리하기 때문입니다.
 
-setAttribute로 false를 로그인 페이지에 보내주는것은 로그인 실패시 로그인페이지 아래에 로그인 실패 구문을 나타내주기 때문입니다.
+session.setAttribute로 false를 로그인 페이지에 보내주는것은 로그인 실패시 로그인페이지 아래에 로그인 실패 구문을 나타내주기 때문입니다.
 alert으로 로그인 실패를 알려줘도 되지만 확실하게 로그인 페이지 아래에 구문으로 알려주는게 좋다고 판단되어 넣은 기능입니다.
 
 
