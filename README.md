@@ -366,7 +366,7 @@ var divMap = document.getElementById('map')
 
 사용자가 주소 입력 칸을 클릭 시 주소 검색 팝업창이 나오게 됩니다.
 
-사용자가 주소 검색을 완료하면 주소 입력 칸에 사용자가 검색한 주소를 넣어주고 위에서 선언한 geocoder는 이떄 쓰이게 됩니다.
+사용자가 주소 검색을 완료하면 주소 입력 칸에 사용자가 검색한 주소를 넣어주고 위에서 선언한 geocoder,marker는 이떄 쓰이게 됩니다.
 
  geocoder.addressSearch(address, function(results, status) 주소의 이름과, 해당 주소의 좌표를 넣어줍니다.
  
@@ -378,7 +378,7 @@ var coords = new daum.maps.LatLng(result.y, result.x); 검색한 주소를 지�
 
  map.setCenter(coords); 좌표값을 받은 변수를 넣어주고 지도 중심으로 이동하고 marker.setPosition(coords) 좌표의 중심에 마커를 생성 해줍니다.
  
- 그리고 $('#map').show(); 사용자가 검색하기전 숨긴 지도 영역을 나타내주고 마지막으로 $('#address2').focus(); 상세 주소 칸으로 자동으로 이동하게 됩니다.
+$('#map').show(); 사용자가 검색하기전 숨긴 지도 영역을 나타내주고 마지막으로 $('#address2').focus(); 상세 주소 칸으로 자동으로 이동하게 됩니다.
  
  
 
