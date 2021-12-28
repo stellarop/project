@@ -276,9 +276,9 @@ function id_duplicate(){
 <!-- 카카오에서 받은 인증키를 반드시 넣어줘야함 -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=여기에 인증키가 들어갑니다.&libraries=services,clusterer,drawing"></script>
 ```
- 
-사용자가 회원가입시 주소를 입력하게 되어 있습니다.
-주소 입력을 어떻게 하면 사용자가 간편하게 자신의 주소를 검색할수 있을까 고민하던중 주소를 검색해주는 api를 활용하게 되었습니다.
+
+
+사용자가 주소 입력을 어떻게 하면 사용자가 간편하게 자신의 주소를 검색할수 있을까 고민하던중 주소를 검색해주는 api를 활용하게 되었습니다.
 
 더 나아가서 사용자가 검색한 주소를 지도로 나타내주는 기능도 지도api를 이용해서 활용하게 되었습니다.
  
