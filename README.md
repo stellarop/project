@@ -387,13 +387,6 @@ $('#map').show(); 사용자가 검색하기전 숨긴 지도 영역을 나타내
 ![아이디 찾기 gif](https://user-images.githubusercontent.com/93149034/141844299-a3aceb27-142f-4869-a329-df8e24c0888c.gif)
 
 ```
-<!-- 아이디 찾기 -->
-<select id="findid" resultType="user" parameterType="user">
-   SELECT * FROM USERS WHERE EMAIL =#{email}
-</select>
-```
-
-```
 $(function(){
 
    // 로그인
