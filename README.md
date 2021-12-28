@@ -101,6 +101,7 @@ public boolean login(@ModelAttribute("user") UserVO vo, HttpSession session) {
       if(user != null) {
          session.setAttribute("userId", user.getId());
          session.setAttribute("userName", user.getName());
+	 session.setAttribute("userPassword", user.getPassword()); 
          return true;
       }else {
          // 로그인 실패 구문을 띄우기위해 false 지정
@@ -122,7 +123,8 @@ success에 true를 controller에서 리턴 받으면 로그인에 성공 = 게�
 
 success에 false controller에서 리턴 받으면 로그인에 실패 = 로그인 페이지로 돌아온 후 로그인 실패 구문을 출력 해줍니다.
 
-session.setAttribute에 사용자에 아이디와 이름을 저장한것은 추후 작성자를 사용자 아이디로 사용하는것도 있지만
+session.setAttribute에 사용자에 아이디와 이름을 저장한것은 추후 아이디 찾기, 패스워드 찾기, 회원탈퇴,
+작성자를 사용자 아이디로 사용하는것도 있지만
 수정, 삭제 처리 시 본인이 작성한 게시글과 댓글을 수정, 삭제 처리하기 때문입니다.
 
 session.setAttribute로 false를 로그인 페이지에 보내주는것은 로그인 실패시 로그인페이지 아래에 로그인 실패 구문을 나타내주기 때문입니다.
@@ -510,7 +512,16 @@ public int passwordCheck(UserVO vo) {
       })   
 ```
 
-===추가===
+로그인에서 session.setAttribute로 저장시킨 사용자 아이디, 이름을 회원탈퇴 form에 나타내주고
+
+사용자가 패스워드를 입력하면 ajax를 통해 DB에서 조회를 합니다.
+
+패스워드 체크 쿼리문은(select count(*) from users where id="아이디" and password="패스워드")로 작성하였습니다.
+
+아이디와 패스워드가 일치한다면 = 1 을 리턴 후 사용자 아이디, 이름, 패스워드가 controller로 이동하고
+
+일치하지 않는다면 = 0 "패스워드가 일치하지 않습니다" 를 알려주는 형식으로 구현하였습니다.
+
 
 ```
 // 회원탈퇴 
@@ -533,8 +544,16 @@ public String deleteUser(UserVO vo, HttpSession session) {
 }
 ```
 
-1. 로그인에서 session.setAttribute 로 넘겨준 비밀번호를 getAttribute 로 가져옵니다 .
-2. 로그인에서 가져온 패스워드와 사용자가 입력한 비밀번호를 equals 문자열 비교를 해서 맞으면 세션을 끊어준 후 로그인 창으로 틀리다면 기존 페이지에 머무릅니다.
+회원탈퇴 데이터가 정상적으로 controller로 이동하게 되면 로그인시 저장한 패스워드를 
+
+session.getAttribute("userPassword")로 가져옵니다
+
+그 후 사용자가 입력한 패스워드와 세션에 있는 패스워드를 equals(문자열 비교) 를 하여 두 패스워드의 값이 맞으면 정상적으로 회원탈퇴 처리와
+session.invalidate(); 세션을 끊어준 후 로그인 페이지로 이동 시켜주고
+
+두 패스워드의 값이 일치하지 않는다면 회원탈퇴 페이지로 이동시켜 주는 형식으로 구현하였습니다.
+
+
 
 
 
