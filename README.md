@@ -203,7 +203,7 @@ public boolean createUser(UserVO vo) {
 
 사용자가 입력한 회원가입 데이터가 들어오는 controller 입니다.
 
-아이디 중복 체크는 (select count(*) from users) 사용자가 입력한 아이디를 DB에서 확인한 후
+아이디 중복 체크는 (select count(*) from users where id ="아이디") 사용자가 입력한 아이디를 DB에서 확인한 후
 
 중복된 아이디면 =1 사용 가능한 아이디면 =0 의 값을 가지고 오게 됩니다.
 
