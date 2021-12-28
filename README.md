@@ -385,32 +385,19 @@ $('#map').show(); 사용자가 검색하기전 숨긴 지도 영역을 나타내
  
  
 
-## 아이디 찾기
+<div align=center><h2>아이디 찾기 기능</h2>
+
+아이디 찾기 기능은 사용자가 회원가입시 입력한 이메일로 찾게 구현하였습니다.
+
+입력한 이메일이 맞다면 아이디를 출력해주고 입력한 이메일이 아니라면 해당 이메일로 등록된 회원정보가 없다고 알려주는 형식입니다.
 
 ![아이디 찾기 gif](https://user-images.githubusercontent.com/93149034/141844299-a3aceb27-142f-4869-a329-df8e24c0888c.gif)
+</div>
+
 
 ```
 $(function(){
 
-   // 로그인
-   $('#login').click(function(){
-      location.href = "login.do"
-   })
-   
-   // 패스워드 찾기
-   $('#findPwn').click(function(){
-      location.href = "findPassword.jsp"
-   })
-   
-   $('#id').click(function(){
-   
-      // 아이디 찾기 유효성 검사
-      if($('#email').val()==''){
-         alert('이메일을 입력하세요.');
-         $('#email').focus();
-         return false;
-      }
-      
       $.ajax({
          // 아이디 찾기 경로 
          url : 'findId.do',
@@ -429,11 +416,11 @@ $(function(){
                window.location.href = "findId.jsp";
             }
          }
-      })   
-   })   
+      })     
 });
 ```
 
+== 설명 들어가야 함 ==
 ```
 // 아이디 찾기
 @ResponseBody
@@ -455,9 +442,31 @@ public int findId(@ModelAttribute("user") UserVO vo, HttpSession session) {
 } 
 ```
 
-1. 사용자가 이메일을 입력하면 입력한 이메일 값이 컨트롤러로 이동합니다 사용자가 입력한 이메일값으로 회원가입이 되있다면 0을 반환
-2. 사용자가 입력한 이메일 값으로 조회가 안된다면 1을 반환 받습니다 이후에 ajax에서 컨트롤러로 반환 받은 값이 0이면 사용자 이름과 아이디를 나타내주고 
-3. 반환 받은 값이 1 이면 등록된 아이디가 없다고 알려줍니다.
+사용자가 이메일을 입력하고 찾기 버튼을 누르게 되면 사용자가 입력한 이메일이 controller로 이동합니다.
+
+ UserVO id = userservice.findId(vo); 사용자가 입력한 이메일과 쿼리문(select * from users where email="이메일")으로 DB에서 조회를 합니다.
+ 
+ 두 값을 비교한 변수 if(id != null)로 사용자가 입력한 이메일과 DB에서 조회한 이메일이 일치하다면 아이디 찾기 페이지로 보내준 후 
+ 
+ session.setAttribute으로 해당 이메일로 조회되는 사용자의 이름과, 패스워드를 저장합니다. (아이디 찾기 페이지에서 사용자의 이름과 아이디를 나타내주어야 하기 때문입니다)
+ session.setAttribute("getId", true);로 사용자가 입력한 이메일과 DB에서 조회한 이메일이 일치하다면 ("getId", true)를 저장합니다 (getId 값으로 이메일이 맞다면
+ 사용자의 이름과,아이디를 출력해주기 때문입니다.)
+ ```
+ <c:if test="${getId == true}">
+	<div class="alert alert-primary">${userName }님의 아이디는 <b>${userId }</b>입니다.</div>
+ </c:if>
+```
+ 
+그 후 일치하면 = 0 불일치하면 = 1을 해당 ajax로직에 리턴시켜주고
+
+0이 리턴되면 사용자의 이름과 아이디를 출력해주고 1이 리턴된다면 alert('사용자의 이메일로 등록된 아이디가 없습니다.');
+
+등록된 이메일이 없다고 알려준 후 아이디 찾기 페이지로 넘어옵니다.
+
+
+ 
+ 
+ 
 
 ```
 <c:if test="${getId == true}">
