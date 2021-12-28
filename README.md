@@ -321,9 +321,9 @@ var divMap = document.getElementById('map')
 
 우선 지도의 영역을 만들어 주고 지도의 영역에 기본으로 설정한 지도의 자표, 지도 영역에 실제 지도를 넣어주었습니다.
 
-사용자가 주소 검색에 성공할 시 사용자가 검색한 주소의 자표를 지도로 변환하는 geocoder를 선언해주고 
+사용자가 주소 검색에 성공할 시 사용자가 검색한 주소의 자표를 지도로 변환하는 geocoder,
 
-지도 중심에 마커를 생성하는 marker도 같이 선언해주고 사용자가 주소 검색을 하기전엔  $('#map').hide(); 으로 지도를 숨겨주었습니다.
+지도 중심에 마커를 생성하는 marker를 선언해주고 사용자가 주소 검색을 하기전에 $('#map').hide(); 으로 지도를 숨겨주었습니다.
 
 
 ![주소검색 gif](https://user-images.githubusercontent.com/93149034/143127339-1a6a7ebb-7513-4120-a651-a23246693fa0.gif)
@@ -468,19 +468,16 @@ public int findId(@ModelAttribute("user") UserVO vo, HttpSession session) {
 패스워드 찾기 기능도 위와 같은 형식으로 구현하여서 패스워드 찾기 기능은 생략하겠습니다.
 
 
-## 회원탈퇴
+<div align=center><h2>회원탈퇴 기능</h2>
+
+회원탈퇴 기능은 사용자의 아이디와 패스워드가 일치하면 탈퇴되게 처리하였고
+
+패스워드 확인시 0과1을 반환받는 ajax로 처리하였습니다.
 
 ![회원탈퇴 gif](https://user-images.githubusercontent.com/88939199/136686776-660fa240-fb91-4aa3-ae36-1f1977df6af2.gif)
+</div>
 
 ```
-<!-- 회원탈퇴  -->
-<delete id="deleteuser" >
-   DELETE FROM USERS WHERE ID =#{id} AND PASSWORD =#{password}
-</delete>
-```
-
-```
-
 // 패스워드 체크
 @ResponseBody
 @RequestMapping(value = "/passwordCheck.do", method = RequestMethod.POST)
@@ -488,7 +485,34 @@ public int passwordCheck(UserVO vo) {
 	int result = userservice.passwordCheck(vo);
 	return result;
 }
+```
 
+```
+      $.ajax({
+         // 회원탈퇴 경로
+         url : 'passwordCheck.do',
+         type : 'post',
+         dataType : 'json',
+         // 폼 안에 있는 데이터 (사용자가 입력한 패스워드 값)
+         data : $('#deleteUser').serializeArray(),
+         success : function(data){
+            // 패스워드가 맞으면 = 1 맞지 않다면 0
+            if(data == 1){
+               if(confirm('회원 탈퇴 하시겠습니까?')){
+               // 사용자가 입력한 패스워드가 컨트롤러로 전송
+               $('#deleteUser').submit();
+               alert('탈퇴가 완료되었습니다.');
+               }
+            }else if(data == 0){
+               alert('패스워드가 일치하지 않습니다.');
+            }
+         }
+      })   
+```
+
+===추가===
+
+```
 // 회원탈퇴 
 @RequestMapping(value = "/deleteUser.do", method = RequestMethod.POST)
 public String deleteUser(UserVO vo, HttpSession session) {
@@ -512,46 +536,7 @@ public String deleteUser(UserVO vo, HttpSession session) {
 1. 로그인에서 session.setAttribute 로 넘겨준 비밀번호를 getAttribute 로 가져옵니다 .
 2. 로그인에서 가져온 패스워드와 사용자가 입력한 비밀번호를 equals 문자열 비교를 해서 맞으면 세션을 끊어준 후 로그인 창으로 틀리다면 기존 페이지에 머무릅니다.
 
-```
-$(function(){
-   
-   // 메인으로 가기
-   $('#mainBtn').click(function(){
-      location.href = "main.do"
-   })
-   
-   // 회원탈퇴 유효성 검사
-   $('#deleteUserBtn').click(function(){
-      if($('#password').val()==''){
-         alert('패스워드를 입력하세요.');
-         $('#password').focus();
-         return false;   
-      }
-      
-      
-      $.ajax({
-         // 회원탈퇴 경로
-         url : 'passwordCheck.do',
-         type : 'post',
-         dataType : 'json',
-         // 폼 안에 있는 데이터 (사용자가 입력한 패스워드 값)
-         data : $('#deleteUser').serializeArray(),
-         success : function(data){
-            // 패스워드가 맞으면 = 1 맞지 않다면 0
-            if(data == 1){
-               if(confirm('회원 탈퇴 하시겠습니까?')){
-               // 사용자가 입력한 패스워드가 컨트롤러로 전송
-               $('#deleteUser').submit();
-               alert('탈퇴가 완료되었습니다.');
-               }
-            }else if(data == 0){
-               alert('패스워드가 일치하지 않습니다.');
-            }
-         }
-      })   
-   })
-});
-```
+
 
 
 3. 사용자가 패스워드를 입력하고 탈퇴 버튼을 클릭하면 사용자가 입력한 패스워드가 컨트롤러로 보내집니다.
