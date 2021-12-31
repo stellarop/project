@@ -602,7 +602,7 @@ processData는 서버에 전달되는 데이터는 쿼리 스트링 형식으로
 
 파일 전송에 경우 쿼리 스트링 형식으로 전송하지 않아서 processData를 false로 선언
 
-contentType은 디폴트 값이 application/x-www-form-urlencoded; charset=UTF-8 입니다.
+contentType은 디폴트 값이 application/x-www-form-urlencoded; 입니다.
 
 파일 전송 시 multipart/form-data 로 전송 해주어야 하기 때문에 contentType를 false로 선언해주었습니다.
 
@@ -686,9 +686,12 @@ private MultipartFile uploadFile;
 <img width=1110px, height=600px src="/img/${board.filename }"  onerror="this.style.display='none';"/>
 ```
 
-## 글 수정
+<div align=center><h2>게시글 수정 기능</h2>
 
 ![글 수정 테스트 gif](https://user-images.githubusercontent.com/93149034/143154199-48828e0f-125e-4469-a5ef-ae2f52fb8eb2.gif)
+</div>
+
+
 
 ```
 <!-- 세션으로 로그인된 아이디와 작성자와 일치하면 수정,삭제  -->
@@ -697,38 +700,36 @@ private MultipartFile uploadFile;
 	<button type="button" class="btn btn-outline-danger" id="deleteBoardBtn" boardseq = "${board.boardseq }">게시글 삭제</button>
 </c:if>
 ```
-1. 글 수정과 글 삭제는 아이디와 작성자가 일치해야 수정,삭제 버튼이 보이게 만들었습니다.
 
-```
-<!-- 게시글 수정 -->
-<update id="updateBoard">
-	UPDATE BOARD SET TITLE=#{title},CONTENT=#{content} WHERE BOARDSEQ=#{boardseq}
-</update>
-```
+게시글 수정 기능, 삭제 기능은 작성자 본인만 수정,삭제가 가능하고
+
+로그인시 세션에 저장된 유저 아이디(userId)와 작성자(writer)가 일치해야만 게시글 수정, 삭제 버튼이 보이게 구현하였고
+
+수정 데이터를 보여주는 JSP, 실제 데이터 수정을 담당하는 메서드 두 개로 나뉘어져 있습니다.
 
 ```
 // 게시글 수정 view
 @RequestMapping(value = "/updateBoardView.do", method = RequestMethod.GET)
 public String updateBoardView(BoardVO vo, Criteria cri, Model model) {
+	// 페이징 유지
 	model.addAttribute("cri", cri);
+	// 어떤 수정된 게시글을 보여줄지
 	model.addAttribute("updateBoard", boardservice.getBoard(vo.getBoardseq()));
 	return "updateBoardView.jsp";
 }		
-	
-// 게시글 수정
-@ResponseBody
-@RequestMapping(value = "/updateBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
-public Map<String, Object> updateBoard(BoardVO vo, Model model, Criteria cri) {
-	Map<String, Object> result = new HashMap<String,Object>();
-	// 페이지 유지
-	result.put("cri", cri);
-	// 어떤 게시글을 수정할지
-	result.put("updateBoard", boardservice.getBoard(vo.getBoardseq()));
-	// 게시글 수정
-	boardservice.updateBoard(vo);
-	return result;
-}
 ```
+
+```
+// 게시글 수정
+	$('#updateBoardBtn').click(function(){
+		location.href = "updateBoardView.do?"
+				+"boardseq=${board.boardseq}"
+				+"&page=${cri.page}"
+	})
+```
+
+게시글 수정 버튼을 클릭하면 해당 게시글의 데이터를 보여주는 JSP 화면으로 이동합니다.
+
 
 ```
 $('#updateBoardBtn').click(function(){		
@@ -763,10 +764,27 @@ $('#updateBoardBtn').click(function(){
 })
 ```
 
-2. 사용자가 글 수정 버튼을 클릭하면 수정 form 안에 있는 데이터가 컨트롤러로 전송 됩니다.
+ajax url 경로를 실제 수정을 담당하는 메서드 경로로 지정하고 updateBoard form 안에 수정된 데이터를 controller로 전송됩니다.
 
-3. 수정 데이터를 submit() 저장시켜 준 후 메인 페이지로 이동합니다.
 
+```
+// 게시글 수정
+@ResponseBody
+@RequestMapping(value = "/updateBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
+public Map<String, Object> updateBoard(BoardVO vo, Model model, Criteria cri) {
+	Map<String, Object> result = new HashMap<String,Object>();
+	// 페이지 유지
+	result.put("cri", cri);
+	// 어떤 게시글을 수정할지
+	result.put("updateBoard", boardservice.getBoard(vo.getBoardseq()));
+	// 게시글 수정
+	boardservice.updateBoard(vo);
+	return result;
+}
+```
+수정된 게시글의 데이터를 정상적으로 수정해주고 해당 ajax 로직으로 리턴, $('#updateBoard').submit(); 폼 전송과 동시에 
+
+location.href = "main.do?page=${cri.page}"; 메인 페이지로 이동합니다.
 
 # 글 삭제
 
