@@ -648,9 +648,9 @@ if(!uploadFile.isEmpty() 업로드한 파일이 있으면 uploadFile.transferTo(
 
 C:\\Project 파일 업로드 에 사용자가 첨부한 파일을 넣어주고
 
-vo.setFilename(fileName) DB에 파일에 이름을 저장, vo.setWriter(user); 게시글 작성자에 로그인 시 저장한 유저 아이디를 넣어줍니다.
+vo.setFilename(fileName) DB에 파일에 이름을 저장, vo.setWriter(user); 로그인 시 저장한 유저 아이디를 작성자로 설정 해줍니다.
 
-그 후 $('#insertBoard').submit(); 폼 
+그 후 $('#insertBoard').submit(); 폼 전송을 한 뒤 메인 페이지로 이동합니다.
 
 
 ```
