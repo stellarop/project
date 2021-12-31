@@ -596,7 +596,15 @@ var formData = new FormData($('#insertBoard')[0]); ajax로 form 전체의 데이
 
 게시글 작성 폼(insertBoard)을 FormData 객체 안에 넣어주었습니다.
 
+ajax로 파일 업로드 시 필수로 설정 해야하는 사항 2가지가 있는데 processData, contentType를 false로 선언해야 한다는 점입니다.
 
+processData는 서버에 전달되는 데이터는 쿼리 스트링 형식으로 전송 됩니다.
+
+파일 전송에 경우 쿼리 스트링 형식으로 전송이 되지 않아서 processData를 false로 선언해야하고
+
+contentType은 디폴트 값이 application/x-www-form-urlencoded; charset=UTF-8 입니다.
+
+파일 전송 시 multipart/form-data 로 전송 하기 때문에 contentType를 false로 선언해주었습니다.
 
 
 ```
