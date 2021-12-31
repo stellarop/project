@@ -554,16 +554,50 @@ session.invalidate(); 세션을 끊어준 후 로그인 페이지로 이동 시�
 두 패스워드의 값이 일치하지 않는다면 회원탈퇴 페이지로 이동시켜 주는 형식으로 구현하였습니다.
 
 
-## 글 작성
+<div align=center><h2>게시글 작성 기능</h2>
 
 ![글 작성 테스트 gif](https://user-images.githubusercontent.com/93149034/143153447-d8e43a2c-08d6-4ed1-8815-674bd790ad3c.gif)
+</div>
 
 ```
-<!-- 게시글 작성 -->
-<insert id="insertBoard">
-	INSERT INTO BOARD (TITLE,WRITER,CONTENT,FILENAME) VALUES (#{title},#{writer},#{content},#{filename})
-</insert>
+// form 전체의 데이터를 보낼때(파일 업로드)
+var formData = new FormData($('#insertBoard')[0]);
+		
+$.ajax({
+	// 게시글 작성 경로
+	url : 'ajaxinsertBoard.do',
+	enctype : 'multipart/form-data',
+	//=== ajax에서 파일 업로드를 할 시 필수로 입력 해야 하는 것 ===
+	// false로 선언 시 formData를 string으로 변환하지 않음
+	processData : false,
+	// false 로 선언 시 content-type 헤더가 multipart/form-data로 전송되게 함
+	contentType : false,
+	cache: false,
+	//==========================================
+	data : formData,
+	dataType : 'json',
+	//async: false,
+	type : 'post',
+	success : function(data){
+	alert('게시글이 등록 되었습니다.');
+		$('#insertBoard').submit();
+		location.href = "main.do";
+	},
+	error : function(data){
+		console.log(data);
+		alert('게시글 등록에 실패 하였습니다.');
+	}
+})
 ```
+
+게시글 작성 기능은 ajax로 이미지 등록까지 해주기 위하여 FromData을 활용해서 구현하였습니다.
+
+var formData = new FormData($('#insertBoard')[0]); ajax로 form 전체의 데이터를 보내기 위해 FormData 객체를 생성,
+
+게시글 작성 폼(insertBoard)을 FormData 객체 안에 넣어주었습니다.
+
+
+
 
 ```
 // 게시글 작성 
@@ -600,36 +634,6 @@ public Map<String, Object> insertBoard(BoardVO vo, HttpSession session) throws I
 2. 업로드한 파일을 경로에 넣어주고 파일 이름을 저장합니다.
 3. 작성자가 입력한 글 작성 데이터를 클라이언트로 리턴 시켜줍니다.
 
-```
-// form 전체의 데이터를 보낼때(파일 업로드)
-var formData = new FormData($('#insertBoard')[0]);
-		
-	$.ajax({
-		// 게시글 작성 경로
-		url : 'ajaxinsertBoard.do',
-		enctype : 'multipart/form-data',
-		//=== ajax에서 파일 업로드를 할 시 필수로 입력 해야 하는 것 ===
-		// false로 선언 시 formData를 string으로 변환하지 않음
-		processData : false,
-		// false 로 선언 시 content-type 헤더가 multipart/form-data로 전송되게 함
-		contentType : false,
-		cache: false,
-		//==========================================
-		data : formData,
-		dataType : 'json',
-		//async: false,
-		type : 'post',
-		success : function(data){
-			alert('게시글이 등록 되었습니다.');
-			$('#insertBoard').submit();
-			location.href = "main.do";
-		},
-		error : function(data){
-			console.log(data);
-			alert('게시글 등록에 실패 하였습니다.');
-		}
-	})
-```
 
 4. ajax로 파일 업로드 할 시 form 안에 있는 내용 전체를 전송하기위해 formData 객체를 사용하였습니다.
 5. formData(insertBoard) 안에 있는 데이터를 서버로 보내준 후 메인 페이지로 보내줍니다.
