@@ -604,7 +604,7 @@ processData는 서버에 전달되는 데이터는 쿼리 스트링 형식으로
 
 contentType은 디폴트 값이 application/x-www-form-urlencoded; charset=UTF-8 입니다.
 
-파일 전송 시 multipart/form-data 로 전송 하기 때문에 contentType를 false로 선언해주었습니다.
+파일 전송 시 multipart/form-data 로 전송 해주어야 하기 때문에 contentType를 false로 선언해주었습니다.
 
 
 ```
@@ -629,7 +629,7 @@ public Map<String, Object> insertBoard(BoardVO vo, HttpSession session) throws I
 	}	
 	// 파일 이름을 데이터베이스에 저장
 	vo.setFilename(fileName);
-	// 게시글 작성자에 로그인 한 유저 아이디 넣어주기
+	// 게시글 작성자에 유저 아이디 저장
 	vo.setWriter(user);
 	result.put("fileName", fileName);
 	//게시글 작성
@@ -638,15 +638,20 @@ public Map<String, Object> insertBoard(BoardVO vo, HttpSession session) throws I
 }
 ```
 
-1. 글 작성시 작성자를 유저 아이디로 넣어주기 위해 로그인시 넘겨준 유저 아이디를 가져옵니다.
-2. 업로드한 파일을 경로에 넣어주고 파일 이름을 저장합니다.
-3. 작성자가 입력한 글 작성 데이터를 클라이언트로 리턴 시켜줍니다.
+게시글 작성자를 유저에 아이디로 저장하기 위해 String user = (String)session.getAttribute("userId") 로그인 시 저장한 유저 아이디를 가져옵니다.
 
+MultipartFile uploadFile = vo.getUploadFile() VO 칼럼에 있는 uploadFile 칼럼을 파일 형식으로 변경 후 
 
-4. ajax로 파일 업로드 할 시 form 안에 있는 내용 전체를 전송하기위해 formData 객체를 사용하였습니다.
-5. formData(insertBoard) 안에 있는 데이터를 서버로 보내준 후 메인 페이지로 보내줍니다.
+String fileName = uploadFile.getOriginalFilename() 업로드 하려는 파일에 이름을 구하기 위해서 fileName 변수에 파일 이름을 넣어주고 
 
-6. BoardVO 필드에 MultipartFile uploadFile 를 추가 해줍니다.
+if(!uploadFile.isEmpty() 업로드한 파일이 있으면 uploadFile.transferTo(new File("C:\\Project 파일 업로드\\" + fileName))
+
+C:\\Project 파일 업로드 에 사용자가 첨부한 파일을 넣어주고
+
+vo.setFilename(fileName) DB에 파일에 이름을 저장, vo.setWriter(user); 게시글 작성자에 로그인 시 저장한 유저 아이디를 넣어줍니다.
+
+그 후 $('#insertBoard').submit(); 폼 
+
 
 ```
 private MultipartFile uploadFile;
