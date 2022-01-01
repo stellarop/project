@@ -786,9 +786,10 @@ public Map<String, Object> updateBoard(BoardVO vo, Model model, Criteria cri) {
 
 location.href = "main.do?page=${cri.page}"; 메인 페이지로 이동합니다.
 
-# 글 삭제
+<div align=center><h2>게시글 삭제 기능</h2>
 
 ![게시글 삭제 gif](https://user-images.githubusercontent.com/93149034/143155001-6e62199d-2a78-461b-8335-c8344d7f9971.gif)
+</div>
 
 ```
 <!-- 게시글 삭제 -->
