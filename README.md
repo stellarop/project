@@ -653,6 +653,8 @@ vo.setFilename(fileName) DB에 파일에 이름을 저장, vo.setWriter(user); �
 그 후 $('#insertBoard').submit(); 폼 전송을 한 뒤 메인 페이지로 이동합니다.
 
 
+
+=== 이미지 출력 추가 해야함 ===
 ```
 private MultipartFile uploadFile;
 ```
@@ -791,14 +793,6 @@ location.href = "main.do?page=${cri.page}"; 메인 페이지로 이동합니다.
 ![게시글 삭제 gif](https://user-images.githubusercontent.com/93149034/143155001-6e62199d-2a78-461b-8335-c8344d7f9971.gif)
 </div>
 
-```
-<!-- 게시글 삭제 -->
-<delete id="deleteBoard">
-   DELETE FROM BOARD WHERE BOARDSEQ=#{boardseq} AND PASSWORD =#{password}
-</delete>
-```
-
-
 ```   
 // 게시글 삭제 
 @ResponseBody
@@ -827,12 +821,22 @@ $.ajax({
 	}
 })
 ```
-1. 글 삭제 버튼을 클릭하면 글 상세에 있는 게시글 번호를 컨트롤러로 전송합니다.
-2. 글 상세에서 보내준 게시글 번호를 삭제하고 메인 페이지로 보내줍니다.
 
-## 게시글 검색, 페이징
+사용자가 게시글 삭제 버튼을 누르면 게시글 삭제 ajax 로직이 실행되고
+
+삭제를 누를 시 해당 게시글 번호가 controller로 전달됩니다. 
+
+삭제된 게시글 번호가 게시글 삭제 메서드로 들어가면 (delete from board where boardseq =게시글번호) 해당 게시글이 삭제되고 
+
+location.href = "main.do?page=${cri.page}" 메인 페이지로 이동합니다.
+
+
+
+
+<div align=center><h2>검색, 페이징</h2>
 
 ![검색 gif](https://user-images.githubusercontent.com/93149034/143157208-a74b15d3-c7b7-46ac-b131-a2818dde4b28.gif)
+</div>
 
 ```
 // 현재 페이지 번호
@@ -994,17 +998,12 @@ searchType(검색키워드)가 null이 아니라면 사용자가 설정한 해�
 searchType(검색키워드)가 없을 시 총 게시글 수를 구해서 view로 나타내줍니다.
 
 
-## 댓글 리스트
+<div align=center><h2>댓글 리스트</h2>
 
 ![댓글 리스트 gif](https://user-images.githubusercontent.com/93149034/143158465-323908cf-a39c-4974-bd40-50e7121e2d6e.gif)
+</div>
 
-
-```
-<!-- 댓글 리스트 -->
-<select id="replyList" resultMap="replyResult">
-	SELECT * FROM REPLY WHERE BOARDSEQ =#{boardseq}
-</select>
-```
+댓글 리스트는 JSON 데이터로 클라이언트에 보내주고 해당 게시글에 댓글리스트 길이만큼 출력하게 구현하였습니다.
 
 ```
 // 댓글 리스트
@@ -1021,9 +1020,10 @@ public Map<String, Object> getBoard(BoardVO vo, ReplyVO rvo,HttpSession session)
 	return result;
 }
 ```
-1. 댓글 수정, 댓글 삭제 버튼을 작성자만 보이게 만들기 위하여 로그인 성공 시 유저 아이디를 가져옵니다.
 
-2. 댓글 리스트와 유저 아이디를 클라이언트로 리턴 시켜줍니다.
+로그인시 저장된 아이디를 session.getAttribute("userId")로 가져와서 댓글 리스트와 같이 리턴 해주었습니다.
+(댓글 수정, 삭제시 유저아이디(user.id)와 작성자(writer)가 일치해야 수정, 삭제 처리가 가능하게 구현했기 때문입니다.)
+
 ```
 //댓글 리스트
 function replyList(){
@@ -1059,18 +1059,18 @@ function replyList(){
 				replyList += '</div>';
 			});
 		}
-		// replyList form에 댓글 목록 추가
+		// replyList form에 댓글 추가
 		$('#replyList').html(replyList);
 	}
 });
 ```
 
-3. url을 해당하는 게시글 번호에 댓글 리스트로 설정해줍니다.
-4. 컨트롤러에서 리턴받은 댓글 리스트에 길이(length)가 0이면 댓글이 없음을 알려주고 리스트의 길이가 1이상이면 리스트에 길이만큼 출력 해줍니다. 
-5. 컨트롤러에서 리턴받은 유저 아이디는 댓글 수정, 댓글 삭제 시 자신의 댓글만 수정, 삭제 처리하기 때문입니다.
-6. 작성자가 유저 아이디로 들어가기 때문에 user == writer 유저 아이디와 작성자가 일치하면 댓글 수정, 삭제 버튼이 보이게 만들었습니다.
-7. replyList form에 댓글 리스트를 넣어주고 replyList(); 리스트 함수를 실행시켜서 글 상세에 들어오면 댓글이 보이게 만들었습니다.
+리턴 받은 댓글 리스트를 if(data.reply.length < 1) 길이가 1 미만이면 등록된 댓글이 없습니다. 를 출력해주고
 
+댓글 리스트에 길이가 1 이상이면 등록된 댓글을 댓글에 길이만큼 출력시켜줍니다($(data.reply).each(function(key, value))
+				       
+				    
+				   
 ## 댓글 등록
 
 ![댓글 등록 gif](https://user-images.githubusercontent.com/93149034/143910807-043f41c2-59ef-4f26-92b4-1d3a966bfd20.gif)
