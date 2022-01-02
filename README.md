@@ -1082,13 +1082,6 @@ function replyList(){
 </div>
 
 ```
-<!-- 댓글 작성 -->
-<insert id="insertreply">
-	INSERT INTO REPLY (BOARDSEQ,WRITER,CONTENT) VALUES (#{boardseq},#{writer},#{content})
-</insert>
-```
-
-```
 // 댓글 작성
 @ResponseBody
 @RequestMapping(value = "/insertReply.do", method = RequestMethod.POST)
@@ -1104,8 +1097,9 @@ public Map<String, Object> insertReply(ReplyVO rvo, Criteria cri,HttpSession ses
 }
 ```
 
-1. 작성자를 유저 아이디로 하기 위해 유저 아이디를 가져옵니다.
-2. 댓글 작성자에 유저 아이디를 넣어주고 댓글 작성을 클라이언트로 리턴 시킵니다.
+댓글 작성 또한 작성자를 아이디로 넣어주기 위해 session.getAttribute("userId") 저장된 아이디를 가져와서
+
+rvo.setWriter(user); 작성자에 넣어주었습니다.
 
 ```
 // 댓글 작성
@@ -1131,9 +1125,9 @@ $('#insertreplyBtn').click(function(){
 	})
 
 ```
+insertReply form 안에 있는 댓글을 controller로 보내준 후 $('#insertReply').submit(); 폼에 있는 댓글을 전송 합니다.
 
-3. 컨트롤러에서 리턴받은 데이터를 submit() 저장 시킨 후 등록된 페이지로 보내줍니다.
-
+댓글을 등록 후 location.href = "getBoard.do?boardseq=${board.boardseq}&page=${cri.page}" 해당 페이지, 해당 게시글로 이동합니다.
 
 ## 댓글 수정
 
@@ -1205,28 +1199,10 @@ $('#updateBoardBtn').click(function(){
 ![댓글 삭제 gif](https://user-images.githubusercontent.com/93149034/143159466-1ac7fadb-7522-4e12-aed8-36925d659cdc.gif)
 
 ```
-<!-- 댓글 삭제 -->
-<delete id="deletereply">
-   DELETE FROM REPLY WHERE REPLYSEQ = #{replyseq}
-</delete>
+<a href="javascript:void(0);" onclick="deleteReply(' + value.replyseq + ');">삭제</a>
 ```
 
-```
-  // 댓글 삭제
-@ResponseBody
-@RequestMapping(value = "/deleteReply.do", method = RequestMethod.POST)
-public String deleteReply(ReplyVO rvo){
-	replyservice.deleteReply(rvo);
-	return "getBoard.do";
-}
-```
-
-```
-replyList += '<a href="javascript:void(0);" onclick="deleteReply(' + value.replyseq + ');">삭제</a>';
-```
-
-1. 댓글 리스트에서 삭제를 클릭하면 deleteReply() 함수를 실행시킵니다.
-2. deleteReply() 함수 파라미터에 삭제할 댓글 번호를 같이 보내줍니다.
+댓글 삭제를 할 시 deleteReply(); 함수가 실행되고 매개변수에 삭제할 댓글 번호를 같이 보내주었습니다.
 
 ```
 //댓글 삭제
@@ -1247,8 +1223,9 @@ function deleteReply(replyseq){
 }
 ```
 
-3. url에 댓글 삭제 경로와 삭제할 댓글 번호를 같이 지정하여 해당 댓글이 삭제되게 지정하였습니다.
-4. 댓글 삭제가 완료되면 해당 게시글로 이동합니다.
+삭제할 댓글 번호를 매개변수에 넣어주고 deleteReply.do?replyseq=' + replyseq  댓글 삭제 url에 삭제할 댓글을 넣어주었습니다.
+
+댓글 삭제 쿼리문에 의해(delete from reply where replyseq="삭제할 댓글번호") 삭제를 누를 시 해당 댓글이 삭제되고 다시 기존 페이지로 되돌아오게 구현하였습니다.
 
 ## error
 
