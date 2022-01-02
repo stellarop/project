@@ -1077,6 +1077,7 @@ function replyList(){
 				       
 				       
 <div align=center><h2>댓글 등록</h2>
+
 ![댓글 등록 gif](https://user-images.githubusercontent.com/93149034/143910807-043f41c2-59ef-4f26-92b4-1d3a966bfd20.gif)
 </div>
 
