@@ -1068,12 +1068,17 @@ function replyList(){
 리턴 받은 댓글 리스트를 if(data.reply.length < 1) 길이가 1 미만이면 등록된 댓글이 없습니다. 를 출력해주고
 
 댓글 리스트에 길이가 1 이상이면 등록된 댓글을 댓글에 길이만큼 출력시켜줍니다($(data.reply).each(function(key, value))
-				       
-				    
-				   
-## 댓글 등록
+				  
+댓글 수정, 삭제는 댓글의 작성자와 controller에서 리턴 시켜준 유저 아이디가 일치하면 if(data.user == value.writer) 수정, 삭제 처리되게 구현하였고 
 
+댓글 삭제는 삭제하고자 하는 댓글 번호를 deleteReply() 함수로 보내서 해당 댓글을 삭제 처리하였고
+
+마지막으로 댓글을 출력해줄 id를 replyList로 지정해준 div에 출력 시켜주었습니다.
+				       
+				       
+<div align=center><h2>댓글 등록</h2>
 ![댓글 등록 gif](https://user-images.githubusercontent.com/93149034/143910807-043f41c2-59ef-4f26-92b4-1d3a966bfd20.gif)
+</div>
 
 ```
 <!-- 댓글 작성 -->
@@ -1285,4 +1290,3 @@ contentType을 false 지정해주면 multipart/fprm-data로 지정되서 파일 
 libraries=services
 
 지도 api 스크립트 선언 시 인증키 옆에 주소를 좌표로 변환하는 라이브러리를 추가하여 해결하였습니다.
-
