@@ -89,7 +89,7 @@ $(function(){
 로그인 페이지에선 아이디,패스워드 유효성 검사와 사용자가 아이디, 패스워드를 입력 후 로그인 버튼을 누를 시 
 사용자가 입력한 아이디, 패스워드 값이 서버로 전송됩니다.
 
-```
+```Java
 // 로그인
 @ResponseBody
 @RequestMapping(value = "/login.do", method = RequestMethod.POST)
@@ -146,7 +146,7 @@ alert으로 로그인 실패를 알려줘도 되지만 확실하게 로그인 �
 
 </div>
 
-```
+```JavaScript
       $.ajax({
       // 회원가입 경로
       url : 'createUser.do',
@@ -184,7 +184,7 @@ alert으로 로그인 실패를 알려줘도 되지만 확실하게 로그인 �
 
 	
 
-```
+```Java
 // 회원가입
 @ResponseBody
 @RequestMapping(value = "/createUser.do", method = RequestMethod.POST)
@@ -217,7 +217,7 @@ public boolean createUser(UserVO vo) {
 사용 가능한 아이디면 true 리턴과 함께 회원가입을 정상적으로 진행 시켜줍니다.
 	
 
-```
+```Java
 // 아이디 체크
 @ResponseBody
 @RequestMapping(value = "/idCheck.do", method = RequestMethod.POST)
@@ -227,7 +227,7 @@ public int idCheck(UserVO vo) {
 }
 ```
 
-```
+```JavaScript
 // 아이디 중복확인
 function id_duplicate(){
    $.ajax({
@@ -292,7 +292,7 @@ function id_duplicate(){
 지도로 나타내주어야 하기 때문에 스크립트 경로에 지도 라이브러리도 같이 추가 해주었습니다.
 
 
-```
+```JavaScript
 // 주소 클릭시 주소 검색 & 지도에 해당 주소 표시
 // 지도 영역
 var divMap = document.getElementById('map')
@@ -334,7 +334,7 @@ var divMap = document.getElementById('map')
 
 사용자가 주소 검색에 성공하고 지도로 그 주소를 변환하여 나타내주는 코드는 아래에서 설명드리겠습니다.
 
-```
+```JavaScript
 	// 주소 입력 칸 클릭 시 발동
 	$('#address').click(function(){
 	// 주소 검색 팝업창  
@@ -397,7 +397,7 @@ $('#map').show(); 사용자가 검색하기전 숨긴 지도 영역을 나타내
 </div>
 
 
-```
+```JavaScript
 $(function(){
 
       $.ajax({
@@ -423,7 +423,7 @@ $(function(){
 ```
 
 == 설명 들어가야 함 ==
-```
+```Java
 // 아이디 찾기
 @ResponseBody
 @RequestMapping(value = "/findId.do", method = RequestMethod.POST)
@@ -479,7 +479,7 @@ public int findId(@ModelAttribute("user") UserVO vo, HttpSession session) {
 ![회원탈퇴 gif](https://user-images.githubusercontent.com/88939199/136686776-660fa240-fb91-4aa3-ae36-1f1977df6af2.gif)
 </div>
 
-```
+```Java
 // 패스워드 체크
 @ResponseBody
 @RequestMapping(value = "/passwordCheck.do", method = RequestMethod.POST)
@@ -489,7 +489,7 @@ public int passwordCheck(UserVO vo) {
 }
 ```
 
-```
+```JavaScript
       $.ajax({
          // 회원탈퇴 경로
          url : 'passwordCheck.do',
@@ -523,7 +523,7 @@ public int passwordCheck(UserVO vo) {
 일치하지 않는다면 = 0 "패스워드가 일치하지 않습니다" 를 알려주는 형식으로 구현하였습니다.
 
 
-```
+```Java
 // 회원탈퇴 
 @RequestMapping(value = "/deleteUser.do", method = RequestMethod.POST)
 public String deleteUser(UserVO vo, HttpSession session) {
@@ -559,7 +559,7 @@ session.invalidate(); 세션을 끊어준 후 로그인 페이지로 이동 시�
 ![글 작성 테스트 gif](https://user-images.githubusercontent.com/93149034/143153447-d8e43a2c-08d6-4ed1-8815-674bd790ad3c.gif)
 </div>
 
-```
+```JavaScript
 // form 전체의 데이터를 보낼때(파일 업로드)
 var formData = new FormData($('#insertBoard')[0]);
 		
@@ -607,7 +607,7 @@ contentType은 디폴트 값이 application/x-www-form-urlencoded; 입니다.
 파일 전송 시 multipart/form-data 로 전송 해주어야 하기 때문에 contentType를 false로 선언해주었습니다.
 
 
-```
+```Java
 // 게시글 작성 
 @ResponseBody
 @RequestMapping(value = "/ajaxinsertBoard.do", method = RequestMethod.POST)
@@ -709,7 +709,7 @@ private MultipartFile uploadFile;
 
 수정 데이터를 보여주는 JSP, 실제 데이터 수정을 담당하는 메서드 두 개로 나뉘어져 있습니다.
 
-```
+```Java
 // 게시글 수정 view
 @RequestMapping(value = "/updateBoardView.do", method = RequestMethod.GET)
 public String updateBoardView(BoardVO vo, Criteria cri, Model model) {
@@ -721,7 +721,7 @@ public String updateBoardView(BoardVO vo, Criteria cri, Model model) {
 }		
 ```
 
-```
+```JavaScript
 // 게시글 수정
 	$('#updateBoardBtn').click(function(){
 		location.href = "updateBoardView.do?"
@@ -733,7 +733,7 @@ public String updateBoardView(BoardVO vo, Criteria cri, Model model) {
 게시글 수정 버튼을 클릭하면 해당 게시글의 데이터를 보여주는 JSP 화면으로 이동합니다.
 
 
-```
+```JavaScript
 $('#updateBoardBtn').click(function(){		
 	if($('#title').val()==''){
 		alert('제목을 입력하세요.');
@@ -769,7 +769,7 @@ $('#updateBoardBtn').click(function(){
 ajax url 경로를 실제 수정을 담당하는 메서드 경로로 지정하고 updateBoard form 안에 수정된 데이터를 controller로 전송됩니다.
 
 
-```
+```Java
 // 게시글 수정
 @ResponseBody
 @RequestMapping(value = "/updateBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
@@ -793,7 +793,7 @@ location.href = "main.do?page=${cri.page}"; 메인 페이지로 이동합니다.
 ![게시글 삭제 gif](https://user-images.githubusercontent.com/93149034/143155001-6e62199d-2a78-461b-8335-c8344d7f9971.gif)
 </div>
 
-```   
+```Java   
 // 게시글 삭제 
 @ResponseBody
 @RequestMapping(value = "/deleteBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
@@ -803,7 +803,7 @@ public String  deleteBoardView(BoardVO vo) {
 } 
 ```
 
-```
+```JavaScript
 // 게시글 삭제
 $('#deleteBoardBtn').click(function(){
 $.ajax({
@@ -838,7 +838,7 @@ location.href = "main.do?page=${cri.page}" 메인 페이지로 이동합니다.
 ![검색 gif](https://user-images.githubusercontent.com/93149034/143157208-a74b15d3-c7b7-46ac-b131-a2818dde4b28.gif)
 </div>
 
-```
+```Java
 // 현재 페이지 번호
    private Criteria cri;
    // 총 게시글 갯수
@@ -887,7 +887,7 @@ location.href = "main.do?page=${cri.page}" 메인 페이지로 이동합니다.
       
    } 
 ```
-```
+```Java
 // 현재 페이지 번호
    private int page;
    // 한 페이지당 보여줄 게시글의 갯수
@@ -934,7 +934,7 @@ location.href = "main.do?page=${cri.page}" 메인 페이지로 이동합니다.
    }
 ```
 
-```
+```Java
 // 게시글 리스트
 @RequestMapping(value = "/main.do", method = {RequestMethod.GET,RequestMethod.POST}) 
 public String boardList(Model model,  @ModelAttribute("cri") Criteria cri) {
@@ -973,7 +973,7 @@ public String boardList(Model model,  @ModelAttribute("cri") Criteria cri) {
 게시판의 게시글이 몇개인지 구하고 검색 키워드에 값이 들어가면 검색 키워드에 맞는 게시글을 구해서 view로 나타내줍니다.
 검색되는 내용이 없으면 총 게시글이 몇개인지 구해서 view로 10개의 게시글을 보여줍니다. 
 
-```
+```JavaScript
 <!-- 검색 -->
 <sql id="search">
    <if test="searchType != null">
@@ -985,7 +985,7 @@ public String boardList(Model model,  @ModelAttribute("cri") Criteria cri) {
 ```
 searchType(검색키워드)를 view에서 선택합니다.
 
-```
+```JavaScript
  <select name="searchType">  
       <option value="t"<c:out value="${cri.searchType eq 't' ? 'selected' : ''}"/>>제목</option>
       <option value="c"<c:out value="${cri.searchType eq 'c' ? 'selected' : ''}"/>>내용</option>
@@ -1005,7 +1005,7 @@ searchType(검색키워드)가 없을 시 총 게시글 수를 구해서 view로
 
 댓글 리스트는 JSON 데이터로 클라이언트에 보내주고 해당 게시글에 댓글리스트 길이만큼 출력하게 구현하였습니다.
 
-```
+```Java
 // 댓글 리스트
 @ResponseBody
 @RequestMapping(value = "/replyList.do",method = RequestMethod.POST)
@@ -1024,7 +1024,7 @@ public Map<String, Object> getBoard(BoardVO vo, ReplyVO rvo,HttpSession session)
 로그인시 저장된 아이디를 session.getAttribute("userId")로 가져와서 댓글 리스트와 같이 리턴 해주었습니다.
 (댓글 수정, 삭제시 유저아이디(user.id)와 작성자(writer)가 일치해야 수정, 삭제 처리가 가능하게 구현했기 때문입니다.)
 
-```
+```JavaScript
 //댓글 리스트
 function replyList(){
 	$.ajax({
@@ -1081,7 +1081,7 @@ function replyList(){
 ![댓글 등록 gif](https://user-images.githubusercontent.com/93149034/143910807-043f41c2-59ef-4f26-92b4-1d3a966bfd20.gif)
 </div>
 
-```
+```Java
 // 댓글 작성
 @ResponseBody
 @RequestMapping(value = "/insertReply.do", method = RequestMethod.POST)
@@ -1101,7 +1101,7 @@ public Map<String, Object> insertReply(ReplyVO rvo, Criteria cri,HttpSession ses
 
 rvo.setWriter(user); 작성자에 넣어주었습니다.
 
-```
+```JavaScript
 // 댓글 작성
 $('#insertreplyBtn').click(function(){
 	if($('#replyContent').val()==''){
@@ -1139,7 +1139,7 @@ insertReply form 안에 있는 댓글을 controller로 보내준 후 $('#insertR
 수정 데이터를 보여주는 JSP, 실제 데이터 수정을 담당하는 메서드 두 개로 나뉘어져 있습니다.
 
 
-```
+```Java
 // 댓글 수정 view
 @RequestMapping(value = "/updateReplyView.do" , method = {RequestMethod.GET,RequestMethod.POST})
 public String updateReplyView(ReplyVO rvo, Model model, Criteria cri) {
@@ -1152,7 +1152,7 @@ public String updateReplyView(ReplyVO rvo, Model model, Criteria cri) {
 ```<a href="updateReplyView.do?replyseq=' + value.replyseq + '">수정</a>``` 수정을 클릭 하면 댓글 수정 JSP로 이동합니다.
 
 
-```
+```Java
 // 댓글 수정
 @ResponseBody
 @RequestMapping(value = "/updateReply.do", method = RequestMethod.POST)
@@ -1169,7 +1169,7 @@ public Map<String, Object> updateReply(ReplyVO rvo){
 
 1. 
 
-```
+```JavaScript
 $('#updateBoardBtn').click(function(){		
 	if($('#title').val()==''){
 		alert('제목을 입력하세요.');
@@ -1213,7 +1213,7 @@ controller에서 정상적으로 수정 처리 후 페이징 유지와 함께 �
 
 댓글 삭제를 할 시 deleteReply(); 함수가 실행되고 매개변수에 삭제할 댓글 번호를 같이 보내주었습니다.
 
-```
+```JavaScript
 //댓글 삭제
 function deleteReply(replyseq){
 	// onclick으로 받은 댓글 번호로 해당 댓글 삭제
