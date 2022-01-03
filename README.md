@@ -45,7 +45,7 @@
 </div>
 
 
-```
+```JavaScript
 $(function(){
    $('#login').click(function(){
       
