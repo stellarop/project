@@ -1129,16 +1129,16 @@ insertReply form 안에 있는 댓글을 controller로 보내준 후 $('#insertR
 
 댓글을 등록 후 location.href = "getBoard.do?boardseq=${board.boardseq}&page=${cri.page}" 해당 페이지, 해당 게시글로 이동합니다.
 
-## 댓글 수정
+<div align=center><h2>댓글 등록</h2>
 
 ![댓글 수정 gif](https://user-images.githubusercontent.com/93149034/143158987-bdcf3593-e163-4264-baab-d24fb9dfe27a.gif)
+</div>
 
-```
-<!-- 댓글 수정 -->
-<update id="updatereply">
-   UPDATE REPLY SET CONTENT=#{content} WHERE REPLYSEQ =#{replyseq}
-</update>
-```
+댓글 수정도 게시글 수정과 마찬가지로 두 개의 메서드로 이루어져 있습니다.
+
+수정 데이터를 보여주는 JSP, 실제 데이터 수정을 담당하는 메서드 두 개로 나뉘어져 있습니다.
+
+
 ```
 // 댓글 수정 view
 @RequestMapping(value = "/updateReplyView.do" , method = {RequestMethod.GET,RequestMethod.POST})
@@ -1147,7 +1147,12 @@ public String updateReplyView(ReplyVO rvo, Model model, Criteria cri) {
 	model.addAttribute("updateReply", replyservice.selectReply(rvo.getReplyseq()));
 	return "updateReplyView.jsp";
 }
+```
 
+'<a href="updateReplyView.do?replyseq=' + value.replyseq + '">수정</a>' 수정을 클릭 하면 댓글 수정 JSP로 이동합니다.
+
+
+```
 // 댓글 수정
 @ResponseBody
 @RequestMapping(value = "/updateReply.do", method = RequestMethod.POST)
@@ -1189,10 +1194,14 @@ $('#updateBoardBtn').click(function(){
 	})
 })
 ```
+ajax url을 실제 댓글 수정을 담당하는 메서드로 지정해준 후
 
-1. 댓글 수정을 클릭하면 사용자가 입력한 댓글 수정 페이지로 이동합니다.
-2. 댓글 수정 후 수정 버튼을 누르면 댓글 수정 form에 있는 내용이 컨트롤러로 전송됩니다.
-3. 전송 후 댓글 수정을 한 페이지로 이동합니다.
+updateReply form에 수정된 데이터를 controller로 보내줍니다.
+
+controller에서 정상적으로 수정 처리 후 페이징 유지와 함께 댓글 수정을 했던 게시글로 되돌아옵니다.
+
+
+
 
 ## 댓글 삭제 
 
