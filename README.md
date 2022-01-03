@@ -833,123 +833,45 @@ location.href = "main.do?page=${cri.page}" 메인 페이지로 이동합니다.
 
 
 
-<div align=center><h2>검색, 페이징</h2>
+<div align=center><h2>검색 기능</h2>
 
 ![검색 gif](https://user-images.githubusercontent.com/93149034/143157208-a74b15d3-c7b7-46ac-b131-a2818dde4b28.gif)
 </div>
 
-```Java
-// 현재 페이지 번호
-   private Criteria cri;
-   // 총 게시글 갯수
-   private int totalCount;
-   private int startPage;
-   private int endPage;
-   private boolean prev;
-   private boolean next;
-   // 화면 하단에 보여지는 페이지 버튼의 수
-   private int displayPageNum = 5;
-
-   public Criteria getCri() {
-      return cri;
-   }
-
-   public void setCri(Criteria cri) {
-      this.cri = cri;
-   }
-
-   public int getTotalCount() {
-      return totalCount;
-   }
-
-   public void setTotalCount(int totalCount) {
-      this.totalCount = totalCount;
-      calcData();
-   }
-
-   private void calcData() {
-      // 끝 페이지 번호 = (현재 페이지 번호 / 화면에 보여질 페이지 번호의 갯수) * 화면에 보여질 페이지 번호의 갯수
-      endPage = (int) (Math.ceil(cri.getPage() / (double) displayPageNum) * displayPageNum);
-      // 시작 페이지 번호 = (끝 페이지 번호 - 화면에 보여질 페이지 번호의 갯수) + 1
-      startPage = (endPage - displayPageNum) + 1;
-      if (startPage <= 0)
-         startPage = 1;
-      
-      //마지막 페이지 번호 = 총 개시글 수 / 한 페이지당 보여줄 개시글의 갯수
-      int tempEndPage = (int) (Math.ceil(totalCount / (double) cri.getPerPageNum()));
-      if (endPage > tempEndPage) {
-         endPage = tempEndPage;
-      }
-      // 이전 버튼 생성 여부 = 시작 페이지 번호 == 1 ? false : true
-      prev = startPage == 1 ? false : true;
-      // 다음 버튼 생성 여부 = 끝 페이지 번호 * 한 페이지당 보여줄 게시글의 갯수 < 총 게시글의 수 ? true : false
-      next = endPage * cri.getPerPageNum() < totalCount ? true : false;
-      
-   } 
 ```
-```Java
-// 현재 페이지 번호
-   private int page;
-   // 한 페이지당 보여줄 게시글의 갯수
-   private int perPageNum;
-   // 검색 키워드 
-   private String keyword;
-   // 검색 타입
-   private String searchType;
-   
-   
-   // 특정 페이지의 게시글 시작 번호, 게시글 시작 행 번호
-   public int getPageStart() {
-      return (this.page - 1) * perPageNum;
-   }
-   // 한개의 페이지에 게시글을 10개 보여줌
-   public Criteria() {
-      this.page = 1;
-      this.perPageNum = 10;
-   }
-
-   public int getPage() {
-      return page;
-   }
-
-   public void setPage(int page) {
-      if (page <= 0) {
-         this.page = 1;
-      } else {
-         this.page = page;
-      }
-   }
-   
-   public int getPerPageNum() {
-      return perPageNum;
-   }
-
-   public void setPerPageNum(int pageCount) {
-      int cnt = this.perPageNum;
-      if (pageCount != cnt) {
-         this.perPageNum = cnt;
-      } else {
-         this.perPageNum = pageCount;
-      }
-   }
+<!-- 게시글 수 -->
+<select id="selectCount" resultType="int">
+   SELECT COUNT(*) FROM BOARD
+   <include refid="search"></include>
+</select>
 ```
 
-```Java
-// 게시글 리스트
-@RequestMapping(value = "/main.do", method = {RequestMethod.GET,RequestMethod.POST}) 
-public String boardList(Model model,  @ModelAttribute("cri") Criteria cri) {
-   // 게시글 리스트
-   model.addAttribute("boardList", boardservice.selectBoardList(cri));      
-   // 페이징
-   PageMaker pageMaker = new PageMaker();
-   pageMaker.setCri(cri);
-   model.addAttribute("pageMaker", pageMaker);
-   // 게시글 수 넣어주기
-   pageMaker.setTotalCount(boardservice.selectCount(cri));
-   return "main.jsp";
-}
-```
+검색 기능은 검색 조건(제목,작성자,작성내용)에 따라 달라집니다.
 
+검색을 하지 않을 시 총 게시글 개수를 구하여  총 게시글을 JSP에 출력해줍니다.
+
+검색 조건에 따라 일치하는 값을 찾아서 일치하는 값이 있는 게시글의 개수를 구하여 JSP로 출력해주고
+
+검색을 하지 않으면 총 게시글 개수를 구해주고  <include refid="search"> 검색 조건이 들어갈 시 검색 조건에 맞는 게시글 개수를 구해주었습니다.
+
+	
+```
+<!-- 검색 -->
+<sql id="search">
+   <if test="searchType != null">
+      <if test="searchType == 't'.toString()">WHERE TITLE LIKE CONCAT('%',#{keyword},'%')</if>
+      <if test="searchType == 'c'.toString()">WHERE CONTENT LIKE CONCAT('%',#{keyword},'%')</if>
+      <if test="searchType == 'w'.toString()">WHERE WRITER LIKE CONCAT('%',#{keyword},'%')</if>
+   </if>
+</sql>
+```
+	
+<if test="searchType != null"> 검색 조건이 들어가면 
+
+ <if test="searchType == 't'.toString()">WHERE TITLE LIKE CONCAT('%',#{keyword},'%')</if> 해당 검색 조건에 맞는 값을 조회 합니다.
+	
+
+	
 ```
 <!-- 게시글리스트 + 페이징 -->
 <select id="selectBoardList" resultMap="boardResult">
@@ -960,30 +882,25 @@ public String boardList(Model model,  @ModelAttribute("cri") Criteria cri) {
 </select>
 ```
 
-게시글 번호를 내림차순으로 1페이지당 10개의 게시글을 보여줍니다.
 
+	
+```Java
+// 게시글 리스트
+@RequestMapping(value = "/main.do", method = {RequestMethod.GET,RequestMethod.POST}) 
+public String boardList(Model model,  @ModelAttribute("cri") Criteria cri) {
+   // 게시글 리스트
+   model.addAttribute("boardList", boardservice.selectBoardList(cri));      
+   // 페이징
+   PageMaker pageMaker = new PageMaker();
+   pageMaker.setCri(cri);
+   model.addAttribute("pageMaker", pageMaker);
+   // 게시글 수 
+   pageMaker.setTotalCount(boardservice.selectCount(cri));
+   return "main.jsp";
+}
 ```
-<!-- 게시글 수 -->
-<select id="selectCount" resultType="int">
-   SELECT COUNT(*) FROM BOARD
-   <include refid="search"></include>
-</select>
-```
+boardservice.selectCount(cri) 총 게시글을 구하여 setTotalCount
 
-게시판의 게시글이 몇개인지 구하고 검색 키워드에 값이 들어가면 검색 키워드에 맞는 게시글을 구해서 view로 나타내줍니다.
-검색되는 내용이 없으면 총 게시글이 몇개인지 구해서 view로 10개의 게시글을 보여줍니다. 
-
-```JavaScript
-<!-- 검색 -->
-<sql id="search">
-   <if test="searchType != null">
-      <if test="searchType == 't'.toString()">WHERE TITLE LIKE CONCAT('%',#{keyword},'%')</if>
-      <if test="searchType == 'c'.toString()">WHERE CONTENT LIKE CONCAT('%',#{keyword},'%')</if>
-      <if test="searchType == 'w'.toString()">WHERE WRITER LIKE CONCAT('%',#{keyword},'%')</if>
-   </if>
-</sql>
-```
-searchType(검색키워드)를 view에서 선택합니다.
 
 ```JavaScript
  <select name="searchType">  
