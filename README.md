@@ -654,46 +654,10 @@ vo.setFilename(fileName) DB에 파일에 이름을 저장, vo.setWriter(user); �
 
 
 
-=== 이미지 출력 추가 해야함 ===
-```
-private MultipartFile uploadFile;
-```
-
-7. servlet-context.xml에서 파일 업로드 빈을 등록 해주고 파일 사이즈를 정해줍니다.
-
-```
-<!-- 파일 업로드  -->
-   <beans:bean id ="multipartResolver" class ="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-      <beans:property name="maxUploadSize" value="10000000"></beans:property>
-   </beans:bean>
-```
-
-8. servlet-context.xml에서 파일이 저장된 경로를 설정해줍니다.
-
-```
-<resources mapping="/img/**" location="C:\Project 파일 업로드" />
-```
-
-9. server.xml에서 이미지 파일 경로를 지정해줍니다.
-
-```
-  <!-- 이미지 파일 경로 -->
-   <Context docBase="C:\Project 파일 업로드" path="/img" reloadable="true"/>
-```
-
-
-10. 이미지를 불러올때 /img/ +  db에 저장된 파일이름 으로 불러옵니다.
-
-```
-<img width=1110px, height=600px src="/img/${board.filename }"  onerror="this.style.display='none';"/>
-```
-
 <div align=center><h2>게시글 수정 기능</h2>
 
 ![글 수정 테스트 gif](https://user-images.githubusercontent.com/93149034/143154199-48828e0f-125e-4469-a5ef-ae2f52fb8eb2.gif)
 </div>
-
-
 
 ```
 <!-- 세션으로 로그인된 아이디와 작성자와 일치하면 수정,삭제  -->
