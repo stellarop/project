@@ -1149,7 +1149,7 @@ public String updateReplyView(ReplyVO rvo, Model model, Criteria cri) {
 }
 ```
 
-'<a href="updateReplyView.do?replyseq=' + value.replyseq + '">수정</a>' 수정을 클릭 하면 댓글 수정 JSP로 이동합니다.
+<a href="updateReplyView.do?replyseq=' + value.replyseq + '">수정</a> 수정을 클릭 하면 댓글 수정 JSP로 이동합니다.
 
 
 ```
