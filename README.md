@@ -834,20 +834,6 @@ location.href = "main.do?page=${cri.page}" 메인 페이지로 이동합니다.
 
  <if test="searchType == 't'.toString()">WHERE TITLE LIKE CONCAT('%',#{keyword},'%')</if> 해당 검색 조건에 맞는 값을 조회 합니다.
 	
-
-	
-```
-<!-- 게시글리스트 + 페이징 -->
-<select id="selectBoardList" resultMap="boardResult">
-   SELECT * FROM BOARD
-      <include refid="search"></include>
-      ORDER BY BOARDSEQ DESC
-   LIMIT #{pageStart},#{perPageNum}
-</select>
-```
-
-
-	
 ```Java
 // 게시글 리스트
 @RequestMapping(value = "/main.do", method = {RequestMethod.GET,RequestMethod.POST}) 
@@ -863,20 +849,10 @@ public String boardList(Model model,  @ModelAttribute("cri") Criteria cri) {
    return "main.jsp";
 }
 ```
-boardservice.selectCount(cri) 총 게시글을 구하여 setTotalCount
 
-
-```JavaScript
- <select name="searchType">  
-      <option value="t"<c:out value="${cri.searchType eq 't' ? 'selected' : ''}"/>>제목</option>
-      <option value="c"<c:out value="${cri.searchType eq 'c' ? 'selected' : ''}"/>>내용</option>
-      <option value="w"<c:out value="${cri.searchType eq 'w' ? 'selected' : ''}"/>>작성자</option>
-    </select>
-    <input type="text" name="keyword" value="${cri.keyword}"/>
-    <button type="submit" class="btn btn-outline-dark">검색</button>
-```
-searchType(검색키워드)가 null이 아니라면 사용자가 설정한 해당 searchType과 검색한 내용이 게시글리스트 + 페이징 쿼리문에 적용됩니다.
-searchType(검색키워드)가 없을 시 총 게시글 수를 구해서 view로 나타내줍니다.
+Criteria 클래스 필드에는 현재 페이지 번호, 1개의 페이지당 보여줄 게시글 개수, 검색 키워드, 검색 타입 4개의 필드가 선언되어있고
+	
+검색 키워드와 검색 타입으로 조회되는 게시글을 한페이지당 10개씩 JSP에 출력해주었습니다.
 
 
 <div align=center><h2>댓글 리스트</h2>
@@ -1084,10 +1060,10 @@ controller에서 정상적으로 수정 처리 후 페이징 유지와 함께 �
 
 
 
-## 댓글 삭제 
+<div align=center><h2>댓글 삭제</h2>
 
 ![댓글 삭제 gif](https://user-images.githubusercontent.com/93149034/143159466-1ac7fadb-7522-4e12-aed8-36925d659cdc.gif)
-
+</div>
 ```
 <a href="javascript:void(0);" onclick="deleteReply(' + value.replyseq + ');">삭제</a>
 ```
@@ -1117,3 +1093,7 @@ function deleteReply(replyseq){
 
 댓글 삭제 쿼리문에 의해(delete from reply where replyseq="삭제할 댓글번호") 삭제를 누를 시 해당 댓글이 삭제되고 다시 기존 페이지로 되돌아오게 구현하였습니다.
 
+
+<div align=center><h2>뭐라고쓰지</h2>
+	==내용들어감==
+</div>
