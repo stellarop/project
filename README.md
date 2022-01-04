@@ -1064,7 +1064,9 @@ controller에서 정상적으로 수정 처리 후 페이징 유지와 함께 �
 
 ![댓글 삭제 gif](https://user-images.githubusercontent.com/93149034/143159466-1ac7fadb-7522-4e12-aed8-36925d659cdc.gif)
 </div>
-```JavaScript<a href="javascript:void(0);" onclick="deleteReply(' + value.replyseq + ');">삭제</a>```
+	
+	
+```JavaScript<a href="javascript:void(0);" onclick="deleteReply(' + value.replyseq + ');".>삭제</a>```
 
 
 댓글 삭제를 할 시 deleteReply(); 함수가 실행되고 매개변수에 삭제할 댓글 번호를 같이 보내주었습니다.
