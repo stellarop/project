@@ -1064,7 +1064,7 @@ controller에서 정상적으로 수정 처리 후 페이징 유지와 함께 �
 
 ![댓글 삭제 gif](https://user-images.githubusercontent.com/93149034/143159466-1ac7fadb-7522-4e12-aed8-36925d659cdc.gif)
 </div>
-```JavaScript<a href="javascript:void(0);" onclick="deleteReply(' + value.replyseq + ');">```삭제</a>
+```JavaScript<a href="javascript:void(0);" onclick="deleteReply(' + value.replyseq + ');">삭제</a>```
 
 
 댓글 삭제를 할 시 deleteReply(); 함수가 실행되고 매개변수에 삭제할 댓글 번호를 같이 보내주었습니다.
@@ -1091,7 +1091,6 @@ function deleteReply(replyseq){
 삭제할 댓글 번호를 매개변수에 넣어주고 deleteReply.do?replyseq=' + replyseq  댓글 삭제 url에 삭제할 댓글을 넣어주었습니다.
 
 댓글 삭제 쿼리문에 의해(delete from reply where replyseq="삭제할 댓글번호") 삭제를 누를 시 해당 댓글이 삭제되고 다시 기존 페이지로 되돌아오게 구현하였습니다.
-
 
 <div align=center><h2>뭐라고쓰지</h2>
 	==내용들어감==
