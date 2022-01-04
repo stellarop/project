@@ -1064,7 +1064,7 @@ controller에서 정상적으로 수정 처리 후 페이징 유지와 함께 �
 
 ![댓글 삭제 gif](https://user-images.githubusercontent.com/93149034/143159466-1ac7fadb-7522-4e12-aed8-36925d659cdc.gif)
 </div>
-```
+```JavaScript
 <a href="javascript:void(0);" onclick="deleteReply(' + value.replyseq + ');">삭제</a>
 ```
 
