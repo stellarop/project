@@ -111,7 +111,6 @@ public boolean login(@ModelAttribute("user") UserVO vo, HttpSession session) {
    }
 ```
 
-=== 로그인 로직 ppt로 추가할 곳===
 
 로그인 페이지에서 사용자가 입력한 아이디,패스워드 값이 컨트롤러로 전송되면
  UserVO user = userservice.login(vo);
@@ -258,17 +257,6 @@ function id_duplicate(){
 
 사용자가 입력한 아이디 != DB에 있는 아이디 = 0
 사용 가능한 아이디면 0을 해당 ajax 로직에 리턴 시켜줍니다.
-
-아이디 체크 반환값 == 1
-중복된 아이디
-
-아이디 체크 반환값 == 0
-사용 가능한 아이디
-
-
-=== 아이디 체크 ajax 로직 추가 ===
-
-
 
 
 ```
@@ -1094,6 +1082,7 @@ function deleteReply(replyseq){
 
 댓글 삭제 쿼리문에 의해(delete from reply where replyseq="삭제할 댓글번호") 삭제를 누를 시 해당 댓글이 삭제되고 다시 기존 페이지로 되돌아오게 구현하였습니다.
 
-<div align=center><h2>마무리</h2>
-	==내용들어감==
-</div>
+	
+이상 포트폴리오 기능 설명을 마치겠습니다.
+
+긴 글 읽어주셔서 감사합니다.
