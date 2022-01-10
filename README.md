@@ -1082,8 +1082,8 @@ function deleteReply(replyseq){
 
 댓글 삭제 쿼리문에 의해(delete from reply where replyseq="삭제할 댓글번호") 삭제를 누를 시 해당 댓글이 삭제되고 다시 기존 페이지로 되돌아오게 구현하였습니다.
 
-<div><h2>마무리</h2>
+<div align=center><h2>마무리</h2>
 이상 포트폴리오 기능 설명을 마치겠습니다.
 
 긴 글 읽어주셔서 감사합니다.
-</
+</div>
