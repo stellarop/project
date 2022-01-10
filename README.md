@@ -1054,7 +1054,7 @@ controller에서 정상적으로 수정 처리 후 페이징 유지와 함께 �
 </div>
 	
 	
-```JavaScript<a href="javascript:void(0);" onclick="deleteReply(' + value.replyseq + ');".>삭제</a>```
+```<a href="javascript:void(0);" onclick="deleteReply(' + value.replyseq + ');".>삭제</a>```
 
 
 댓글 삭제를 할 시 deleteReply(); 함수가 실행되고 매개변수에 삭제할 댓글 번호를 같이 보내주었습니다.
