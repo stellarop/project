@@ -588,7 +588,7 @@ ajax로 파일 업로드 시 필수로 설정 해야하는 사항 2가지가 있
 
 processData는 서버에 전달되는 데이터는 쿼리 스트링 형식으로 전송 됩니다.
 
-파일 전송에 경우 쿼리 스트링 형식으로 전송하지 않아서 processData를 false로 선언
+파일 전송에 경우 쿼리 스트링 형식으로 전송하지 않고 폼 전체의 데이터를 전송하기 때문에 processData를 false로 선언
 
 contentType은 디폴트 값이 application/x-www-form-urlencoded; 입니다.
 
