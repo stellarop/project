@@ -10,7 +10,6 @@ integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706t
 <script src="<c:url value="/vendor/jquery/jquery.min.js"/>"></script>
 <script>
 $(function(){
-	
 	// 목록
 	$('#mainBtn').click(function(){
 		location.href = "main.do"
