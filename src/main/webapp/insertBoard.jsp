@@ -79,6 +79,74 @@ $(function(){
 			}
 		})
 	})
+// 파일 첨부 시 file 함수 실행
+	//$('#uploadFile').on('change', file);
+	
+});
+
+/*
+//파일 개수
+var fileCount = 0;
+// 파일 첨부 최대 개수
+var totalCount = 10;
+// 파일 고유 수
+var fileNum = 0;
+// 첨부 파일 배열
+var fileArray = new Array();
+
+// 파일 첨부 / 리스트
+function file(e){
+	
+	// 사용자가첨부한 파일
+	var file = e.target.files;
+	// 첨부한 파일을 배열로 저장
+	var fileList = Array.prototype.slice.call(file);
+	  
+	// 첨부한 파일이 파일 최대 개수보다 크다면
+	if(fileCount + fileList.length > totalCount){
+		// 파일 최대 개수가 몇개인지
+		alert('파일 첨부는 최대 ' + totalCount + '까지 가능합니다.');
+		return;
+	}else{
+		// 첨부한 파일이 최대 개수보다 작다면
+		// 첨부한 파일에 길이를 파일 개수에 더하여 넣어준다
+		fileCount = fileCount + fileList.length;
+		// 파일 첨부 시 개수 나타내줌
+		alert(fileCount + '개 의 파일이 첨부되었습니다.');
+	}
+	
+	
+ 
+    console.log(fileList);
+    console.log(fileArray);
+ 	
+	// 파일에 길이만큼 출력
+	$(fileList).each(function(key, value){
+		// 첨부한 파일의 값을 fileArray에 넣어준다
+	    fileArray.push(fileList);
+		$('#fileList').append(
+			'<p> '+ fileNum +'</p>' + 
+			'<span>' + value.name + '</span>' + '&nbsp&nbsp' + 
+			'<a class="btn btn-danger btn-sm" href="javascript:void(0);" onclick="deleteFile(' + fileNum + ');">x</a>' + 
+			'<br>' 
+		);	
+		fileNum++;
+	}) 
+	console.log('파일 수 : ' + fileNum);
+		
+}
+
+//파일 삭제
+function deleteFile(fileNum){
+	
+	$('#fileList').remove(fileNum);
+	
+	fileArray.splice(fileNum);
+	console.log(fileArray);
+	fileCount--;
+	fileNum--;
+}
+*/
 });
 </script>
 <meta charset="UTF-8">
