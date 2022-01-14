@@ -97,7 +97,7 @@ var fileArray = new Array();
 // 파일 첨부 / 리스트
 function file(e){
 	
-	// 사용자가첨부한 파일
+	// 사용자가 첨부한 파일
 	var file = e.target.files;
 	// 첨부한 파일을 배열로 저장
 	var fileList = Array.prototype.slice.call(file);
@@ -122,7 +122,7 @@ function file(e){
  	
 	// 파일에 길이만큼 출력
 	$(fileList).each(function(key, value){
-		// 첨부한 파일의 값을 fileArray에 넣어준다
+	    // 첨부한 파일의 값을 fileArray에 넣어준다
 	    fileArray.push(fileList);
 		$('#fileList').append(
 			'<p> '+ fileNum +'</p>' + 
