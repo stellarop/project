@@ -84,7 +84,7 @@ $(function(){
 	
 });
 
-/*
+
 //파일 개수
 var fileCount = 0;
 // 파일 첨부 최대 개수
@@ -146,7 +146,7 @@ function deleteFile(fileNum){
 	fileCount--;
 	fileNum--;
 }
-*/
+
 });
 </script>
 <meta charset="UTF-8">
