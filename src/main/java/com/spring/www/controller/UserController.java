@@ -21,52 +21,23 @@ public class UserController {
 	@Autowired
 	private UserService userservice;
 	
-	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
-	public String getLogin(@ModelAttribute("user") UserVO vo) {
-		//vo.setId("leeyeonjae");
-		//vo.setPassword("1234");
-		return "login.jsp";
-	}
-
 	// 로그인
 	@ResponseBody
 	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
 	public boolean login(@ModelAttribute("user") UserVO vo, HttpSession session,RedirectAttributes rttr) {
 		
-		//HashMap<String, Object> loginMap = new HashMap<String, Object>();
-		//loginMap.put("id", vo.getId());
-		//loginMap.put("password", vo.getPassword());
-		
-		//System.out.println("����ڰ� �Է��� �� : " + loginMap);
-		
-		UserVO user = userservice.login(vo);
-		//System.out.println("db���� ������ �� : " + user);
-		
-			if(user != null) {
-				session.setAttribute("userId", user.getId());
-				session.setAttribute("userName", user.getName());
-				session.setAttribute("userTime", user.getRegdate());
-				session.setAttribute("userPassword", user.getPassword()); 
-				return true;
-			}else {
-				session.setAttribute("login", false);
-				return false;
-			}	
-		
-		/*
 		UserVO user = userservice.login(vo);
 		
-		if (user != null) {
+		if(user != null) {
 			session.setAttribute("userId", user.getId());
+			session.setAttribute("userName", user.getName());
 			session.setAttribute("userTime", user.getRegdate());
-			session.setAttribute("userPassword", user.getPassword());
-			return "main.do";
-		} else {
+			session.setAttribute("userPassword", user.getPassword()); 
+			return true;
+		}else {
 			session.setAttribute("login", false);
-			//rttr.addFlashAttribute("login", false);
-			return "login.jsp";
-		}
-		*/
+			return false;
+		}	
 	}
 
 	// 로그아웃
