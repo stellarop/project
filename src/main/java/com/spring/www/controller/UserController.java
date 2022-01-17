@@ -25,9 +25,9 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
 	public boolean login(@ModelAttribute("user") UserVO vo, HttpSession session,RedirectAttributes rttr) {
-		
+		// 사용자가 입력한 로그인 데이터를 db와 비교
 		UserVO user = userservice.login(vo);
-		
+		// 두 데이터가 일치하면 true / 불일치 할시 
 		if(user != null) {
 			session.setAttribute("userId", user.getId());
 			session.setAttribute("userName", user.getName());
