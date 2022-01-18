@@ -127,8 +127,6 @@ public class BoardController {
 		return "getBoard.jsp";
 	}  
 	
-
-	
 	// 게시글 리스트 View
 	@RequestMapping(value = "/main.do", method = {RequestMethod.GET,RequestMethod.POST}) 
 	public String boardList(Model model,  @ModelAttribute("cri") Criteria cri) {
@@ -140,50 +138,5 @@ public class BoardController {
 		return "main.jsp";
 	}
 	
-	// 게시글 추천
-	@ResponseBody
-	@RequestMapping(value = "/upCountBoard.do", method = RequestMethod.POST)
-	public Map<String, Object> upCountBoard(BoardVO vo, HttpSession session) {
-		Map<String, Object> upCountMap = new HashMap<String, Object>();
-		
-		String userId = (String) session.getAttribute("userId");
-		int boardseq = vo.getBoardseq();
-		
-		upCountMap.put("userId", userId);
-		upCountMap.put("boardseq", boardseq);
-		
-		int upCount = boardservice.upCount(vo);
-		
-		
-		return upCountMap;
-	}
-	
-	/*
-	// 게시글 반대
-	@ResponseBody
-	@RequestMapping(value = "/downCountBoard.do", method = RequestMethod.POST)
-	public int downCountBoard(BoardVO vo) {
-		int downCount = boardservice.downCount(vo);
-		return downCount;
-	}
-	
-	// 추천 / 반대 수 
-	@ResponseBody
-	@RequestMapping(value = "/count.do", method = RequestMethod.POST)
-	public int count(BoardVO vo) {
-		int count = boardservice.count(vo);
-		return count;
-	}
-	
-	*/
-	
-	/*
-	// 게시글 패스워드 체크
-	@ResponseBody
-	@RequestMapping(value = "/boardPwdCheck.do", method = RequestMethod.POST)
-	public int boardPwdCheck(BoardVO vo) {
-		int result = boardservice.boardPwdCheck(vo);
-		return result;
-	}
-*/
+
 }
