@@ -14,48 +14,42 @@ integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706t
 <script src="<c:url value="/vendor/jquery/jquery.min.js"/>"></script>
 <script>
 $(function(){	
-	// 추천 / 반대 수 
-	//count();
 	// 댓글 리스트 
 	replyList();
 	
 	// 게시글 수정
 	$('#updateBoardBtn').click(function(){
 		location.href = "updateBoardView.do?"
-						+"boardseq=${board.boardseq}"
-						+"&page=${cri.page}"
+				+"boardseq=${board.boardseq}"
+				+"&page=${cri.page}"
 	})
 	
 	// 게시글 삭제
 	$('#deleteBoardBtn').click(function(){
-		
 		$.ajax({
-			// 게시글 삭제 경로
-			url : 'deleteBoard.do',
-			type : 'post',
-			// 삭제할 해당 게시글 번호
-			data : {'boardseq' : $('#boardseq').val()},
-			success : function(data){
-				if(confirm('삭제 하시겠습니까?')){
-					$('#getBoard').submit();
-					alert('삭제가 완료되었습니다.');
-					// 메인
-					location.href = "main.do?page=${cri.page}"
-				}
+		// 게시글 삭제 경로
+		url : 'deleteBoard.do',
+		type : 'post',
+		// 삭제할 해당 게시글 번호
+		data : {'boardseq' : $('#boardseq').val()},
+		success : function(data){
+			if(confirm('삭제 하시겠습니까?')){
+				alert('삭제가 완료되었습니다.');
+				// 메인
+				location.href = "main.do?page=${cri.page}"
 			}
-		})
-	});
+		}
+	})
+});
 	
 	
 	// 댓글 작성
 	$('#insertreplyBtn').click(function(){
-		
 		if($('#replyContent').val()==''){
 			alert('댓글 내용을 입력하세요.');
 			$('#replyContent').focus();
 			return false;
 		}	
-		
 		$.ajax({
 			url : 'insertReply.do',
 			type : 'post',
@@ -79,29 +73,6 @@ $(function(){
 	})
 	
 }); 
-
-
-/*
-// 추천 / 반대 count 
-function count(){
-	$.ajax({
-		url : 'count.do?boardseq=${board.boardseq}',
-		type : 'post',
-		dataType : 'json',
-		success : function(data){
-			count ='';
-			// count가 + 일 경우
-			if(data > 0){
-				count += '<p><b> ' + data + ' </b>명의 사용자가 이 게시글을 추천 하였습니다.</p>';
-			// count가 - 일 경우
-			}else if(data < 0){
-				count += '<p><b> ' + data + ' </b>명의 사용자가 이 게시글을 반대 하였습니다.</p>';
-			}
-			$('#count').html(count);
-		}
-	})
-}
-*/
 
 //댓글 리스트
 function replyList(){
@@ -145,18 +116,15 @@ function replyList(){
 
 //댓글 삭제
 function deleteReply(replyseq){
-	
 	// onclick으로 받은 댓글 번호로 해당 댓글 삭제
 	$.ajax({
 		// 댓글 리스트에서 받은 해당 댓글 번호 삭제
 		url : 'deleteReply.do?replyseq=' + replyseq,
 		type : 'post', 
-		success : function(data){
-			if(confirm('댓글을 삭제 하시겠습니까?')){
+		success : function(data){	
 				alert('삭제가 완료되었습니다.');
-				$('#replyList').submit();
 				location.href = "getBoard.do?boardseq=${board.boardseq}&page=${cri.page}";
-			}
+			
 		},
 		error : function(data){
 			alert('댓글 삭제에 실패하였습니다.');
@@ -176,12 +144,6 @@ function deleteReply(replyseq){
 <form id="count" method="post">
 
 </form>
-<!-- 게시글 추천 
-<button type="button" id="upCountBoardBtn" onclick="upcount()" class="btn btn-outline-primary">👍</button>
--->
-<!-- 게시글 반대 
-&nbsp;<button type="button" id="downCountBoardBtn" class="btn btn-outline-danger">👎</button>
--->
 <!-- 글 상세보기 -->
 <form action="getBoard.do" name="getBoard" id="" method="post">
 <!-- 게시판 글 상세보기  -->
@@ -225,7 +187,7 @@ function deleteReply(replyseq){
 <input type="hidden" name="page" id="page" value="${cri.page }" page = "${cri.page }" />
 
 	<div class="mb-3">
-		<label>작성자</label>
+		<label>댓글 작성자</label>
 		<input type="text" class="form-control" name="writer" id="writer" value="${sessionScope.userId }" readonly="readonly" />
 	</div>
 	<div class="mb-3">
