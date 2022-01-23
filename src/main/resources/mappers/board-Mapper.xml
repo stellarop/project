@@ -17,6 +17,11 @@
   </resultMap>
   
 
+<!-- 내 게시글 리스트 -->
+<select id="myList" resultMap="boardResult">
+	SELECT * FROM BOARD B JOIN USERS U ON(B.WRITER = U.ID AND B.WRITER = #{writer})
+</select>
+	
 <!-- 게시글 조회 -->
 <select  id="getBoard" resultType="board" parameterType="board">
 	SELECT * FROM BOARD WHERE BOARDSEQ =#{boardseq}
