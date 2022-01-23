@@ -74,19 +74,10 @@ public class BoardServiceImpl implements BoardService {
 		return count;
 	}
 	
-	/*
 	@Override
-	public int boardPwdCheck(BoardVO vo) {
-		int result = boardDAO.boardPwdCheck(vo);
-		return result;
+	public List<BoardVO> myList(BoardVO vo) {
+		return boardDAO.myList(vo);
 	}
-	*/
-	/*
-	@Override
-	public List<BoardVO> boardList() {
-		return boardDAO.boardList();
-	}
-	*/
 	
 
 }
