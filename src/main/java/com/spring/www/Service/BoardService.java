@@ -30,10 +30,6 @@ public interface BoardService {
 	public int upCount(BoardVO vo);
 	// 반대
 	public int downCount(BoardVO vo);
-	/*
-	// 게시긆 패스워드 체크
-	public int boardPwdCheck(BoardVO vo);
-	public List<BoardVO> boardList();
-	 */
-	int count(BoardVO vo);
+	// 사용자가 작성한 리스트
+	public List<BoardVO> myList(BoardVO vo);
 }
