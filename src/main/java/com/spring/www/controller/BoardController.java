@@ -138,5 +138,15 @@ public class BoardController {
 		return "main.jsp";
 	}
 	
-
+	// 마이 리스트
+	@ResponseBody
+	@RequestMapping(value = "/myList.do",method = {RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> myList(BoardVO vo){
+		Map<String, Object> result = new HashMap<String, Object>();
+		// 작성 게시글, 댓글 수  넣어야 함 
+		// 게시글 리스트에서 작성자 클릭 시 작성자도 리턴해줘야함
+		result.put("myList", boardservice.myList(vo));
+		System.out.println(result);
+		return result;
+	}
 }
