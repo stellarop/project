@@ -49,11 +49,9 @@ public class BoardDAO {
 		int count = sqlsessiontemplate.selectOne("BoardDAO.count",vo);
 		return count;
 	}
-	/*
-	public int boardPwdCheck(BoardVO vo) {
-		int result = sqlsessiontemplate.selectOne("BoardDAO.boardPwdCheck",vo);
-		return result;
+	
+	public List<BoardVO> myList(BoardVO vo){
+		return sqlsessiontemplate.selectList("BoardDAO.myList",vo);
 	}
-	*/
 	
 }
