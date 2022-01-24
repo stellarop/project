@@ -14,6 +14,5 @@ public interface ReplyServie {
 	public void updateReply(ReplyVO rvo);	
 	public void deleteReply(ReplyVO rvo);
 	public ReplyVO selectReply(int replyseq);
-	public void upCountReply(int replyseq);
-	public void downCountReply(int replyseq);
+	public int replyCount(ReplyVO rvo);
 }
