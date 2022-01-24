@@ -42,13 +42,7 @@ public class ReplyServieImpl implements ReplyServie {
 	}
 
 	@Override
-	public void upCountReply(int replyseq) {
-		replyDAO.upCountReply(replyseq);
+	public int replyCount(ReplyVO rvo) {
+		return replyDAO.replyCount(rvo);
 	}
-
-	@Override
-	public void downCountReply(int replyseq) {
-		replyDAO.downCountReply(replyseq);
-	}
-
 }
