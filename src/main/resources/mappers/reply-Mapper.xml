@@ -37,13 +37,8 @@
 	SELECT * FROM REPLY WHERE REPLYSEQ =#{replyseq}
 </select>
 
-<!-- 댓글 추천 -->
-<update id="upCountReply" parameterType="int">
-	UPDATE REPLY SET COUNT = COUNT + 1 WHERE REPLYSEQ =#{replyseq}
-</update>
-
-<!-- 댓글 비추천 -->
-<update id="downCountReply"  parameterType="int">
-	UPDATE REPLY SET COUNT = COUNT - 1 WHERE REPLYSEQ =#{replyseq}
-</update>
+<!-- 작성한 댓글 개수 -->
+<select id="replyCount" resultType="int">
+	SELECT COUNT(*) FROM REPLY WHERE WRITER=#{writer}
+</select>
 </mapper>
