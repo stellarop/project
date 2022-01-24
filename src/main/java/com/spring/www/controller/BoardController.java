@@ -141,11 +141,12 @@ public class BoardController {
 	// 마이 리스트
 	@ResponseBody
 	@RequestMapping(value = "/myList.do",method = {RequestMethod.GET,RequestMethod.POST})
-	public Map<String, Object> myList(BoardVO vo){
+	public Map<String, Object> myList(BoardVO vo, ReplyVO rvo){
 		Map<String, Object> result = new HashMap<String, Object>();
-		// 작성 게시글, 댓글 수  넣어야 함 
+		// 작성한 게시글
 		result.put("myList", boardservice.myList(vo));
-		System.out.println(result);
+		// 댓글 개수
+		result.put("replyCount", replyservice.replyCount(rvo));
 		return result;
 	}
 }
