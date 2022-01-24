@@ -849,6 +849,7 @@ Criteria 클래스 필드에는 현재 페이지 번호, 1개의 페이지당 �
 </div>
 
 <div align=center><h2>댓글 리스트</h2>
+
 ![댓글 리스트 gif](https://user-images.githubusercontent.com/93149034/143158465-323908cf-a39c-4974-bd40-50e7121e2d6e.gif)
 </div>
 
