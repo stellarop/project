@@ -13,39 +13,35 @@ public class ReplyDAO {
 	@Autowired
 	private SqlSessionTemplate sqlsessiontemplate;
 	
-	// ´ñ±Û ¸®½ºÆ® 
+	// ëŒ“ê¸€ ë¦¬ìŠ¤íŠ¸ 
 	public List<ReplyVO> replyList(ReplyVO rvo){
 		return sqlsessiontemplate.selectList("ReplyDAO.replyList",rvo);
 	}
 	
-	// ´ñ±Û ÀÔ·Â
+	// ëŒ“ê¸€ ìž…ë ¥
 	public void insertReply(ReplyVO rvo) {
 		sqlsessiontemplate.insert("ReplyDAO.insertreply",rvo);
 	}
 	
-	// ´ñ±Û ¼öÁ¤
+	// ëŒ“ê¸€ ìˆ˜ì •
 	public void updateReply(ReplyVO rvo) {
 		sqlsessiontemplate.update("ReplyDAO.updatereply",rvo);
 	}
 	
-	// ´ñ±Û »èÁ¦
+	// ëŒ“ê¸€ ì‚­ì œ
 	public void deleteReply(ReplyVO rvo) {
 		sqlsessiontemplate.delete("ReplyDAO.deletereply",rvo);
 	}
 	
-	// ´ñ±Û Á¶È¸
+	// ëŒ“ê¸€ ì¡°íšŒ
 	public ReplyVO selectReply(int replyseq) {
 		return sqlsessiontemplate.selectOne("ReplyDAO.selectreply",replyseq);
 	}
 	
-	// ´ñ±Û ÃßÃµ
-	public void upCountReply(int replyseq) {
-		sqlsessiontemplate.update("ReplyDAO.upCountReply", replyseq);
-	}
-	
-	// ´ñ±Û ºñÃßÃµ
-	public void downCountReply(int replyseq) {
-		sqlsessiontemplate.update("ReplyDAO.downCountReply", replyseq);
+	// ëŒ“ê¸€ ê°œìˆ˜
+	public int replyCount(ReplyVO rvo) {
+		int replyCount = sqlsessiontemplate.selectOne("ReplyDAO.replyCount", rvo);
+		return replyCount;
 	}
 	
 }
