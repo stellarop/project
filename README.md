@@ -844,7 +844,9 @@ Criteria 클래스 필드에는 현재 페이지 번호, 1개의 페이지당 �
 	
 검색 키워드와 검색 타입으로 조회되는 게시글을 한페이지당 10개씩 JSP에 출력해주었습니다.
 
-
+<div align=center><h2>내 게시글 리스트</h2>
+기능 영상 추가할 곳
+</div
 <div align=center><h2>댓글 리스트</h2>
 
 ![댓글 리스트 gif](https://user-images.githubusercontent.com/93149034/143158465-323908cf-a39c-4974-bd40-50e7121e2d6e.gif)
