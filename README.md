@@ -884,7 +884,7 @@ function myList(){
 
 게시판에서 보내준 작성자를 localStorage.getItem('writer') key값으로 받아주고 변수에 저장 시켜주었습니다.
 
-```
+```JavaScript
 $.ajax({
 	// 해당 사용자가 작성한 게시글 조회
 	url : 'myList.do?writer=' + writer,
