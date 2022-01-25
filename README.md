@@ -871,8 +871,101 @@ function myList(writer){
 ```
 게시판에서 보내준 작성자를 매개변수로 받아주고 myList.jsp로 해당 작성자를 보내주기 위해 localStorage.setItem('writer',writer); 작성자를 저장 해주었습니다.
 
+```JavaScript
+// myList 함수 
+function myList(){
+	// writer로 보낸 작성자가 있으면 if문 실행
+	if(localStorage.getItem('writer')){
+		// 작성자를 받아서 변수에 저장
+		var writer = localStorage.getItem('writer')
+	}
+}
+```
 
+게시판에서 보내준 작성자를 localStorage.getItem('writer') key값으로 받아주고 변수에 저장 시켜주었습니다.
+
+```
+$.ajax({
+	// 해당 사용자가 작성한 게시글 조회
+	url : 'myList.do?writer=' + writer,
+	type : 'post',
+	dataType : 'json',
+	success : function(data){
+		myList = '';
+		// 헤더
+		count = '<h1>' + writer +  '님의 List' + '</h1>'
+		// 작성한 게시글이 없으면
+		if(data.myList.length < 1){
+			myList +='<p>' + writer + '님이 작성한 게시글이 없습니다.' + '</p>';
+		// 작성한 게시글이 있으면
+		}else{
+			// 작성 게시글 수, 작성 댓글 수 
+			count +='<h6>' + '작성한 게시글 : ' + '<b>' + data.myList.length + '</b>' + '</p>'
+			count +='<h6>' + '작성한 댓글 : ' + '<b>' + data.replyCount + '</b>' + '</p>'
+			
+			// 게시판 헤더
+			myList += '<table class="table table-hover">';
+			myList += '<tr>';
+			myList += '<th scope="col">번호</th>';
+			myList += '<th scope="col">제목</th>';
+			myList += '<th scope="col">작성자</th>';
+			myList += '<th scope="col">작성일</th>';
+			myList += '<th scope="col">조회수</th>';
+			myList += '</tr>';
+			// list 길이만큼 게시글 출력
+			$(data.myList).each(function(key, value){
+				myList += '<tr>';
+				myList += '<td>' + value.boardseq + '</td>';
+				// 제목 클릭 시 해당 게시글로 이동
+				myList += '<td><a href="getBoard.do?boardseq=' + value.boardseq + '">' + value.title + '</a> </td>';
+				myList += '<td>' + value.writer + '</td>';
+				myList += '<td>' + value.regdate + '</td>';
+				myList += '<td>' + value.boardcount + '</td>';
+				myList += '</tr>';
+			});
+		}
+	// 게시판 영역에 게시글 추가
+	$('#myList').html(myList);
+	// 작성자, 작성 게시글, 작성 댓글 추가
+	$('#count').html(count);
+	}
+})
+```
+
+ajax url 경로에 클릭한 작성자 값으로 호출하고 클릭한 작성자의 게시글 리스트, 작성 게시글 수, 댓글 수를 출력 해주었습니다.
+
+글 작성, 댓글 작성 시 로그인한 id로 작성자가 들어가기 때문에 
+					  
+```
+select * from board b join users u on(b.writer = u.id and b.writer="작성자")
+```
+					   
+board 테이블에 작성자(writer)와 users 테이블의 아이디(id)를 조인 후 작성자 == 아이디가 일치하는 게시글만 출력하게 구현하였고
+
+일치하는 게시글을 ajax로 출력하게 구현하였습니다.
+					   
+```Java
+// 유저 게시글 리스트
+	@ResponseBody
+	@RequestMapping(value = "/myList.do",method = {RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> myList(BoardVO vo, ReplyVO rvo){
+	Map<String, Object> result = new HashMap<String, Object>();
+	// 작성한 게시글
+	result.put("myList", boardservice.myList(vo));
+	// 댓글 개수
+	result.put("replyCount", replyservice.replyCount(rvo));
+	return result;
+	}					   
+```
+
+controller에서는 Map에 2개의 데이터를 넣어서 리턴 시켜주었습니다.
+
+작성 게시글 리스트와 댓글 개수 입니다.
+
+작성 게시글 리스트는 클릭한 작성자와 아이다가 일치하는 게시글을 리스트로 조회하였고 
 	
+댓글 개수는 count를 이용해서 작성자가 작성한 댓글의 개수를 구해었습니다.
+
 <div align=center><h2>댓글 리스트</h2>
 
 ![댓글 리스트 gif](https://user-images.githubusercontent.com/93149034/143158465-323908cf-a39c-4974-bd40-50e7121e2d6e.gif)
