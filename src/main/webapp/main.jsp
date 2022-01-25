@@ -25,107 +25,18 @@ $(function(){
 		$('#insertBoard').click(function(){
 		location.href = "insertBoard.do"
 	})
+	
 })
-	/*
-	// 검색 버튼 클릭
-	$('#searchBtn').click(function(){
-		alert('클릭됨');
-		
-		// 사용자가 입력한 검색어, 검색 타입
-		var keyword = $('#keyword').val();
-		var searchType = $('#searchType').val();
-		// 사용자가 입력한 검색어, 검색타입을 각각 넣어준다
-		$('#keyword').val(keyword);
-		$('#searchType').val(searchType);
-		
-		//boardList();
-	});
-	*/
-
-/*
-// 게시글 리스트
-function boardList(){
-	
-	var keyword = $('#keyword').val();
-	var searchType = $('#searchType').val();
-	
-	
-	var page = document.getElementById('page').value;
-	
-	$.ajax({
-		// 게시글 리스트,페이징 경로
-		url : 'ajaxMain.do?page=${cri.page}',
-		post : 'post',
-		dataType : 'json',
-		success : function(data){
-			data.cri.keyword += keyword
-			data.cri.searchType += searchType
-			
-			var boardList = data.boardList;
-			var cri = data.cri;
-			var pageMaker = data.pageMaker;
-			
-			// 게시글 리스트에 들어갈 값
-			boardList = '';
-			// 페이징
-			page = '';
-			// List에 길이가 0이라면(게시글이 없다면)
-			if(data.boardList.length < 0){
-				// 출력
-				boardList += '<P>등록된 게시글이 없습니다</p>';
-			// List에 길이가 1이상이면 (등록된 게시글이 있을경우)
-			}else{
-				boardList += '<input type="hidden" name="page" id="page" value= ' + data.cri.page + ' />';
-				// 테이블 상단
-				boardList += '<table class="table table-hover">';
-				boardList += '<tr>';
-				boardList += '<th scope="col">번호</th>';
-				boardList += '<th scope="col">제목</th>';
-				boardList += '<th scope="col">작성자</th>';
-				boardList += '<th scope="col">작성일</th>';
-				boardList += '<th scope="col">조회수</th>';
-				boardList += '</tr>';
-				// List 길이만큼 반복문으로 출력
-				$(data.boardList).each(function(key, value){
-					boardList += '<tr>';
-					boardList += '<td>' + value.boardseq + '</td>';
-					boardList += '<td><a href="getBoard.do?boardseq=' + value.boardseq + '&page=' + data.cri.page +'">' + value.title + '</a> </td>';
-					boardList += '<td>' + value.writer + '</td>';
-					boardList += '<td>' + value.regdate + '</td>';
-					boardList += '<td>' + value.boardcount + '</td>';
-					boardList += '</tr>';
-				});
-				boardList += '</table>';
-			}
-			
-			
-			page += '<div class="paging-div">';
-			page += '<ul class="pagination" display : inline-block;>';
-			
-			if(pageMaker.prev){
-				page += '<li class="page-item><a aria-label="Previous" class="page-link" href="javascript:void(0);" onclick="boardList(' + pageMaker.startPage -1 + ');">〈</a></li>';
-			}
-			
-			for(var pageNum = pageMaker.startPage; pageNum < pageMaker.endPage; pageNum++){
-				page += '<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="boardList('+ pageNum +');" >' + pageNum + '</a></li>';
-			}
-			
-			if(pageMaker.next && pageMaker.endPage >0){
-				page += '<li class="page-item"> <a aria-label="Previous" class="page-link" href="javascript:void(0);" onclick="boardList('+ pageMaker.endPage +1 +');"> 〉</a></li>';
-			}
-			
-			page += '</ul>';
-			page += '</div>';
-			
-			// boardList form에 데이터를 넣어준다
-			//$('#boardList').html(boardList);
-			// page form에 데이터 넣어주기
-			//$('#pageMaker').html(page);
-
-		}
-	})
+// myList 함수
+// 작성자 클릭 시 실행 / 매개변수로 작성자 받아줌
+function myList(writer){
+	// myList.jsp로 보낼 작성자 값
+	localStorage.setItem('writer',writer);
+	// myList.jsp로 이동
+	location.href = "myList.jsp"
 }
-*/
+
+
 </script>
 <style>
 .paging-div { padding: 15px 0 5px 10px; display: table; margin-left: auto; margin-right: auto; text-align: center; }
@@ -164,7 +75,7 @@ function boardList(){
 		<tr>
 			<td>${list.boardseq }</td>
 			<td><a href="getBoard.do?boardseq=${list.boardseq }&page=${cri.page}">${list.title }</a></td>
-			<td>${list.writer }</td>
+			<td><a href="javascript:void(0);" onclick="myList('${list.writer}');" vaule="${list.writer }">${list.writer }</a></td>
 			<td>${list.regdate }</td>
 			<td>${list.boardcount }</td>
 		</tr>
