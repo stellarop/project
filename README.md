@@ -849,6 +849,30 @@ Criteria 클래스 필드에는 현재 페이지 번호, 1개의 페이지당 �
 ![유저 게시글 리스트 gif](https://user-images.githubusercontent.com/93149034/151031419-d187b253-05c6-4f78-8c1f-204707bd5515.gif)
 </div>
 
+유저 게시글 리스트는 메인 게시판 페이지에서 작성자를 클릭하면 작성자가 작성한 게시글 수, 댓글 수, 작성한 게시글을 리스트로 나타내주었습니다.
+
+
+```JavaScript
+<td><a href="javascript:void(0);" onclick="myList('${list.writer}');" vaule="${list.writer }">${list.writer }</a></td>	
+```
+
+게시판 리스트에서 작성자를 클릭 시 myList() 함수가 실행되고 클릭한 작성자도 같이 보내주었습니다.
+
+	
+```JavaScript
+// myList 함수
+// 작성자 클릭 시 실행 / 매개변수로 작성자 받아줌
+function myList(writer){
+	// myList.jsp로 보낼 작성자 값
+	localStorage.setItem('writer',writer);
+	// myList.jsp로 이동
+	location.href = "myList.jsp"
+}
+```
+게시판에서 보내준 작성자를 매개변수로 받아주고 myList.jsp로 해당 작성자를 보내주기 위해 localStorage.setItem('writer',writer); 작성자를 저장 해주었습니다.
+
+
+	
 <div align=center><h2>댓글 리스트</h2>
 
 ![댓글 리스트 gif](https://user-images.githubusercontent.com/93149034/143158465-323908cf-a39c-4974-bd40-50e7121e2d6e.gif)
