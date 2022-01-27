@@ -882,7 +882,7 @@ function myList(){
 }
 ```
 
-게시판에서 보내준 작성자를 localStorage.getItem('writer') key값으로 받아주고 변수에 저장 시켜주었습니다.
+myList.jsp에서 localStorage.getItem('writer') 클릭한 작성자를 key값으로 받아주고 변수에 저장 시켜주었습니다.
 
 ```JavaScript
 $.ajax({
