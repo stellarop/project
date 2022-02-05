@@ -15,7 +15,7 @@
 
 그럼 지금부터 포트폴리오 소개를 시작 하겠습니다.
 
-* test
+<div align=center><h2>주요 구현 기능</h2> </div>
 
 
 <div align=center><h2>개발환경</h2></div>
