@@ -1,0 +1,31 @@
+package com.spring.www.Impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.spring.www.DAO.LikeDAO;
+import com.spring.www.Service.LikeService;
+import com.spring.www.VO.LikeVO;
+
+@Service
+public class LikeServiceImpl implements LikeService {
+	@Autowired
+	private LikeDAO likeDAO;
+
+	@Override
+	public void insertLike(LikeVO likevo) {
+		likeDAO.insertLike(likevo);
+	}
+
+	@Override
+	public int likeCount(LikeVO likevo) {
+		int likeCount = likeDAO.likeCount(likevo);
+		return likeCount;
+	}
+
+	@Override
+	public int clickLike(LikeVO likevo) {
+		int clickLike = likeDAO.clickLike(likevo);
+		return clickLike;
+	}
+}
