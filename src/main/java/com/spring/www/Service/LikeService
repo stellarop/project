@@ -1,0 +1,12 @@
+package com.spring.www.Service;
+
+import org.springframework.stereotype.Service;
+
+import com.spring.www.VO.LikeVO;
+
+@Service
+public interface LikeService {
+	public void insertLike(LikeVO likevo);
+	public int likeCount(LikeVO likevo);
+	public int clickLike(LikeVO likevo);
+}
