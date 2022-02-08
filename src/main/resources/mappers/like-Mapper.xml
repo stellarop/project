@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="LikeDAO">
+  
+ <!-- 좋아요 개수 -->
+ <select id="likeCount" parameterType="int">
+  	SELECT COUNT(*) FROM LIKES WHERE BOARDSEQ =#{boardseq}
+ </select>
+  
+  
+ <!-- 좋아요 누른 사용자 -->
+ <insert id="insertLike">
+ 	INSERT INTO LIKES(BOARDSEQ,ID) VALUES(#{boardseq}, #{id})
+ </insert>
+ 
+ <!-- 좋아요 클릭, 취소 시  반환 값  -->
+ <update id="clickLike" parameterType="int">
+ 	UPDATE LIKES SET 
+ 	<include refid="cal"></include>
+ 	WHERE BOARDSEQ=#{boardseq} AND ID=#{id}
+ </update>
+ 
+ <sql id="count">
+ 	<!-- 좋아요를 눌렀을 시 -->
+ 	<if test="clickLike == 1">
+ 		LIKECOUNT = 0
+ 	</if>
+ 	<!-- 좋아요를 누르지 않으면 -->
+ 	<if test="clickLike == 0">
+ 		LIKECOUNT = LIKECOUNT + 1
+ 	</if>
+ </sql>
+ </mapper>
