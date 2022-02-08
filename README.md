@@ -51,7 +51,7 @@
 </div>
 <div align=center><h2>ERD</h2>
 
-![ERD](https://user-images.githubusercontent.com/93149034/142772745-51282138-525b-4923-82ba-a52faea23958.png)
+![erd](https://user-images.githubusercontent.com/93149034/153079474-6295c1bb-6806-45c6-a285-28a660740228.png)
 </div>
 
 <div align=center><h2>로그인 기능</h2>
