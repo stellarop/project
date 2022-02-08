@@ -1,0 +1,30 @@
+package com.spring.www.DAO;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.spring.www.VO.LikeVO;
+
+@Repository
+public class LikeDAO {
+	@Autowired
+	private SqlSessionTemplate sqlsessiontemplate;
+	
+	// 좋아요 누른 사용자, 게시글
+	public void insertLike(LikeVO likevo) {
+		sqlsessiontemplate.insert("LikeDAO.insertLike", likevo);
+	}
+	
+	// 좋아요 개수
+	public int likeCount(LikeVO likevo) {
+		int likeCount = sqlsessiontemplate.selectOne("likeDAO.likeCount",likevo);
+		return likeCount;
+	}
+	
+	// 좋아요 = 1 좋아요 x = 0
+	public int clickLike(LikeVO likevo) {
+		int clickLike = sqlsessiontemplate.selectOne("likeDAO.clickLike",likevo);
+		return clickLike;
+	}
+}
