@@ -1,0 +1,44 @@
+package com.spring.www.VO;
+
+public class LikeVO {
+	// 좋아요를 누른 아이디
+	private String id;
+	// 게시글 번호
+	private int boardseq;
+	// 좋아요을 누르면 1 안누르면 0
+	private int clicklike;
+	// 좋아요 개수
+	private int likecount;
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public int getBoardseq() {
+		return boardseq;
+	}
+	public void setBoardseq(int boardseq) {
+		this.boardseq = boardseq;
+	}
+	public int getClicklike() {
+		return clicklike;
+	}
+	public void setClicklike(int clicklike) {
+		this.clicklike = clicklike;
+	}
+	public int getLikecount() {
+		return likecount;
+	}
+	public void setLikecount(int likecount) {
+		this.likecount = likecount;
+	}
+	@Override
+	public String toString() {
+		return "LikesVO [id=" + id + ", boardseq=" + boardseq + ", clicklike=" + clicklike + ", likecount=" + likecount
+				+ "]";
+	}
+	
+	
+}
