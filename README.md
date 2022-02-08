@@ -47,7 +47,7 @@
 <div align=center><h2>프로젝트 구조</h2>
 
 ![프로젝트 구조 1](https://user-images.githubusercontent.com/93149034/153079985-0acdf3de-b9ce-4ffd-aee6-3715a3d7b0ad.png)
-![프로젝트 구조2](https://user-images.githubusercontent.com/93149034/153080015-a0381835-da1a-40cb-8d16-4c9352405c4a.png)
+![프로젝트 구조 2](https://user-images.githubusercontent.com/93149034/153080310-b20c2bb6-ab10-4310-9c11-98a2c3f1166f.png)
 </div>
 <div align=center><h2>ERD</h2>
 
