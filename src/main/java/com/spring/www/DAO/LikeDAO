@@ -22,9 +22,9 @@ public class LikeDAO {
 		return likeCount;
 	}
 	
-	// 좋아요 = 1 좋아요 x = 0
-	public int clickLike(LikeVO likevo) {
-		int clickLike = sqlsessiontemplate.selectOne("likeDAO.clickLike",likevo);
-		return clickLike;
+	// 좋아요 증가
+	public int updateLike(LikeVO likevo) {
+		int updateLike = sqlsessiontemplate.selectOne("likeDAO.updateLike",likevo);
+		return updateLike;
 	}
 }
