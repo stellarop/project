@@ -24,8 +24,8 @@ public class LikeServiceImpl implements LikeService {
 	}
 
 	@Override
-	public int clickLike(LikeVO likevo) {
-		int clickLike = likeDAO.clickLike(likevo);
-		return clickLike;
+	public int updateLike(LikeVO likevo) {
+		int updateLike = likeDAO.updateLike(likevo);
+		return updateLike;
 	}
 }
