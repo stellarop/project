@@ -8,5 +8,5 @@ import com.spring.www.VO.LikeVO;
 public interface LikeService {
 	public void insertLike(LikeVO likevo);
 	public int likeCount(LikeVO likevo);
-	public int clickLike(LikeVO likevo);
+	public int updateLike(LikeVO likevo);
 }
