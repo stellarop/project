@@ -15,10 +15,10 @@
  	INSERT INTO LIKES(BOARDSEQ,ID) VALUES(#{boardseq}, #{id})
  </insert>
  
- <!-- 좋아요 클릭, 취소 시  반환 값  -->
- <update id="clickLike" parameterType="int">
+ <!-- 좋아요 추가  -->
+ <update id="updateLike" parameterType="int">
  	UPDATE LIKES SET 
- 	<include refid="cal"></include>
+ 	<include refid="count"></include>
  	WHERE BOARDSEQ=#{boardseq} AND ID=#{id}
  </update>
  
