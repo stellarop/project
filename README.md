@@ -429,7 +429,7 @@ $(function(){
 });
 ```
 
-== 설명 들어가야 함 ==
+
 ```Java
 // 아이디 찾기
 @ResponseBody
