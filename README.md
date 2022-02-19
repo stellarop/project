@@ -1118,7 +1118,7 @@ insertReply form 안에 있는 댓글을 controller로 보내준 후 $('#insertR
 
 댓글을 등록 후 location.href = "getBoard.do?boardseq=${board.boardseq}&page=${cri.page}" 해당 페이지, 해당 게시글로 이동합니다.
 
-<div align=center><h2>댓글 등록</h2>
+<div align=center><h2>댓글 수정</h2>
 
 ![댓글 수정 gif](https://user-images.githubusercontent.com/93149034/143158987-bdcf3593-e163-4264-baab-d24fb9dfe27a.gif)
 </div>
