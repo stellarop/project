@@ -12,5 +12,26 @@ public class LikeServiceImpl implements LikeService {
 	@Autowired
 	private LikeDAO likeDAO;
 
-	
+	@Override
+	public void insertLike(LikeVO likevo) {
+		likeDAO.insertLike(likevo);
+	}
+
+	@Override
+	public int likeCheck(LikeVO likevo) {
+		int likeCheck = likeDAO.likeCheck(likevo);
+		return likeCheck;
+	}
+
+	@Override
+	public int upLike(LikeVO likevo) {
+		int upLike = likeDAO.upLike(likevo);
+		return upLike;
+	} 
+
+	@Override
+	public int downLike(LikeVO likevo) {
+		int downLike = likeDAO.downLike(likevo);
+		return downLike;
+	}
 }
