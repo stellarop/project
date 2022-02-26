@@ -11,20 +11,5 @@ public class LikeDAO {
 	@Autowired
 	private SqlSessionTemplate sqlsessiontemplate;
 	
-	// 좋아요 누른 사용자, 게시글
-	public void insertLike(LikeVO likevo) {
-		sqlsessiontemplate.insert("LikeDAO.insertLike", likevo);
-	}
 	
-	// 좋아요 개수
-	public int likeCount(LikeVO likevo) {
-		int likeCount = sqlsessiontemplate.selectOne("likeDAO.likeCount",likevo);
-		return likeCount;
-	}
-	
-	// 좋아요 증가
-	public int updateLike(LikeVO likevo) {
-		int updateLike = sqlsessiontemplate.selectOne("likeDAO.updateLike",likevo);
-		return updateLike;
-	}
 }
