@@ -124,6 +124,9 @@ public class BoardController {
 		model.addAttribute("board", boardservice.getBoard(vo.getBoardseq()));
 		// 페이지
 		model.addAttribute("cri", cri);
+		// 로그인한 유저 아이디
+		String userId = (String) session.getAttribute("userId");
+		model.addAttribute("userId", userId);
 		return "getBoard.jsp";
 	}  
 	
