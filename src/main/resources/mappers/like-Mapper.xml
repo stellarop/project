@@ -4,5 +4,32 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="LikeDAO">
   
+   <!-- 좋아요 체크 -->
+ <select id="likeCheck" resultType="int">
+  	SELECT COUNT(likecount) FROM LIKES WHERE BOARDSEQ =#{boardseq} AND ID=#{id}
+ </select>
+ 
+ <!-- 좋아요 누른 사용자 -->
+ <!-- 조회 후 중복된 값이 있으면 insert 안함 likeCount만 update  -->
+ <insert id="insertLike">
+ 	INSERT INTO LIKES (BOARDSEQ, ID)
+	SELECT #{boardseq}, #{id} FROM DUAL
+	WHERE NOT EXISTS
+	(SELECT BOARDSEQ, ID FROM LIKES WHERE BOARDSEQ =#{boardseq} AND ID =#{id});
+ </insert>
+ 
+ <!-- 좋아요  -->
+ <update id="upLike">
+ 	UPDATE LIKES SET 
+ 	LIKECOUNT = LIKECOUNT + 1
+ 	WHERE BOARDSEQ=#{boardseq} AND ID=#{id}
+ </update>
+ 
+ <!-- 좋아요 취소  -->
+ <update id="downLike">
+ 	UPDATE LIKES SET 
+ 	LIKECOUNT = 0
+ 	WHERE BOARDSEQ=#{boardseq} AND ID=#{id}
+ </update>
 
  </mapper>
