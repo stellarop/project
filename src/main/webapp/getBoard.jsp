@@ -131,6 +131,39 @@ function deleteReply(replyseq){
 		}
 	})
 }
+	
+//좋아요 버튼 클릭 시 like 함수 실행
+function like(){
+	// 게시판 번호
+	var boardseq = ${board.boardseq}
+	// 유저 아이디
+	var id = "${userId}"
+	
+	$.ajax({
+		url : 'Like.do',
+		type : 'post',
+		dataType : 'json',
+		// controller로 보낼 데이터
+		data : {'boardseq' : boardseq,
+			'id' : id},
+		success : function(data){
+			// count 조회 후 controller에서 리턴 된 값이 1이면 좋아요
+			if(data.likeCheck == 1){
+				alert(boardseq + '번 게시글에 좋아요를 눌렀습니다.');
+				// 좋아요 버튼 클릭 시 빨간색으로 변경
+				$('#likebtn').attr('class','btn btn-danger');
+			// count 조회 후 controller에서 리턴 된 값이 0이면 좋아요 취소
+			}else if(data.likeCheck == 0){
+				alert(boardseq + '번 게시글에 좋아요를 취소했습니다.');
+				// 좋아요 취소 시 기존 버튼 색상으로 변경
+				$('#likebtn').attr('class','btn btn-outline-primary');
+			}
+		},
+		error : function(data){
+			alert('실패.');
+		}
+	})
+}
 </script>
 <meta charset="UTF-8"> 
 <title>글 상세 보기</title>
@@ -152,6 +185,8 @@ function deleteReply(replyseq){
 <br>
 <button type="button" class="btn btn-outline-primary" id="mainBtn">메인</button>
 
+<!-- 좋아요 버튼 -->
+<button type="button" class="btn btn-outline-primary" id="likebtn" onclick="like();">좋아요</button>
 <!-- 세션으로 로그인된 아이디와 작성자와 일치하면 수정,삭제  -->
 <c:if test="${sessionScope.userId == board.writer }">
 	<button type="button" class="btn btn-outline-primary" id="updateBoardBtn" boardseq = "${board.boardseq }">게시글 수정</button>
