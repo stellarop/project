@@ -1,1 +1,46 @@
 
+package com.spring.www.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.spring.www.Service.LikeService;
+import com.spring.www.VO.LikeVO;
+
+@Controller
+public class LikeController {
+
+	@Autowired
+	private LikeService likeservice;
+	
+	// 좋아요 
+	@ResponseBody
+	@RequestMapping(value = "/Like.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> clickLike(LikeVO likevo) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		// 해당 게시글 좋아요 체크
+		int likeCheck = likeservice.likeCheck(likevo);
+		// 좋아요 누르지 않을 시
+		if(likeCheck == 0) {
+			// 사용자가 좋아요를 누르지 않으면 insert
+			likeservice.insertLike(likevo);
+			// 좋아요 칼럼 + 1
+			likeservice.upLike(likevo);
+		// 좋아요 눌렀을 떄
+		}else if(likeCheck == 1) {
+			// 좋아요 칼럼 - 1
+			likeservice.downLike(likevo);
+		}
+		// 좋아요 체크
+		result.put("likeCheck", likeservice.likeCheck(likevo));
+		return result;
+	}
+
+}
