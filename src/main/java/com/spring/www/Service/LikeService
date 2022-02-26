@@ -7,6 +7,7 @@ import com.spring.www.VO.LikeVO;
 @Service
 public interface LikeService {
 	public void insertLike(LikeVO likevo);
-	public int likeCount(LikeVO likevo);
-	public int updateLike(LikeVO likevo);
+	public int likeCheck(LikeVO likevo);
+	public int upLike(LikeVO likevo);
+	public int downLike(LikeVO likevo);
 }
