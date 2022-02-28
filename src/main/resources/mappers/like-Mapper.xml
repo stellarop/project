@@ -32,4 +32,9 @@
  	WHERE BOARDSEQ=#{boardseq} AND ID=#{id}
  </update>
 
+<!-- 좋아요 개수  -->
+<select id="likeNum" resultType="int"> 
+	SELECT COUNT(LIKECOUNT) FROM LIKES WHERE BOARDSEQ=#{boardseq} AND LIKECOUNT = 1
+</select>
+	  
  </mapper>
