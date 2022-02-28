@@ -807,6 +807,82 @@ location.href = "main.do?page=${cri.page}" 메인 페이지로 이동합니다.
 ![좋아요 기능 gif](https://user-images.githubusercontent.com/93149034/156047055-c33ab0a2-117d-4ea0-86d2-dcfbc42d58e3.gif)	
 </div>
 
+```Java
+// 좋아요 
+@ResponseBody
+@RequestMapping(value = "/Like.do", method = {RequestMethod.GET,RequestMethod.POST})
+public Map<String, Object> Like(LikeVO likevo) {
+	Map<String, Object> result = new HashMap<String, Object>();
+	
+	// 해당 게시글 좋아요 체크
+	int likeCheck = likeservice.likeCheck(likevo);
+
+	// 좋아요를 한번도 누르지 않은 사용자면 insert
+	if(likeCheck == 0) {
+		likeservice.insertLike(likevo);
+	}
+	
+	// 좋아요 유무 확인 
+	int likeCount = likeservice.likeCount(likevo);
+	// 좋아요를 누르지 않았으면 if 실행
+	if(likeCount == 0) {
+		// 좋아요 카운트 1 증가
+		likeservice.upLike(likevo);
+	// 좋아요를 누른 상태이면 else if 실행
+	}else if(likeCount == 1) {
+		// 좋아요 카운트 1 감소
+		likeservice.downLike(likevo);
+	}
+	
+	// 좋아요 클릭 유무
+	result.put("likeCount", likeservice.likeCount(likevo));
+	// 좋아요 개수
+	result.put("likeNum", likeservice.likeNum(likevo));
+	return result;
+}
+```
+
+```JavaScript
+//좋아요 버튼 클릭 시 like 함수 실행
+function like(){
+// 게시판 번호
+var boardseq = ${board.boardseq}
+// 유저 아이디
+var id = "${userId}"
+
+$.ajax({
+	url : 'Like.do',
+	type : 'post',
+	dataType : 'json',
+	// controller로 보낼 데이터
+	data : {'boardseq' : boardseq,
+		'id' : id},
+	success : function(data){
+		// 좋아요 개수 변수 선언
+		likeNum = '';
+		// count 조회 후 controller에서 리턴 된 값이 1이면 좋아요
+		if(data.likeCount == 1){
+			alert(boardseq + '번 게시글에 좋아요를 눌렀습니다.');
+			// 좋아요 버튼 클릭 시 빨간색으로 변경
+			$('#likebtn').attr('class','btn btn-danger');
+		// count 조회 후 controller에서 리턴 된 값이 0이면 좋아요 취소
+		}else if(data.likeCount == 0){
+			alert(boardseq + '번 게시글에 좋아요를 취소했습니다.');
+			// 좋아요 취소 시 기존 버튼 색상으로 변경
+			$('#likebtn').attr('class','btn btn-outline-primary');
+		}
+		// 좋아요 개수 넣기
+		likeNum +='<p>' + boardseq + '번 게시글의 좋아요 수 : ' + data.likeNum + '</p>';
+		// 좋아요 개수 likeNum 영역에 표시함
+		$('#likeNum').html(likeNum);
+	},
+	error : function(data){
+		alert('실패.');	
+	}
+		
+  })
+}
+```
 <div align=center><h2>검색 기능</h2>
 
 ![검색 gif](https://user-images.githubusercontent.com/93149034/143157208-a74b15d3-c7b7-46ac-b131-a2818dde4b28.gif)
