@@ -10,4 +10,5 @@ public interface LikeService {
 	public int likeCheck(LikeVO likevo);
 	public int upLike(LikeVO likevo);
 	public int downLike(LikeVO likevo);
+	public int likeNum(LikeVO likevo);
 }
