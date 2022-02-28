@@ -802,7 +802,9 @@ $.ajax({
 location.href = "main.do?page=${cri.page}" 메인 페이지로 이동합니다.
 
 
-
+<div align=center><h2>로그인 기능</h2>
+![좋아요 기능 gif](https://user-images.githubusercontent.com/93149034/156047055-c33ab0a2-117d-4ea0-86d2-dcfbc42d58e3.gif)	
+</div>
 
 <div align=center><h2>검색 기능</h2>
 
