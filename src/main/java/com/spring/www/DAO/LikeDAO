@@ -35,4 +35,9 @@ public class LikeDAO {
 		return downLike;
 	}
 	
+	// 좋아요 개수
+	public int likeNum(LikeVO likevo) {
+		int likeNum = sqlsessiontemplate.selectOne("LikeDAO.likeNum",likevo);
+		return likeNum;
+	}
 }
