@@ -22,25 +22,35 @@ public class LikeController {
 	// 좋아요 
 	@ResponseBody
 	@RequestMapping(value = "/Like.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public Map<String, Object> clickLike(LikeVO likevo) {
+	public Map<String, Object> Like(LikeVO likevo) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		
 		// 해당 게시글 좋아요 체크
 		int likeCheck = likeservice.likeCheck(likevo);
-		// 좋아요 누르지 않을 시
+
+		// 좋아요를 한번도 누르지 않은 사용자면 insert
 		if(likeCheck == 0) {
-			// 사용자가 좋아요를 누르지 않으면 insert
 			likeservice.insertLike(likevo);
-			// 좋아요 칼럼 + 1
+		}
+		
+		// 좋아요 유무 확인 
+		int likeCount = likeservice.likeCount(likevo);
+		// 좋아요를 누르지 않았으면 if 실행
+		if(likeCount == 0) {
+			// 좋아요 카운트 1 증가
 			likeservice.upLike(likevo);
-		// 좋아요 눌렀을 떄
-		}else if(likeCheck == 1) {
-			// 좋아요 칼럼 - 1
+		// 좋아요를 누른 상태이면 else if 실행
+		}else if(likeCount == 1) {
+			// 좋아요 카운트 1 감소
 			likeservice.downLike(likevo);
 		}
-		// 좋아요 체크
-		result.put("likeCheck", likeservice.likeCheck(likevo));
+		
+		// 좋아요 클릭 유무
+		result.put("likeCount", likeservice.likeCount(likevo));
+		// 좋아요 개수
+		result.put("likeNum", likeservice.likeNum(likevo));
 		return result;
+	}
 	}
 
 }
