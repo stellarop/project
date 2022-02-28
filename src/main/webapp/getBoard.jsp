@@ -147,21 +147,28 @@ function like(){
 		data : {'boardseq' : boardseq,
 			'id' : id},
 		success : function(data){
+			// 좋아요 개수 변수 선언
+			likeNum = '';
 			// count 조회 후 controller에서 리턴 된 값이 1이면 좋아요
-			if(data.likeCheck == 1){
+			if(data.likeCount == 1){
 				alert(boardseq + '번 게시글에 좋아요를 눌렀습니다.');
 				// 좋아요 버튼 클릭 시 빨간색으로 변경
 				$('#likebtn').attr('class','btn btn-danger');
 			// count 조회 후 controller에서 리턴 된 값이 0이면 좋아요 취소
-			}else if(data.likeCheck == 0){
+			}else if(data.likeCount == 0){
 				alert(boardseq + '번 게시글에 좋아요를 취소했습니다.');
 				// 좋아요 취소 시 기존 버튼 색상으로 변경
 				$('#likebtn').attr('class','btn btn-outline-primary');
 			}
+			// 좋아요 개수 넣기
+			likeNum +='<p>' + boardseq + '번 게시글의 좋아요 수 : ' + data.likeNum + '</p>';
+			// 좋아요 개수 likeNum 영역에 표시함
+			$('#likeNum').html(likeNum);
 		},
 		error : function(data){
-			alert('실패.');
+			alert('실패.');	
 		}
+		
 	})
 }
 </script>
@@ -183,6 +190,9 @@ function like(){
 <input type="hidden" name="boardseq" id="boardseq" value="${board.boardseq }" />
 <input type="hidden" name="page" id="page" value="${cri.page }" page = "${cri.page }" />
 <br>
+<!-- 좋아요 개수 위치 -->
+<div id="likeNum">
+</div>
 <button type="button" class="btn btn-outline-primary" id="mainBtn">메인</button>
 
 <!-- 좋아요 버튼 -->
