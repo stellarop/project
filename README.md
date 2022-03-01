@@ -807,6 +807,8 @@ location.href = "main.do?page=${cri.page}" 메인 페이지로 이동합니다.
 ![좋아요 기능 gif](https://user-images.githubusercontent.com/93149034/156047055-c33ab0a2-117d-4ea0-86d2-dcfbc42d58e3.gif)	
 </div>
 
+좋아요 기능은 lik 테이블을 생성 게시판 번호, 아이디, 좋아요 유무로 나뉘어져 있고 게시글 번호와 아이디는 외래키로 지정하였습니다.
+
 ```Java
 // 좋아요 
 @ResponseBody
@@ -816,7 +818,7 @@ public Map<String, Object> Like(LikeVO likevo) {
 	
 	// 해당 게시글 좋아요 체크
 	int likeCheck = likeservice.likeCheck(likevo);
-
+	
 	// 좋아요를 한번도 누르지 않은 사용자면 insert
 	if(likeCheck == 0) {
 		likeservice.insertLike(likevo);
@@ -841,6 +843,17 @@ public Map<String, Object> Like(LikeVO likevo) {
 	return result;
 }
 ```
+
+count 로 해당 게시글 좋아요를 누르지 않았으면 0을 반환 누른 상태이면 1을 반환처리 하여 0이 반환될 시 좋아요 테이블에 게시글 번호와 아이디를 insert 합니다.
+
+게시글과 아이디가 여러 개 insert 되면 안되기 때문에 서브쿼리(NOT EXISTS) 를 이용하여 조회되는 값이 있으면 insert 하지 못하게 구현 하였고
+
+좋아요 유무는 컬럼이 삽입될 시 0으로 지정하였습니다.
+
+좋아요 테이블에 좋아요 유무를 누르지 않았으면 0 좋아요를 누른 상태이면 1의 값을 조회합니다.
+
+0이면 좋아요 유무 + 1 증가 1이면 좋아요 유무를 -1 로 수정 후 ajax로 리턴 시켜주었습니다.
+
 
 ```JavaScript
 //좋아요 버튼 클릭 시 like 함수 실행
@@ -883,6 +896,15 @@ $.ajax({
   })
 }
 ```
+
+좋아요 버튼 클릭 시 like() 함수가 실행됩니다.
+
+값을 반환 받기 위해 게시글 번호와 아이디를 controller로 보내준 후 
+
+controller에서 리턴 받은 값(좋아요 유무)이 1이면 좋아요, 0이면 좋아요 취소가 되게 구현하였습니다.
+
+좋아요 개수는 해당 게시글에 좋아요 유무 컬럼이 1인 것(좋아요 처리 된 행)만 조회하여 나타내주었습니다.
+
 <div align=center><h2>검색 기능</h2>
 
 ![검색 gif](https://user-images.githubusercontent.com/93149034/143157208-a74b15d3-c7b7-46ac-b131-a2818dde4b28.gif)
