@@ -39,48 +39,48 @@ public class BoardController {
 	@Autowired
 	private BoardService boardservice;
 
-	// 게시글 작성 view
+	// 寃���湲� ���� view
 	@RequestMapping(value = "/insertBoard.do")
 	public String insertBoardUrl() {
 		return "insertBoard.jsp";
 	}
-	
-	// 게시글 작성 
+	  
+	// 寃���湲� ���� 
 	@ResponseBody
 	@RequestMapping(value = "/ajaxinsertBoard.do", method = RequestMethod.POST
 			) //,produces = "application/text;charset=UTF-8",consumes="multipart/form-data")
 	public Map<String, Object> insertBoard(BoardVO vo, HttpSession session) throws IOException{
 		Map<String, Object> result = new HashMap<String, Object>();
 		System.out.println(result);
-		// 로그인 한 유저 아이디 getAttribute로 가져오기
+		// 濡�洹몄�� �� ���� ���대�� getAttribute濡� 媛��몄�ㅺ린
 		String user = (String)session.getAttribute("userId");
 		
-		// vo에 있는 UploadFile을 파일 형식으로 변경
+		// vo�� ���� UploadFile�� ���� �����쇰� 蹂�寃�
 		MultipartFile uploadFile = vo.getUploadFile();
 		System.out.println(uploadFile);
-		// 업로드하는 파일의 실제 이름를 반환
+		// ��濡������� ���쇱�� �ㅼ�� �대�瑜� 諛���
 		
 		String fileName = uploadFile.getOriginalFilename();
 		
-		// 업로드한 파일의 존재여부
+		// ��濡����� ���쇱�� 議댁�ъ�щ�
 		if(!uploadFile.isEmpty()) {
 			String originalFilename = uploadFile.getOriginalFilename();
-			// 업로드한 파일을 C:\\Project 파일 업로드 에 저장
-			uploadFile.transferTo(new File("C:\\Project 파일 업로드\\" + fileName));
+			// ��濡����� ���쇱�� C:\\Project ���� ��濡��� �� ����
+			uploadFile.transferTo(new File("C:\\Project ���� ��濡���\\" + fileName));
 		}	
-		// 파일 이름을 데이터베이스에 저장
+		// ���� �대��� �곗�댄�곕��댁�ㅼ�� ����
 		vo.setFilename(fileName);
-		// 게시글 작성자에 로그인 한 유저 아이디 넣어주기
+		// 寃���湲� ���깆���� 濡�洹몄�� �� ���� ���대�� �ｌ�댁＜湲�
 		vo.setWriter(user);
 		result.put("fileName", fileName);
-		//게시글 작성
+		//寃���湲� ����
 		result.put("insertBoard", boardservice.insertBoard(vo));
 		return result;
 	}
 	
 	
 	
-	// 게시글 수정 view
+	// 寃���湲� ���� view
 	@RequestMapping(value = "/updateBoardView.do", method = RequestMethod.GET)
 	public String updateBoardView(BoardVO vo, Criteria cri, Model model) {
 		model.addAttribute("cri", cri);
@@ -90,47 +90,47 @@ public class BoardController {
 	
 	
 	
-	// 게시글 수정
+	// 寃���湲� ����
 	@ResponseBody
 	@RequestMapping(value = "/updateBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public Map<String, Object> updateBoard(BoardVO vo, Model model, Criteria cri) {
 		Map<String, Object> result = new HashMap<String,Object>();
-		// 페이지 유지
+		// ���댁� ��吏�
 		result.put("cri", cri);
-		// 어떤 게시글을 수정할지
+		// �대�� 寃���湲��� ������吏�
 		result.put("updateBoard", boardservice.getBoard(vo.getBoardseq()));
-		// 게시글 수정
+		// 寃���湲� ����
 		boardservice.updateBoard(vo);
 		return result;
 	}
 	
 	 
-	// 게시글 삭제 
+	// 寃���湲� ���� 
 	@ResponseBody
 	@RequestMapping(value = "/deleteBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public Map<String, Object>  deleteBoardView(BoardVO vo, Criteria cri) {
 		Map<String, Object> result = new HashMap<String,Object>();
-		// 페이지 유지
+		// ���댁� ��吏�
 		result.put("cri", cri);
 		boardservice.deleteBoard(vo);
 		return result;
 	}
 	
-	// 게시글 상세
+	// 寃���湲� ����
 	@RequestMapping(value = "/getBoard.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String getBoard(BoardVO vo,ReplyVO rvo, Model model, Criteria cri,HttpSession session){
 	
-		// 해당 게시글
+		// �대�� 寃���湲�
 		model.addAttribute("board", boardservice.getBoard(vo.getBoardseq()));
-		// 페이지
+		// ���댁�
 		model.addAttribute("cri", cri);
-		// 로그인한 유저 아이디
+		// 濡�洹몄�명�� ���� ���대��
 		String userId = (String) session.getAttribute("userId");
 		model.addAttribute("userId", userId);
 		return "getBoard.jsp";
 	}  
 	
-	// 게시글 리스트 View
+	// 寃���湲� 由ъ�ㅽ�� View
 	@RequestMapping(value = "/main.do", method = {RequestMethod.GET,RequestMethod.POST}) 
 	public String boardList(Model model,  @ModelAttribute("cri") Criteria cri) {
 		PageMaker pageMaker = new PageMaker();
@@ -141,14 +141,14 @@ public class BoardController {
 		return "main.jsp";
 	}
 	
-	// 마이 리스트
+	// 留��� 由ъ�ㅽ�� 
 	@ResponseBody
 	@RequestMapping(value = "/myList.do",method = {RequestMethod.GET,RequestMethod.POST})
 	public Map<String, Object> myList(BoardVO vo, ReplyVO rvo){
 		Map<String, Object> result = new HashMap<String, Object>();
-		// 작성한 게시글
+		// ���깊�� 寃���湲� 
 		result.put("myList", boardservice.myList(vo));
-		// 댓글 개수
+		// ��湲� 媛���
 		result.put("replyCount", replyservice.replyCount(rvo));
 		return result;
 	}
