@@ -38,7 +38,7 @@ import com.spring.www.VO.UserVO;
 public class BoardController {
 	@Autowired
 	private BoardService boardservice;
-
+	private ReplyServie replyservice;
 	// 寃���湲� ���� view
 	@RequestMapping(value = "/insertBoard.do")
 	public String insertBoardUrl() {
