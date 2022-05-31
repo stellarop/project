@@ -390,7 +390,7 @@ var coords = new daum.maps.LatLng(result.y, result.x); 검색한 주소를 지�
 
  map.setCenter(coords); 좌표값을 받은 변수를 넣어주고 지도 중심으로 이동하고 marker.setPosition(coords) 좌표의 중심에 마커를 생성 해줍니다.
  
-$('#map').show(); 사용자가 검색하기전 숨긴 지도 영역을 나타내주고 마지막으로 $('#address2').focus(); 상세 주소 칸으로 자동으로 이동하게 됩니다.
+$('#map').show(); 사용자가 검색하기전 숨긴 지도 영역을 나타내주고 마지막으로 $('#address2').focus(); 상세 주소 칸으로 자동으로 이동하게 됩니다. 
  
  
 
