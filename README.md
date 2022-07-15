@@ -63,6 +63,77 @@
 ![로그인 gif](https://user-images.githubusercontent.com/88939199/135759759-6b8f1df1-0c5a-41c2-8610-9b3db077dc4b.gif)	
 </div>
 
+```JavaScript
+function selectVendor() {
+
+	if(localStorage.getItem('vendor_seq')){
+		
+		var vendor_seq = localStorage.getItem('vendor_seq');
+		console.log(vendor_seq);
+		
+		if(vendor_seq == '' || vendor_seq == undefined || vendor_seq == null){
+			alert('판매처 등록 번호가 없어 상세 조회를 할 수 없습니다.');
+			location.href = "vendorList.jsp";
+		}else{
+			$.ajax({
+				url : 'selectVendor.do?vendor_seq=' + vendor_seq,
+				type : 'post',
+				dataType : 'json',
+				success : function(data) {
+					selectVendor = '';
+					console.log(data);
+					
+					selectVendor += '<div class="container" role="main">';
+					selectVendor += '<h1>판매처 상세 조회</h1>';
+					selectVendor += '<div class="form-row">';
+					
+					selectVendor += '<div class="form-group col-md-3">';
+					selectVendor += '<label for="">판매처 이름</label>';
+					selectVendor += '<input type="text" class="form-control" id="vendor_name" value= ' + data.selectVendor.vendor_name + ' readonly="readonly"/>';
+					selectVendor += '</div>';
+					
+					selectVendor += '<div class="form-group col-md-3">';
+					selectVendor += '<label for="">판매처 등록코드</label>';
+					selectVendor += '<input type="text" class="form-control" id="vendor_name" value= ' + data.selectVendor.vendor_code + ' readonly="readonly"/>';
+					selectVendor += '</div>';
+					
+					selectVendor += '<div class="form-group col-md-3">';
+					selectVendor += '<label for="">판매처 등록일</label>';
+					selectVendor += '<input type="text" class="form-control" id="vendor_name" value= ' + data.selectVendor.regData + ' readonly="readonly"/>';
+					selectVendor += '</div>';
+					
+					selectVendor += '<div class="form-group col-md-3">';
+					selectVendor += '<label for="">담당자 번호</label>';
+					selectVendor += '<input type="text" class="form-control" id="vendor_name" value= ' + data.selectVendor.vendor_number + ' readonly="readonly"/>';
+					selectVendor += '</div>';
+					
+					selectVendor += '<div class="form-group col-md-3">';
+					selectVendor += '<label for="">담당자 성함</label>';
+					selectVendor += '<input type="text" class="form-control" id="vendor_name" value= ' + data.selectVendor.vendor_username + ' readonly="readonly"/>';
+					selectVendor += '</div>';
+					
+					selectVendor += '<div class="form-group col-md-3">';
+					selectVendor += '<label for="">판매 물품종류</label>';
+					selectVendor += '<input type="text" class="form-control" id="vendor_name" value= ' + data.selectVendor.vendor_type + ' readonly="readonly"/>';
+					selectVendor += '</div>';
+					
+					selectVendor += '<div class="form-group col-md-3">';
+					selectVendor += '<label for="">판매처 주소</label>';
+					selectVendor += '<input type="text" class="form-control" id="vendor_name" value= ' + data.selectVendor.vendor_address + ' readonly="readonly"/>';
+					selectVendor += '</div>';
+					
+					// button 영역	
+					selectVendor += '</div>'; 
+					selectVendor += '<button type="button" id="updateVendor" class="btn btn-primary">수정</button>&nbsp;&nbsp;&nbsp;';
+					selectVendor += '<button type="button" id="deleteVendor" class="btn btn-danger" onclick="deleteVendor('+ data.selectVendor.vendor_seq +');">삭제</button>';
+					selectVendor += '</div>'; 
+					
+				
+				$('#selectVendor').html(selectVendor);
+				}
+			})
+		}
+```
 
 ```JavaScript
 $(function(){
