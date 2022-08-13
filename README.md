@@ -2,6 +2,41 @@
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fstellarop%2Fhit-counter&count_bg=%2379C83D&title_bg=%23555555&icon=litecoin.svg&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 
+
+```Java
+@RequestMapping(value = "/login.do")
+public String login(UserVO uservo, HttpSession session,Model model) {
+UserVO user = userservice.selectUser(uservo);
+		
+int adminCheck = userservice.adminCheck(uservo);
+		
+try {
+	if(user == null || StringUtils.isEmpty(uservo.getId())) {
+		if(adminCheck == 1) {
+			model.addAttribute("loginAdmin", adminCheck);
+			//session.setAttribute("admin", uservo.getId());
+			logger.info("[login] " + uservo.getId() + "관리자님 로그인 성공." );
+			return "main.jsp";
+		}
+		logger.error("[login] 로그인 실패." );
+		model.addAttribute("loginError", user);
+		return "login.jsp"; 
+	}else {
+		if(user.isAccount_suspension() == false) {
+			logger.info("[login] 계정 정지된 사용자.");
+			return "login.jsp";
+		}
+		logger.info("[login] " + uservo.getId() + "사용자님 로그인 성공." );
+		session.setAttribute("userName", user.getUsername());
+		session.setAttribute("userId", user.getId());
+		return "main.jsp";
+	}
+} catch (Exception e) {
+	logger.error("login 오류[" + e.getMessage() + "]");
+	return "login.jsp";
+	}
+}
+```
 안녕하세요 웹 개발자를 지망하는 이연재입니다.
 제 포트폴리오를 보러 와주셔서 감사드립니다.
 제가 만든 포트폴리오는 게시판 기반 포트폴리오 입니다.
